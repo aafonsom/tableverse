@@ -1,4 +1,4 @@
-package com.example.tableverse;
+package com.example.tableverse.admin;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tableverse.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentoRojo#newInstance} factory method to
+ * Use the {@link FragmentoAmarillo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentoRojo extends Fragment {
+public class FragmentoAmarillo extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class FragmentoRojo extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentoRojo() {
+    public FragmentoAmarillo() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class FragmentoRojo extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentoRojo.
+     * @return A new instance of fragment FragmentoAmarillo.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentoRojo newInstance(String param1, String param2) {
-        FragmentoRojo fragment = new FragmentoRojo();
+    public static FragmentoAmarillo newInstance(String param1, String param2) {
+        FragmentoAmarillo fragment = new FragmentoAmarillo();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class FragmentoRojo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragmento_rojo, container, false);
+        return inflater.inflate(R.layout.fragment_fragmento_amarillo, container, false);
     }
 }

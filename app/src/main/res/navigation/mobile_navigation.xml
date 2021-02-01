@@ -3,23 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/fragmentoAmarillo">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.tableverse.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
+        android:id="@+id/fragmentoAmarillo"
+        android:name="com.example.tableverse.admin.FragmentoAmarillo"
+        android:label="fragment_fragmento_amarillo"
+        tools:layout="@layout/fragment_fragmento_amarillo" />
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.tableverse.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.tableverse.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/fragmentoNegro"
+        android:name="com.example.tableverse.admin.FragmentoNegro"
+        android:label="fragment_fragmento_negro"
+        tools:layout="@layout/fragment_fragmento_negro" />
 </navigation>

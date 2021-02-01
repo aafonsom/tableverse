@@ -62,7 +62,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/icono_app"
+        android:src="@drawable/icono_appcreoquesi"
         android:tint="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
