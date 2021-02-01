@@ -19,6 +19,7 @@
     <string name="title_activity_usuario_actividad">UsuarioActividad</string>
     <string name="registro_usuario">Nombre de usuario</string>
     <string name="repit_contrasenia">Repite la contraseña</string>
+    <string name="completar_registro">Registrarse</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -35,4 +36,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="registro_email">Email</string>
 </resources>

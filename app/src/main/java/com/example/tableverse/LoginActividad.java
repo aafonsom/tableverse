@@ -3,6 +3,10 @@ package com.example.tableverse;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -12,13 +16,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class LoginActividad extends AppCompatActivity {
-    NavController navController;
-    TabLayout tabLayout;
+    public NavController navController;
+    private TabLayout tabLayout;
+    public DatabaseReference ref;
+    public StorageReference sto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         tabLayout = findViewById(R.id.tab_login);
+
+        ref = FirebaseDatabase.getInstance().getReference();
+        sto = FirebaseStorage.getInstance().getReference();
 
         navController = Navigation.findNavController(this, R.id.nav_host_login);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

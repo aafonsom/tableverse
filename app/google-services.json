@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1001857540197",
+    "project_id": "tableverse-12a22",
+    "storage_bucket": "tableverse-12a22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001857540197:android:0d0cfb9f7ced7e3a1ce68c",
+        "android_client_info": {
+          "package_name": "com.example.tableverse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001857540197-gshmf2l913fqt90aiftdg0eg2ush9lp5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuLDbhVS78kjIS7B2FIWh9icxD5qGInCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001857540197-gshmf2l913fqt90aiftdg0eg2ush9lp5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

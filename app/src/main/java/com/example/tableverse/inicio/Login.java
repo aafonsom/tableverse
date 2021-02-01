@@ -1,4 +1,4 @@
-package com.example.tableverse.login;
+package com.example.tableverse.inicio;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.widget.Button;
 
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
-import com.example.tableverse.UsuarioActividad;
 
 /**
  * A simple {@link Fragment} subclass.

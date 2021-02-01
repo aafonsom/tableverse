@@ -6,12 +6,12 @@
     app:startDestination="@id/login">
     <fragment
         android:id="@+id/login"
-        android:name="com.example.tableverse.login.Login"
+        android:name="com.example.tableverse.inicio.Login"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/registro"
-        android:name="com.example.tableverse.login.Registro"
+        android:name="com.example.tableverse.inicio.Registro"
         android:label="fragment_registro"
         tools:layout="@layout/fragment_registro" />
 </navigation>
