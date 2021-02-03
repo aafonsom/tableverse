@@ -17,7 +17,7 @@ import android.view.MenuItem;
 
 public class LoginActividad extends AppCompatActivity {
     public NavController navController;
-    private TabLayout tabLayout;
+    public TabLayout tabLayout;
     public DatabaseReference ref;
     public StorageReference sto;
 
@@ -58,12 +58,8 @@ public class LoginActividad extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

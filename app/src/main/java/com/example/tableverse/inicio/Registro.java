@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.objetos.Usuario;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +31,8 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Registro#newInstance} factory method to
@@ -36,12 +40,13 @@ import java.util.Calendar;
  */
 public class Registro extends Fragment {
 
+    private static final int SELECCIONAR_FOTO = 1;
     private EditText et_nombre, et_pass, et_passrepit, et_email;
+    private ImageView fotoElegida;
     private DatabaseReference ref;
     private StorageReference sto;
     private Uri fotoUsuario_url;
     private NavController navController;
-
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -85,6 +90,8 @@ public class Registro extends Fragment {
         et_pass = view.findViewById(R.id.et_registro_pass);
         et_passrepit = view.findViewById(R.id.et_registro_repitpass);
         et_email = view.findViewById(R.id.et_email);
+        fotoElegida = view.findViewById(R.id.iv_foto_perfil);
+
         LoginActividad loginActividad = (LoginActividad)getActivity();
         navController = loginActividad.navController;
         ref = loginActividad.ref;
@@ -97,18 +104,26 @@ public class Registro extends Fragment {
                 registrarse(view);
             }
         });
+        fotoElegida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionarFotoPerfil(view);
+            }
+        });
+
+        fotoUsuario_url = null;
     }
 
     public void registrarse(View v){
         final String nombre, pass, repit_pass, email;
         nombre = et_nombre.getText().toString().trim();
         pass = et_pass.getText().toString().trim();
-        repit_pass = et_pass.getText().toString().trim();
+        repit_pass = et_passrepit.getText().toString().trim();
         email = et_email.getText().toString().trim();
         boolean validacion = validar(nombre, pass, repit_pass, email);
 
         if(validacion){
-            ref.child("tienda").child("clientes").equalTo(nombre)
+            ref.child("tienda").child("clientes").orderByChild("nombre").equalTo(nombre)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -119,11 +134,15 @@ public class Registro extends Fragment {
                         Usuario nuevo = new Usuario(nombre, email, pass);
                         String id = ref.child("tienda").child("clientes").push().getKey();
                         ref.child("tienda").child("clientes").child(id).setValue(nuevo);
-                        if(!fotoUsuario_url.equals("")){
+                        if(fotoUsuario_url != null){
                             sto.child("tienda").child("usuarios").child(id).putFile(fotoUsuario_url);
                         }
 
+                        LoginActividad loginActividad = (LoginActividad)getActivity();
+                        TabLayout.Tab tab = loginActividad.tabLayout.getTabAt(0);
+                        loginActividad.tabLayout.selectTab(tab);
                         navController.navigate(R.id.login);
+
                     }
                 }
 
@@ -142,13 +161,31 @@ public class Registro extends Fragment {
     public boolean validar(String nombre, String pass, String repit_pass, String email){
         boolean validacion = true;
         //mejorar valicacion
-        if(nombre.equals("") || !pass.equals(repit_pass) || email.equals("")){
+        if(nombre.equals("") || !pass.equals(repit_pass) || email.equals("") || pass.equals("")){
             validacion = false;
         }
 
         return validacion;
     }
 
+
+    public void seleccionarFotoPerfil(View v){
+        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent,SELECCIONAR_FOTO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && requestCode==SELECCIONAR_FOTO){
+            fotoUsuario_url=data.getData();
+            fotoElegida.setImageURI(fotoUsuario_url);
+            Toast.makeText(getContext(), "Foto de perfil seleccionada con éxito", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Fallo al seleccionar la foto de perfil", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 
