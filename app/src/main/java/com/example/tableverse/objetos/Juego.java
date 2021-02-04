@@ -3,6 +3,7 @@ package com.example.tableverse.objetos;
 import java.io.Serializable;
 
 public class Juego implements Serializable {
+    //meterle una descripcion
     private String id, nombre, categoria, url_juego;
     private double precio;
     private int stock;
