@@ -8,6 +8,10 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.tableverse.admin.CrearJuego;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -18,16 +22,22 @@ import androidx.navigation.ui.NavigationUI;
 public class AdminActividad extends AppCompatActivity {
     private FloatingActionButton fab;
     private NavController navController;
+    private DatabaseReference ref;
+    private StorageReference sto;
 
     //Dudo que el getFab sea necesario, eliminar si no le encuentro utilidad
-    public FloatingActionButton getFab(){ return fab; }
+    /*public FloatingActionButton getFab(){ return fab; }*/
     public NavController getNavController(){ return navController; }
+    public DatabaseReference getRef(){ return ref; }
+    public StorageReference getSto(){ return sto; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_actividad);
         fab = findViewById(R.id.fab_admin);
+        ref = FirebaseDatabase.getInstance().getReference();
+        sto = FirebaseStorage.getInstance().getReference();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         BottomNavigationView navView = findViewById(R.id.nav_view);

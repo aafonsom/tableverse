@@ -9,7 +9,7 @@
     tools:context=".admin.CrearJuego" >
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/iv_foto_juego"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toTopOf="@+id/b_addjuego"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+        app:layout_constraintTop_toBottomOf="@+id/iv_foto_juego">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout8">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_categoria_juego"
+                        android:id="@+id/et_precio_juego"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/precio_juego"
@@ -85,10 +85,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_precio_juego"
+                        android:id="@+id/et_categoria_juego"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/categoria_juego" />
+                        android:hint="@string/categoria_juego"
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

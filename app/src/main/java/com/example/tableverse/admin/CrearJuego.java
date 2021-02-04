@@ -1,5 +1,7 @@
 package com.example.tableverse.admin;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,11 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tableverse.AdminActividad;
-import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
+import com.example.tableverse.objetos.Juego;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,9 +34,13 @@ import com.example.tableverse.R;
  */
 public class CrearJuego extends Fragment {
     private final int MODO_FAB = 3;
-    //Si no doy más uso, hacerlo variable local
-    private AdminActividad adminActividad;
+    private static final int SELECCIONAR_FOTO = 1;
+
+    private ImageView fotoJuego;
     private EditText et_nombre, et_categoria, et_precio, et_stock;
+    private DatabaseReference ref;
+    private StorageReference sto;
+    private Uri fotoJuegoUrl;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -72,38 +86,69 @@ public class CrearJuego extends Fragment {
         et_categoria = view.findViewById(R.id.et_categoria_juego);
         et_precio = view.findViewById(R.id.et_precio_juego);
         et_stock = view.findViewById(R.id.et_stock);
-        Button b = view.findViewById(R.id.b_addjuego);
+        fotoJuego = view.findViewById(R.id.iv_foto_juego);
+        Button añadir = view.findViewById(R.id.b_addjuego);
 
-        adminActividad = (AdminActividad)getActivity();
+        AdminActividad adminActividad = (AdminActividad)getActivity();
         adminActividad.modoFab(MODO_FAB);
+        ref = adminActividad.getRef();
+        sto = adminActividad.getSto();
 
-        b.setOnClickListener(new View.OnClickListener() {
+        fotoJuegoUrl = null;
+        añadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 crearJuego();
+            }
+        });
+        fotoJuego.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionarFoto(view);
             }
         });
 
     }
 
     private void crearJuego(){
-        String nombre, categoria;
-        double precio;
-        int stock;
+        final String nombre, categoria;
+        final double precio;
+        final int stock;
 
         nombre = et_nombre.getText().toString().trim();
-        categoria = et_nombre.getText().toString().trim();
+        categoria = et_categoria.getText().toString().trim();
+
         try{
-            precio = Double.parseDouble(et_precio.toString().trim());
-            stock = Integer.parseInt(et_stock.toString().trim());
+            precio = Double.parseDouble(et_precio.getText().toString().trim());
+            stock = Integer.parseInt(et_stock.getText().toString().trim());
             boolean validacion = validar(nombre, categoria, precio, stock);
             if(validacion){
+                ref.child("tienda").child("juegos").orderByChild("nombre").equalTo(nombre)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.hasChildren()){
+                                Toast.makeText(getContext(), "Ya existe un juego con ese nombre", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Juego pojo_juego = new Juego(nombre, categoria, precio, stock);
+                                String id = ref.child("tienda").child("juegos").push().getKey();
+                                ref.child("tienda").child("juegos").child(id).setValue(pojo_juego);
+                                sto.child("tienda").child("juegos").child(id).putFile(fotoJuegoUrl);
+                                AdminActividad adminActividad = (AdminActividad)getActivity();
+                                adminActividad.getNavController().navigate(R.id.listaJuegosAdmin);
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
             }else{
-
+                Toast.makeText(getContext(), "Hay campos no validados", Toast.LENGTH_SHORT).show();
             }
         }catch(NumberFormatException nfe){
-            Toast.makeText(getContext(), "Ni el precio ni el stock pueden estar vacíos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "El precio o el stock no son válidos", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -111,12 +156,33 @@ public class CrearJuego extends Fragment {
     private boolean validar(String nombre, String categoria, double precio, int stock){
         boolean validado = true;
 
-        if(nombre.equals("") || categoria.equals("") || precio == 0.0 || stock == 0){
+        if(nombre.equals("") || categoria.equals("") || precio == 0.0 || stock == 0
+            || fotoJuegoUrl == null){
             validado = false;
         }
 
         return validado;
     }
+
+    public void seleccionarFoto(View v){
+        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent,SELECCIONAR_FOTO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && requestCode==SELECCIONAR_FOTO){
+            fotoJuegoUrl=data.getData();
+            fotoJuego.setImageURI(fotoJuegoUrl);
+            fotoJuego.setImageTintMode(null);
+            Toast.makeText(getContext(), "Foto de perfil seleccionada con éxito", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Fallo al seleccionar la foto de perfil", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
 }
