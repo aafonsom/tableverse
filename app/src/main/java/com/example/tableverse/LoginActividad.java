@@ -16,10 +16,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class LoginActividad extends AppCompatActivity {
-    public NavController navController;
-    public TabLayout tabLayout;
-    public DatabaseReference ref;
-    public StorageReference sto;
+    private NavController navController;
+    private TabLayout tabLayout;
+    private DatabaseReference ref;
+    private StorageReference sto;
+
+    public NavController getNavController(){ return navController; }
+    public TabLayout getTabLayout(){ return tabLayout; }
+    public DatabaseReference getRef(){ return ref; }
+    public StorageReference getSto() {return sto; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/fragmentoAmarillo"
+        android:id="@+id/listaJuegosAdmin"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Amarillo" />
+        android:title="@string/lista_juegos" />
 
     <item
-        android:id="@+id/fragmentoNegro"
+        android:id="@+id/listaEventosAdmin"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Negro" />
+        android:title="@string/lista_eventos" />
+
+    <item
+        android:id="@+id/listaPedidos"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/lista_pedidos" />
 
 </menu>

@@ -93,9 +93,9 @@ public class Registro extends Fragment {
         fotoElegida = view.findViewById(R.id.iv_foto_perfil);
 
         LoginActividad loginActividad = (LoginActividad)getActivity();
-        navController = loginActividad.navController;
-        ref = loginActividad.ref;
-        sto = loginActividad.sto;
+        navController = loginActividad.getNavController();
+        ref = loginActividad.getRef();
+        sto = loginActividad.getSto();
         Button b = view.findViewById(R.id.b_registro);
 
         b.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +139,8 @@ public class Registro extends Fragment {
                         }
 
                         LoginActividad loginActividad = (LoginActividad)getActivity();
-                        TabLayout.Tab tab = loginActividad.tabLayout.getTabAt(0);
-                        loginActividad.tabLayout.selectTab(tab);
+                        TabLayout.Tab tab = loginActividad.getTabLayout().getTabAt(0);
+                        loginActividad.getTabLayout().selectTab(tab);
                         navController.navigate(R.id.login);
 
                     }

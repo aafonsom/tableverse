@@ -91,8 +91,8 @@ public class Login extends Fragment {
         et_pass = view.findViewById(R.id.et_password);
 
         LoginActividad loginActividad = (LoginActividad)getActivity();
-        ref = loginActividad.ref;
-        sto = loginActividad.sto;
+        ref = loginActividad.getRef();
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
