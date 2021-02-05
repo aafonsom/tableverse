@@ -36,6 +36,7 @@ public class ListaJuegosAdmin extends Fragment {
 
     private AdminActividad adminActividad;
     private final int MODO_FAB = 1;
+    private final int MODO_NAVVIEW = 1;
     private DatabaseReference ref;
     private StorageReference sto;
     private RecyclerView rv_juegos;
@@ -85,7 +86,7 @@ public class ListaJuegosAdmin extends Fragment {
         rv_juegos = view.findViewById(R.id.rv_juegos_admin);
         adminActividad = (AdminActividad)getActivity();
         adminActividad.modoFab(MODO_FAB);
-
+        adminActividad.modoNavView(MODO_NAVVIEW);
         ref = adminActividad.getRef();
         sto = adminActividad.getSto();
 

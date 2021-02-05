@@ -26,6 +26,7 @@ public class AdminActividad extends AppCompatActivity {
     private NavController navController;
     private DatabaseReference ref;
     private StorageReference sto;
+    private BottomNavigationView navView;
 
     //Dudo que el getFab sea necesario, eliminar si no le encuentro utilidad
     /*public FloatingActionButton getFab(){ return fab; }*/
@@ -42,7 +43,7 @@ public class AdminActividad extends AppCompatActivity {
         sto = FirebaseStorage.getInstance().getReference();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.listaJuegosAdmin, R.id.listaEventosAdmin, R.id.listaPedidos)
                 .build();
@@ -66,9 +67,26 @@ public class AdminActividad extends AppCompatActivity {
                 break;
             case 2:
                 fab.setVisibility(View.VISIBLE);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        navController.navigate(R.id.crearEvento);
+                    }
+                });
                 break;
             case 3:
                 fab.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    public void modoNavView(int modo){
+        switch (modo){
+            case 1:
+                navView.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                navView.setVisibility(View.GONE);
                 break;
         }
     }

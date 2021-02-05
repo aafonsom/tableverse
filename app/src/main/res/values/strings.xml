@@ -23,6 +23,11 @@
     <string name="precio_juego">Precio del juego</string>
     <string name="stock_juego">Stock del juego</string>
     <string name="crear_juego">Añadir el juego a la tienda</string>
+    <string name="nombre_evento">Título del evento</string>
+    <string name="precio_evento">Precio</string>
+    <string name="aforo_maximo">Aforo máximo</string>
+    <string name="fecha_evento">Fecha del evento</string>
+    <string name="añadir_evento">Crear el evento</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>

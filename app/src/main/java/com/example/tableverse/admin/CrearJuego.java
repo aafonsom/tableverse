@@ -34,6 +34,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class CrearJuego extends Fragment {
     private final int MODO_FAB = 3;
+    private final int MODO_NAVVIEW = 2;
     private static final int SELECCIONAR_FOTO = 1;
 
     private ImageView fotoJuego;
@@ -91,6 +92,7 @@ public class CrearJuego extends Fragment {
 
         AdminActividad adminActividad = (AdminActividad)getActivity();
         adminActividad.modoFab(MODO_FAB);
+        adminActividad.modoNavView(MODO_NAVVIEW);
         ref = adminActividad.getRef();
         sto = adminActividad.getSto();
 

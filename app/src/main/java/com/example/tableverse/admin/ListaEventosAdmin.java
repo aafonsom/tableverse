@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,10 @@ import android.view.ViewGroup;
 
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
+import com.example.tableverse.objetos.Evento;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,11 +26,12 @@ import com.example.tableverse.R;
 public class ListaEventosAdmin extends Fragment {
     private AdminActividad adminActividad;
     private final int MODO_FAB = 2;
-
+    private final int MODO_NAVVIEW = 1;
+    private RecyclerView rv_eventos;
+    private List<Evento> lista_eventos = new ArrayList<>();
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
 
     private String mParam1;
     private String mParam2;
@@ -34,15 +40,6 @@ public class ListaEventosAdmin extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListaEventosAdmin.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ListaEventosAdmin newInstance(String param1, String param2) {
         ListaEventosAdmin fragment = new ListaEventosAdmin();
         Bundle args = new Bundle();
@@ -73,6 +70,7 @@ public class ListaEventosAdmin extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         adminActividad = (AdminActividad)getActivity();
         adminActividad.modoFab(MODO_FAB);
+        adminActividad.modoNavView(MODO_NAVVIEW);
     }
 
 }

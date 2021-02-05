@@ -10,6 +10,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class AppUtilities {
     DatabaseReference ref;
     StorageReference sto;
@@ -46,6 +50,13 @@ public class AppUtilities {
         });
 
         return res[0];
+    }
+
+    public String getDate(){
+        Calendar hoy = Calendar.getInstance();
+        SimpleDateFormat formateador = new SimpleDateFormat("YYYY-MM-dd");
+        String fecha_hoy = formateador.format(hoy.getTime());
+        return fecha_hoy;
     }
 
 }

@@ -25,4 +25,9 @@
         android:name="com.example.tableverse.admin.CrearJuego"
         android:label="fragment_crear_juego"
         tools:layout="@layout/fragment_crear_juego" />
+    <fragment
+        android:id="@+id/crearEvento"
+        android:name="com.example.tableverse.admin.CrearEvento"
+        android:label="fragment_crear_evento"
+        tools:layout="@layout/fragment_crear_evento" />
 </navigation>
