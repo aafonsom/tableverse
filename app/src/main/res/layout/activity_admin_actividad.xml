@@ -38,8 +38,10 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment" />
+        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
+        app:titleTextColor="@color/design_default_color_background" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_admin"
@@ -52,5 +54,20 @@
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/add_24px" />
+
+    <ImageView
+        android:id="@+id/iv_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:adjustViewBounds="true"
+        android:onClick="logout"
+        android:tint="@color/design_default_color_background"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
+        app:srcCompat="@drawable/logout_24px" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.example.tableverse;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -69,6 +71,15 @@ public class AdminActividad extends AppCompatActivity {
                 fab.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    public void logout(View v){
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("LOGIN", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("id");
+        editor.commit();
+        Intent intent = new Intent(this, LoginActividad.class);
+        startActivity(intent);
     }
 
 

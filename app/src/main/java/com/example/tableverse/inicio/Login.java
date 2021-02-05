@@ -1,6 +1,8 @@
 package com.example.tableverse.inicio;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tableverse.AdminActividad;
+import com.example.tableverse.AppUtilities;
 import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
@@ -24,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +41,7 @@ public class Login extends Fragment {
     private StorageReference sto;
     private EditText et_nombre, et_pass;
     private Usuario usuario;
+    private SharedPreferences sp;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -90,14 +96,41 @@ public class Login extends Fragment {
         et_nombre = view.findViewById(R.id.et_usuario);
         et_pass = view.findViewById(R.id.et_password);
 
+        sp = getContext().getSharedPreferences("LOGIN", MODE_PRIVATE);
+
         LoginActividad loginActividad = (LoginActividad)getActivity();
         ref = loginActividad.getRef();
+
+        String id = sp.getString("id", "");
+        if(!id.equals("")){
+            cargarUsuario(id);
+        }
 
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 login(view);
+            }
+        });
+    }
+
+    private void cargarUsuario(String id){
+        ref.child("tienda").child("clientes").orderByKey()
+                .equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChildren()){
+                    DataSnapshot dataSnapshot = snapshot.getChildren().iterator().next();
+                    usuario = dataSnapshot.getValue(Usuario.class);
+                    usuario.setId(snapshot.getKey());
+                    loguearse();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -117,8 +150,8 @@ public class Login extends Fragment {
                                 DataSnapshot dataSnapshot = snapshot.getChildren().iterator().next();
                                 usuario = dataSnapshot.getValue(Usuario.class);
                                 if(usuario.getContraseña().equals(pass)){
-                                    usuario.setId(snapshot.getKey());
-
+                                    usuario.setId(dataSnapshot.getKey());
+                                    guardarShared();
                                     loguearse();
                                 }else{
                                     Toast.makeText(getContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
@@ -135,6 +168,12 @@ public class Login extends Fragment {
                         }
                     });
         }
+    }
+
+    private void guardarShared(){
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("id", usuario.getId());
+        edit.commit();
     }
 
     private void loguearse(){

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
 import android.provider.Settings;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.tableverse.AppUtilities;
 import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.objetos.Usuario;
@@ -128,7 +130,7 @@ public class Registro extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.hasChildren()){
-                        Toast.makeText(getContext(), "Este nombre de usuario ya existe", Toast.LENGTH_SHORT).show();
+                        et_nombre.setError("Ese nombre de usuario ya existe");
                     }else{
 
                         Usuario nuevo = new Usuario(nombre, email, pass);
@@ -160,8 +162,31 @@ public class Registro extends Fragment {
 
     public boolean validar(String nombre, String pass, String repit_pass, String email){
         boolean validacion = true;
-        //mejorar valicacion
-        if(nombre.equals("") || !pass.equals(repit_pass) || email.equals("") || pass.equals("")){
+
+        if(nombre.equals("")){
+            et_nombre.setError("El nombre no puede estar vacío");
+            validacion = false;
+        }
+
+        if(pass.equals("")){
+            et_pass.setError("La contraseña no puede estar vacía");
+            validacion = false;
+        }else{
+            AppUtilities utilities = new AppUtilities();
+            if(!pass.equals(repit_pass)){
+                et_pass.setError("Las contraseñas deben ser iguales");
+                validacion = false;
+            }else if(!utilities.isValidPass(pass)){
+                validacion = false;
+                et_pass.setError("Debe contener por lo menos un dígito y tener una longitud entre 5 y 15 caracteres");
+            }
+        }
+
+        if(email.equals("")){
+            et_email.setError("El email es obligatorio");
+            validacion = false;
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            et_email.setError("No es un email válido");
             validacion = false;
         }
 
