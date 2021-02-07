@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.tableverse.admin.CrearJuego;
+import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,9 +33,11 @@ public class AdminActividad extends AppCompatActivity {
     private StorageReference sto;
     private BottomNavigationView navView;
     private List<Juego> lista_juegos = new ArrayList<>();
+    private List<Evento> lista_eventos = new ArrayList<>();
     private int position = 0;
 
     public List<Juego> getLista_juegos(){ return lista_juegos; }
+    public List<Evento> getLista_eventos(){ return lista_eventos; }
     public NavController getNavController(){ return navController; }
     public DatabaseReference getRef(){ return ref; }
     public StorageReference getSto(){ return sto; }

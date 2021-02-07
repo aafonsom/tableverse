@@ -44,7 +44,7 @@ public class ListaEventosAdmin extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private DatabaseReference ref;
     private StorageReference sto;
-    private List<Evento> lista_eventos = new ArrayList<>();
+    private List<Evento> lista_eventos;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -88,6 +88,7 @@ public class ListaEventosAdmin extends Fragment {
         rv_eventos = view.findViewById(R.id.rv_eventos);
 
         adminActividad = (AdminActividad)getActivity();
+        lista_eventos = adminActividad.getLista_eventos();
         adminActividad.modoFab(MODO_FAB);
         adminActividad.modoNavView(MODO_NAVVIEW);
         ref = adminActividad.getRef();
@@ -95,7 +96,7 @@ public class ListaEventosAdmin extends Fragment {
 
         cargarEventos();
         linearLayoutManager = new LinearLayoutManager(getContext());
-        adaptador = new AdaptadorEventos(lista_eventos, getContext());
+        adaptador = new AdaptadorEventos(lista_eventos, getContext(), adminActividad);
         rv_eventos.setAdapter(adaptador);
         rv_eventos.setLayoutManager(linearLayoutManager);
     }

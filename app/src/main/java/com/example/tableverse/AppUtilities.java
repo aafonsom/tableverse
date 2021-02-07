@@ -86,4 +86,15 @@ public class AppUtilities {
         return res;
     }
 
+    public boolean esAforoValido(String aforoString){
+        boolean validado = true;
+
+        int aforo = Integer.parseInt(aforoString);
+        if(aforo <= 0){
+            validado = false;
+        }
+
+        return validado;
+    }
+
 }

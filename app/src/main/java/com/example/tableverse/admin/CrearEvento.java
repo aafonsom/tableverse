@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.AppUtilities;
 import com.example.tableverse.R;
+import com.example.tableverse.dialog.DatePickerFragment;
 import com.example.tableverse.objetos.Evento;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -84,7 +85,7 @@ public class CrearEvento extends Fragment {
         et_nombre = view.findViewById(R.id.et_evento);
         et_aforo = view.findViewById(R.id.et_aforo);
         et_fecha = view.findViewById(R.id.et_fecha_evento);
-        et_precio = view.findViewById(R.id.et_precio);
+        et_precio = view.findViewById(R.id.et_aforo);
         fotoEvento = view.findViewById(R.id.iv_evento);
         error = view.findViewById(R.id.tv_error);
         Button addEvent = view.findViewById(R.id.b_add_event);
@@ -187,23 +188,10 @@ public class CrearEvento extends Fragment {
             et_aforo.setError("El aforo máximo no puede estar vacío");
             validado = false;
         }else{
-            validado = esAforoValido(aforo_maximoStr);
-        }
-
-        return validado;
-    }
-
-    private boolean esAforoValido(String aforoString){
-        boolean validado = true;
-
-        try{
-            int aforo = Integer.parseInt(aforoString);
-            if(aforo <= 0){
+            if(!utilities.esAforoValido(aforo_maximoStr)){
                 et_aforo.setError("El aforo no puede ser 0 o inferior a 0");
                 validado = false;
             }
-        }catch (NumberFormatException nfe){
-            validado = false;
         }
 
         return validado;

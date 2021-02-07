@@ -17,13 +17,13 @@ public class Evento implements Serializable {
         this.urlImagen = "";
     }
 
-    public Evento(String nombre, String fecha, double precio, int ocupado) {
+    public Evento(String nombre, String fecha, double precio, int aforoMax) {
         this.id = "";
         this.nombre = nombre;
         this.fecha = fecha;
         this.precio = precio;
-        this.aforoMax = 0;
-        this.ocupado = ocupado;
+        this.aforoMax = aforoMax;
+        this.ocupado = 0;
         this.urlImagen = "";
     }
 

@@ -86,8 +86,8 @@ public class CrearJuego extends Fragment {
         et_nombre = view.findViewById(R.id.et_nombre_juego);
         et_categoria = view.findViewById(R.id.et_categoria_juego);
         et_precio = view.findViewById(R.id.et_precio_juego);
-        et_stock = view.findViewById(R.id.et_stock);
-        fotoJuego = view.findViewById(R.id.iv_foto_juego);
+        et_stock = view.findViewById(R.id.et_fecha);
+        fotoJuego = view.findViewById(R.id.iv_foto_evento);
         Button añadir = view.findViewById(R.id.b_addjuego);
 
         AdminActividad adminActividad = (AdminActividad)getActivity();

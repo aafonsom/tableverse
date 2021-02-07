@@ -1,4 +1,4 @@
-package com.example.tableverse.admin;
+package com.example.tableverse.dialog;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

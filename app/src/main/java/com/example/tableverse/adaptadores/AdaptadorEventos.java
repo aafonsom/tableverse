@@ -11,7 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
+import com.example.tableverse.dialog.DialogModEvento;
+import com.example.tableverse.dialog.DialogModJuego;
 import com.example.tableverse.objetos.Evento;
 
 import java.util.List;
@@ -20,10 +23,11 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
 
     List<Evento> lista_eventos;
     Context context;
-
-    public AdaptadorEventos(List<Evento> lista_eventos, Context context) {
+    AdminActividad adminActividad;
+    public AdaptadorEventos(List<Evento> lista_eventos, Context context, AdminActividad adminActividad) {
         this.lista_eventos = lista_eventos;
         this.context = context;
+        this.adminActividad = adminActividad;
     }
 
     @NonNull
@@ -36,7 +40,7 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Vh holder, int position) {
+    public void onBindViewHolder(@NonNull Vh holder, final int position) {
         Evento evento = lista_eventos.get(position);
 
         holder.nombre.setText(evento.getNombre());
@@ -45,6 +49,15 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
         Glide.with(context).load(evento.getUrlImagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(android.R.drawable.stat_notify_error).into(holder.foto);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adminActividad.setPosition(position);
+                DialogModEvento fragment = new DialogModEvento();
+                fragment.show(adminActividad.getSupportFragmentManager(), "Modificar Datos");
+            }
+        });
     }
 
     @Override
