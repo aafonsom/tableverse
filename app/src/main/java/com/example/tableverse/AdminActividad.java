@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.tableverse.admin.CrearJuego;
+import com.example.tableverse.objetos.Juego;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -21,18 +22,24 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminActividad extends AppCompatActivity {
     private FloatingActionButton fab;
     private NavController navController;
     private DatabaseReference ref;
     private StorageReference sto;
     private BottomNavigationView navView;
+    private List<Juego> lista_juegos = new ArrayList<>();
+    private int position = 0;
 
-    //Dudo que el getFab sea necesario, eliminar si no le encuentro utilidad
-    /*public FloatingActionButton getFab(){ return fab; }*/
+    public List<Juego> getLista_juegos(){ return lista_juegos; }
     public NavController getNavController(){ return navController; }
     public DatabaseReference getRef(){ return ref; }
     public StorageReference getSto(){ return sto; }
+    public int getPosition(){ return position; }
+    public void setPosition(int position){ this.position = position; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

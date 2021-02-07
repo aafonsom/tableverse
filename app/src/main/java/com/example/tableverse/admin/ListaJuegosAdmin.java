@@ -42,8 +42,7 @@ public class ListaJuegosAdmin extends Fragment {
     private RecyclerView rv_juegos;
     private AdaptadorJuegos adaptadorJuegos;
     private LinearLayoutManager linearLayoutManager;
-    private List<Juego> lista_juegos = new ArrayList<>();
-
+    private List<Juego> lista_juegos;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -85,13 +84,14 @@ public class ListaJuegosAdmin extends Fragment {
 
         rv_juegos = view.findViewById(R.id.rv_juegos_admin);
         adminActividad = (AdminActividad)getActivity();
+        lista_juegos = adminActividad.getLista_juegos();
         adminActividad.modoFab(MODO_FAB);
         adminActividad.modoNavView(MODO_NAVVIEW);
         ref = adminActividad.getRef();
         sto = adminActividad.getSto();
 
         cargarJuegos();
-        adaptadorJuegos = new AdaptadorJuegos(lista_juegos, getContext());
+        adaptadorJuegos = new AdaptadorJuegos(lista_juegos, getContext(), adminActividad);
         linearLayoutManager = new LinearLayoutManager(getContext());
         rv_juegos.setAdapter(adaptadorJuegos);
         rv_juegos.setLayoutManager(linearLayoutManager);

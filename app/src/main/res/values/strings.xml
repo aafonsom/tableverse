@@ -28,6 +28,7 @@
     <string name="aforo_maximo">Aforo máximo</string>
     <string name="fecha_evento">Fecha del evento</string>
     <string name="añadir_evento">Crear el evento</string>
+    <string name="modificar_juego">Modificar el juego</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>

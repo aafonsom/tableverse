@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
+import com.example.tableverse.dialog.DialogModJuego;
 import com.example.tableverse.objetos.Juego;
 
 import java.util.ArrayList;
@@ -22,11 +24,13 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> {
     private List<Juego> lista_juegos;
     private List<Juego> lista_filtrada;
     private Context context;
+    private AdminActividad adminActividad;
 
-    public AdaptadorJuegos(List<Juego> lista_juegos, Context context) {
+    public AdaptadorJuegos(List<Juego> lista_juegos, Context context, AdminActividad adminActividad) {
         this.lista_juegos = lista_juegos;
         this.lista_filtrada = new ArrayList<>(this.lista_juegos);
         this.context = context;
+        this.adminActividad = adminActividad;
     }
 
     @NonNull
@@ -39,7 +43,7 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Vh holder, int position) {
+    public void onBindViewHolder(@NonNull Vh holder, final int position) {
         Juego juego = lista_juegos.get(position);
 
         holder.titulo.setText(juego.getNombre());
@@ -49,6 +53,14 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> {
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(android.R.drawable.stat_notify_error).into(holder.foto);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adminActividad.setPosition(position);
+                DialogModJuego fragment = new DialogModJuego();
+                fragment.show(adminActividad.getSupportFragmentManager(), "Modificar Datos");
+            }
+        });
     }
 
     @Override

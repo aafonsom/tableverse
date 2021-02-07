@@ -28,11 +28,13 @@
     <style name="RobotoButtonStyle" parent="android:Widget.Button">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textSize">18sp</item>
     </style>
-    <style name="RobotoButtonStyleDialog" parent="android:Widget.Button">
+    <!--<style name="RobotoButtonStyleDialog" parent="android:Widget.Button">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
-    </style>
+    </style>-->
 
     <style name="RobotoToolbarStyle" parent="android:Widget.Toolbar">
         <item name="android:fontFamily">@font/roboto</item>
