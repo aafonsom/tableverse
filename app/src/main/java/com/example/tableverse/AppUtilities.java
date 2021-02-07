@@ -1,5 +1,7 @@
 package com.example.tableverse;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -10,9 +12,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class AppUtilities {
     DatabaseReference ref;
@@ -54,9 +58,32 @@ public class AppUtilities {
 
     public String getDate(){
         Calendar hoy = Calendar.getInstance();
-        SimpleDateFormat formateador = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         String fecha_hoy = formateador.format(hoy.getTime());
         return fecha_hoy;
+    }
+
+    public boolean esPosterior(String fecha){
+        boolean res = false;
+        try {
+            Calendar hoy = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar fechaEvento = Calendar.getInstance();
+            fechaEvento.setTime(sdf.parse(fecha));
+            int añoEvento = fechaEvento.get(Calendar.YEAR);
+            int mesEvento = fechaEvento.get(Calendar.MONTH) + 1;
+            int diaEvento = fechaEvento.get(Calendar.DAY_OF_MONTH);
+            int añoActual = hoy.get(Calendar.YEAR);
+            int mesActual = hoy.get(Calendar.MONTH) + 1;
+            int diaActual = hoy.get(Calendar.DAY_OF_MONTH);
+
+            if(hoy.before(fechaEvento)){
+                res = true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
 }

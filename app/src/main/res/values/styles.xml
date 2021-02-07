@@ -1,15 +1,21 @@
 <resources>
-    <!-- Base application theme. -->
+
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/OpenSansTextViewStyle</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
-        <item name="android:toolbarStyle">@style/RobotoButtonStyle</item>
+        <item name="android:toolbarStyle">@style/RobotoToolbarStyle</item>
         <item name="android:editTextStyle">@style/OpenSansEditTextStyle</item>
+        <!--<item name="android:datePickerDialogTheme">@style/DatePickerTheme</item>-->
     </style>
+
+    <!--Modificar completamente, añadir temas de titulo etc.-->
+    <!--<style name="DatePickerTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:buttonStyle">@style/RobotoButtonStyleDialog</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>-->
 
     <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/open_sans</item>
@@ -19,7 +25,16 @@
         <item name="android:fontFamily">@font/open_sans</item>
     </style>
 
-    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+    <style name="RobotoButtonStyle" parent="android:Widget.Button">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+    <style name="RobotoButtonStyleDialog" parent="android:Widget.Button">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="RobotoToolbarStyle" parent="android:Widget.Toolbar">
         <item name="android:fontFamily">@font/roboto</item>
     </style>
 
