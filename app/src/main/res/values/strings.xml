@@ -29,6 +29,9 @@
     <string name="fecha_evento">Fecha del evento</string>
     <string name="añadir_evento">Crear el evento</string>
     <string name="modificar_juego">Modificar el juego</string>
+    <string name="disponibilidad_juego">Disponibilidad del juego</string>
+    <string name="precio_minimo">Precio mínimo sin establecer</string>
+    <string name="precio_max">Precio máximo sin establecer</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>
@@ -37,6 +40,10 @@
     <string name="lista_juegos">Juegos</string>
     <string name="lista_eventos">Eventos</string>
     <string name="lista_pedidos">Pedidos</string>
+    <string name="eventos_disponibles">Eventos disponibles</string>
+    <string name="eventos_suscritos">Mis eventos</string>
+    <string name="configuracion">Configuración</string>
+    <string name="logout">Logout</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

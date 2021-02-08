@@ -109,6 +109,13 @@ public class CrearEvento extends Fragment {
                 showDatePickerDialog();
             }
         });
+        fotoEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionarFoto();
+            }
+        });
+
     }
 
     private void showDatePickerDialog() {
@@ -133,6 +140,7 @@ public class CrearEvento extends Fragment {
         aforo_maximo =et_aforo.getText().toString().trim();
 
         if(esValido(nombre, fecha, precio, aforo_maximo)){
+            //TODO: Añadir funcionalidad, no puede haber dos eventos en la misma fecha
             ref.child("tienda").child("eventos").orderByChild("nombre").equalTo(nombre)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -197,7 +205,7 @@ public class CrearEvento extends Fragment {
         return validado;
     }
 
-    public void seleccionarFoto(View v){
+    public void seleccionarFoto(){
         Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent,SELECCIONAR_FOTO);

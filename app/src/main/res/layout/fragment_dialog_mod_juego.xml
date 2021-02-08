@@ -91,8 +91,18 @@
         android:id="@+id/b_modificar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/modificar_juego"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout17"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout17"
+        app:layout_constraintTop_toBottomOf="@+id/sw_disponibilidad" />
+
+    <Switch
+        android:id="@+id/sw_disponibilidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/disponibilidad_juego"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout17"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout17"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout17" />

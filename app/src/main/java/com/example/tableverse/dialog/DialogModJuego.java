@@ -3,6 +3,7 @@ package com.example.tableverse.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -28,16 +30,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class DialogModJuego extends DialogFragment {
     private AdminActividad adminActividad;
     private Juego juego;
     private EditText et_nombre, et_categoria, et_precio, et_stock;
+    private Switch sw_disponibilidad;
     private ImageView iv_foto;
     private Button modificar;
     private Uri foto_url;
     private StorageReference sto;
     private DatabaseReference ref;
+    private static final int SELECCIONAR_FOTO = 1;
+
 
     public DialogModJuego(){
 
@@ -61,6 +68,7 @@ public class DialogModJuego extends DialogFragment {
         et_stock = v.findViewById(R.id.et_stock);
         iv_foto = v.findViewById(R.id.iv_foto_juego);
         modificar = v.findViewById(R.id.b_modificar);
+        sw_disponibilidad = v.findViewById(R.id.sw_disponibilidad);
 
         sto = adminActividad.getSto();
         ref = adminActividad.getRef();
@@ -70,6 +78,12 @@ public class DialogModJuego extends DialogFragment {
         foto_url = null;
 
         setView();
+        iv_foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionarFoto(view);
+            }
+        });
 
         modificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +109,7 @@ public class DialogModJuego extends DialogFragment {
         et_categoria.setText(juego.getCategoria());
         et_precio.setText(Double.toString(juego.getPrecio()));
         et_stock.setText(Integer.toString(juego.getStock()));
+        sw_disponibilidad.setChecked(juego.isDisponible());
 
         sto.child("tienda").child("juegos").child(juego.getId())
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -147,12 +162,14 @@ public class DialogModJuego extends DialogFragment {
         juego.setCategoria(categoria);
         juego.setPrecio(precio);
         juego.setStock(stock);
-
+        juego.setDisponible(sw_disponibilidad.isChecked());
         ref.child("tienda").child("juegos").child(juego.getId()).setValue(juego);
         if(foto_url != null){
             sto.child("tienda").child("juegos").child(juego.getId()).putFile(foto_url);
         }
         Toast.makeText(adminActividad, "Datos modificados con éxito", Toast.LENGTH_SHORT).show();
+        //TODO: Añadir un notify datasetChanged, seguramente haya que poner el adaptador en AdminActividad ya que no consigo acceder al fragmento de ListaJuegos
+
 
         dismiss();
 
@@ -162,7 +179,8 @@ public class DialogModJuego extends DialogFragment {
         boolean cambios = true;
 
         if(nombre.equals(juego.getNombre()) && categoria.equals(juego.getCategoria())
-                && precio == juego.getPrecio() && stock == juego.getStock()){
+                && precio == juego.getPrecio() && stock == juego.getStock() &&
+                sw_disponibilidad.isChecked() == juego.isDisponible() && foto_url == null){
             Toast.makeText(getContext(), "No se ha realizado ningun cambio", Toast.LENGTH_SHORT).show();
             cambios = false;
         }
@@ -179,6 +197,25 @@ public class DialogModJuego extends DialogFragment {
             }
         }
         return esValido;
+    }
+
+    public void seleccionarFoto(View v){
+        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent,SELECCIONAR_FOTO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && requestCode==SELECCIONAR_FOTO){
+            foto_url=data.getData();
+            iv_foto.setImageURI(foto_url);
+            iv_foto.setImageTintMode(null);
+            Toast.makeText(getContext(), "Foto de perfil seleccionada con éxito", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Fallo al seleccionar la foto de perfil", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

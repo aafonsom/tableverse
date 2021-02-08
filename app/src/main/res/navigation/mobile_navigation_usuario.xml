@@ -3,15 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/fragmentoGris">
+    app:startDestination="@id/listaJuegosUsuario">
     <fragment
-        android:id="@+id/fragmentoGris"
-        android:name="com.example.tableverse.usuario.FragmentoGris"
-        android:label="fragment_fragmento_gris"
-        tools:layout="@layout/fragment_fragmento_gris" />
+        android:id="@+id/listaJuegosUsuario"
+        android:name="com.example.tableverse.usuario.ListaJuegosUsuario"
+        android:label="Juegos"
+        tools:layout="@layout/fragment_lista_juegos_usuario" />
     <fragment
-        android:id="@+id/fragmentoRojo"
-        android:name="com.example.tableverse.usuario.FragmentoRojo"
-        android:label="fragment_fragmento_rojo"
-        tools:layout="@layout/fragment_fragmento_rojo" />
+        android:id="@+id/eventosApuntado"
+        android:name="com.example.tableverse.usuario.EventosApuntado"
+        android:label="Suscripción a Eventos"
+        tools:layout="@layout/fragment_eventos_apuntado" />
+    <fragment
+        android:id="@+id/configuracionUsuario"
+        android:name="com.example.tableverse.usuario.ConfiguracionUsuario"
+        android:label="Configuracion"
+        tools:layout="@layout/fragment_configuracion_usuario" />
+    <fragment
+        android:id="@+id/eventosDisponibles"
+        android:name="com.example.tableverse.usuario.EventosDisponibles"
+        android:label="Eventos Disponibles"
+        tools:layout="@layout/fragment_eventos_disponibles" />
 </navigation>

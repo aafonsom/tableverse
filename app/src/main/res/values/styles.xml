@@ -19,6 +19,7 @@
 
     <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="OpenSansEditTextStyle" parent="android:Widget.EditText">

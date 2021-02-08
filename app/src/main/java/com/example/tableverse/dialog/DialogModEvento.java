@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -32,6 +33,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import static android.app.Activity.RESULT_OK;
+
 public class DialogModEvento extends DialogFragment {
     private AdminActividad adminActividad;
     private Evento evento;
@@ -42,6 +45,8 @@ public class DialogModEvento extends DialogFragment {
     private Uri foto_url;
     private StorageReference sto;
     private DatabaseReference ref;
+    private static final int SELECCIONAR_FOTO = 1;
+
 
     public DialogModEvento(){
 
@@ -86,6 +91,12 @@ public class DialogModEvento extends DialogFragment {
             @Override
             public void onClick(View view) {
                 showDatePickerDialog();
+            }
+        });
+        iv_foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seleccionarFoto();
             }
         });
         return builder.create();
@@ -173,6 +184,7 @@ public class DialogModEvento extends DialogFragment {
             sto.child("tienda").child("eventos").child(evento.getId()).putFile(foto_url);
         }
         Toast.makeText(getContext(), "Datos modificados con éxito", Toast.LENGTH_SHORT).show();
+        //TODO: Añadir un notify datasetChanged, seguramente haya que poner el adaptador en AdminActividad ya que no consigo acceder al fragmento de ListaEventos
 
         dismiss();
 
@@ -182,7 +194,8 @@ public class DialogModEvento extends DialogFragment {
         boolean cambios = true;
 
         if(nombre.equals(evento.getNombre()) && fecha.equals(evento.getFecha())
-                && precio == evento.getPrecio() && aforo == evento.getAforoMax()){
+                && precio == evento.getPrecio() && aforo == evento.getAforoMax()
+                && foto_url == null){
             Toast.makeText(getContext(), "No se ha realizado ningun cambio", Toast.LENGTH_SHORT).show();
             cambios = false;
         }
@@ -194,7 +207,7 @@ public class DialogModEvento extends DialogFragment {
         boolean esValido = true;
         double precioDouble = -1;
         int aforoInt;
-
+        //TODO: Mejorar la validación, no afecta cambiar el válido a false en el catch
         try{
             precioDouble = Double.parseDouble(precio);
         }catch (NumberFormatException nfe){
@@ -244,6 +257,26 @@ public class DialogModEvento extends DialogFragment {
         }
 
         return esValido;
+    }
+
+
+    public void seleccionarFoto(){
+        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent,SELECCIONAR_FOTO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && requestCode==SELECCIONAR_FOTO){
+            foto_url=data.getData();
+            iv_foto.setImageURI(foto_url);
+            iv_foto.setImageTintMode(null);
+            Toast.makeText(getContext(), "Foto de perfil seleccionada con éxito", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Fallo al seleccionar la foto de perfil", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

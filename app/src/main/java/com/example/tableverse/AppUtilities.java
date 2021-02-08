@@ -70,12 +70,6 @@ public class AppUtilities {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Calendar fechaEvento = Calendar.getInstance();
             fechaEvento.setTime(sdf.parse(fecha));
-            int añoEvento = fechaEvento.get(Calendar.YEAR);
-            int mesEvento = fechaEvento.get(Calendar.MONTH) + 1;
-            int diaEvento = fechaEvento.get(Calendar.DAY_OF_MONTH);
-            int añoActual = hoy.get(Calendar.YEAR);
-            int mesActual = hoy.get(Calendar.MONTH) + 1;
-            int diaActual = hoy.get(Calendar.DAY_OF_MONTH);
 
             if(hoy.before(fechaEvento)){
                 res = true;
@@ -96,5 +90,7 @@ public class AppUtilities {
 
         return validado;
     }
+
+
 
 }

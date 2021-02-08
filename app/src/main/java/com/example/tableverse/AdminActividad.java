@@ -60,10 +60,11 @@ public class AdminActividad extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+
     }
 
     public void modoFab(int modo){
-        //Añadir aqui navegacion, ir a crear juego, a crear evento, desaparecer en pedidos
 
         switch (modo){
             case 1:

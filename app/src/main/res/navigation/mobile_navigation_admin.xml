@@ -8,26 +8,26 @@
     <fragment
         android:id="@+id/listaJuegosAdmin"
         android:name="com.example.tableverse.admin.ListaJuegosAdmin"
-        android:label="fragment_lista_juegos_admin"
+        android:label="Juegos"
         tools:layout="@layout/fragment_lista_juegos_admin" />
     <fragment
         android:id="@+id/listaEventosAdmin"
         android:name="com.example.tableverse.admin.ListaEventosAdmin"
-        android:label="fragment_lista_eventos_admin"
+        android:label="Eventos"
         tools:layout="@layout/fragment_lista_eventos_admin" />
     <fragment
         android:id="@+id/listaPedidos"
         android:name="com.example.tableverse.admin.ListaPedidos"
-        android:label="fragment_lista_pedidos"
+        android:label="Pedidos"
         tools:layout="@layout/fragment_lista_pedidos" />
     <fragment
         android:id="@+id/crearJuego"
         android:name="com.example.tableverse.admin.CrearJuego"
-        android:label="fragment_crear_juego"
+        android:label="Añadir juego nuevo"
         tools:layout="@layout/fragment_crear_juego" />
     <fragment
         android:id="@+id/crearEvento"
         android:name="com.example.tableverse.admin.CrearEvento"
-        android:label="fragment_crear_evento"
+        android:label="Añadir nuevo evento"
         tools:layout="@layout/fragment_crear_evento" />
 </navigation>

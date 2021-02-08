@@ -5,13 +5,23 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/fragmentoGris"
+            android:id="@+id/listaJuegosUsuario"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Placeholder" />
+            android:title="@string/lista_juegos" />
         <item
-            android:id="@+id/fragmentoRojo"
+            android:id="@+id/eventosDisponibles"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Placeholder 2" />
+            android:title="@string/eventos_disponibles" />
+
+        <item
+            android:id="@+id/eventosApuntado"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/eventos_suscritos" />
+
+        <item
+            android:id="@+id/configuracionUsuario"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/configuracion" />
 
     </group>
 </menu>
