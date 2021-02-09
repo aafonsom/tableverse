@@ -34,6 +34,7 @@
     <string name="precio_max">Precio máximo sin establecer</string>
     <string name="eventos_gratuitos">Eventos gratuitos</string>
     <string name="apuntarse_evento">Apuntarse al evento</string>
+    <string name="comprar_juego">Realizar pedido ya!</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>

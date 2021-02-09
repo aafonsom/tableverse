@@ -20,6 +20,7 @@
     <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/open_sans</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="OpenSansEditTextStyle" parent="android:Widget.EditText">

@@ -17,8 +17,10 @@ import com.bumptech.glide.Glide;
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
+import com.example.tableverse.dialog.DialogComprarJuego;
 import com.example.tableverse.dialog.DialogModJuego;
 import com.example.tableverse.objetos.Juego;
+import com.example.tableverse.objetos.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +69,14 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
                 }
             });
         }else if(activity instanceof UsuarioActividad){
-
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((UsuarioActividad)activity).setPosition(position);
+                    DialogComprarJuego dialogComprarJuego = new DialogComprarJuego();
+                    dialogComprarJuego.show(((UsuarioActividad)activity).getSupportFragmentManager(), "Información del juego");
+                }
+            });
         }
 
     }
