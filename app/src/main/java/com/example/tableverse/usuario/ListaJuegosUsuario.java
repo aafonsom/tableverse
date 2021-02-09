@@ -121,7 +121,6 @@ public class ListaJuegosUsuario extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 min = i;
                 tv_min.setText("Precio mínimo: " + Integer.toString(i));
-                adaptadorJuegos.filtrarPorPrecio(min, max);
                 if(i > max ){
                     sb_max.setProgress(i);
                 }
@@ -133,6 +132,7 @@ public class ListaJuegosUsuario extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                adaptadorJuegos.filtrarPorPrecio(min, max);
             }
         });
 
@@ -141,7 +141,6 @@ public class ListaJuegosUsuario extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 max = i;
                 tv_max.setText("Precio máximo: " + Integer.toString(i));
-                adaptadorJuegos.filtrarPorPrecio(min, max);
                 if(i < min){
                     sb_min.setProgress(i);
                 }
@@ -153,6 +152,8 @@ public class ListaJuegosUsuario extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                adaptadorJuegos.filtrarPorPrecio(min, max);
+
             }
         });
 

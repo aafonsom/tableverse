@@ -27,6 +27,6 @@
     <fragment
         android:id="@+id/verEvento"
         android:name="com.example.tableverse.usuario.VerEvento"
-        android:label="fragment_ver_evento"
+        android:label="Información del evento"
         tools:layout="@layout/fragment_ver_evento" />
 </navigation>
