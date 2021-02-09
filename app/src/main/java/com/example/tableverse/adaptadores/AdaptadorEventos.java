@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
+import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.dialog.DialogModEvento;
 import com.example.tableverse.dialog.DialogModJuego;
 import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
+import com.example.tableverse.objetos.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +67,8 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
                 }
             });
         }else if(activity instanceof AdminActividad){
-
+            ((UsuarioActividad)activity).setPosition(position);
+            ((UsuarioActividad)activity).getNavController().navigate(R.id.verEvento);
         }
 
     }

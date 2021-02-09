@@ -54,9 +54,11 @@ public class UsuarioActividad extends AppCompatActivity {
     private Usuario usuario;
     private List<Juego> lista_juegos = new ArrayList<>();
     private List<Evento> lista_eventos = new ArrayList<>();
+    private NavController navController;
     public AdaptadorJuegos adaptadorJuegos;
     private AdaptadorEventos adaptadorEventos;
     private SearchView searchView;
+    private int position = 0;
 
     public List<Juego> getLista_juegos() { return lista_juegos; }
     public List<Evento> getLista_eventos() { return lista_eventos; }
@@ -64,6 +66,9 @@ public class UsuarioActividad extends AppCompatActivity {
     public AdaptadorEventos getAdaptadorEventos() { return adaptadorEventos; }
     public DatabaseReference getRef(){ return ref; }
     public StorageReference getSto(){ return sto; }
+    public int getPosition() { return position; }
+    public void setPosition(int position) { this.position = position; }
+    public NavController getNavController(){ return navController; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +96,7 @@ public class UsuarioActividad extends AppCompatActivity {
                 R.id.eventosApuntado, R.id.eventosDisponibles, R.id.listaJuegosUsuario, R.id.configuracionUsuario)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_usuario);
+        navController = Navigation.findNavController(this, R.id.nav_host_usuario);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 

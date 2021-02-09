@@ -33,6 +33,7 @@
     <string name="precio_minimo">Precio mínimo sin establecer</string>
     <string name="precio_max">Precio máximo sin establecer</string>
     <string name="eventos_gratuitos">Eventos gratuitos</string>
+    <string name="apuntarse_evento">Apuntarse al evento</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>

@@ -24,4 +24,9 @@
         android:name="com.example.tableverse.usuario.EventosDisponibles"
         android:label="Eventos Disponibles"
         tools:layout="@layout/fragment_eventos_disponibles" />
+    <fragment
+        android:id="@+id/verEvento"
+        android:name="com.example.tableverse.usuario.VerEvento"
+        android:label="fragment_ver_evento"
+        tools:layout="@layout/fragment_ver_evento" />
 </navigation>
