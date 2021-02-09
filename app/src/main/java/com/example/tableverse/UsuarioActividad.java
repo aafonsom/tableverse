@@ -57,7 +57,12 @@ public class UsuarioActividad extends AppCompatActivity {
     public AdaptadorJuegos adaptadorJuegos;
     private AdaptadorEventos adaptadorEventos;
     private SearchView searchView;
+    private String queryfull = "", newTextFull = "";
+    private boolean querySi = false;
 
+    public String getQueryfull() { return queryfull; }
+    public String getNewTextFull() { return newTextFull; }
+    public boolean isQuerySi() { return querySi; }
     public List<Juego> getLista_juegos() { return lista_juegos; }
     public List<Evento> getLista_eventos() { return lista_eventos; }
     public AdaptadorJuegos getAdaptadorJuegos() { return adaptadorJuegos; }
@@ -122,12 +127,16 @@ public class UsuarioActividad extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                queryfull = s;
+                querySi = true;
                 adaptadorJuegos.getFilter().filter(s);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                newTextFull = s;
+                querySi = false;
                 adaptadorJuegos.getFilter().filter(s);
                 return false;
             }

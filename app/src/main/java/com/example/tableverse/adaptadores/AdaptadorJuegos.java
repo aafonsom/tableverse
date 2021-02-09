@@ -29,6 +29,11 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
     private List<Juego> lista_filtrada;
     private Context context;
     private Activity activity;
+    private String categoria = "Todas", filtro;
+    private int min = 0, max = 0;
+
+    //TODO: MEJORAR LOS FILTROS, QUE SE MANTENGAN SI HAY VARIOS APLICADOS
+
 
     public AdaptadorJuegos(List<Juego> lista_juegos, Context context, Activity activity) {
         this.lista_juegos = lista_juegos;
@@ -87,10 +92,47 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
                 String filtro = charSequence.toString();
 
                 if(filtro.isEmpty()){
-                    lista = lista_juegos;
+                    if(categoria.equalsIgnoreCase("Todas") && min == 0 && max == 0){
+                        lista = lista_juegos;
+                    }else{
+                        if(!categoria.equalsIgnoreCase("Todas") && (min != 0 || max != 0)){
+                            for(Juego juego: lista_juegos){
+                                if(juego.getCategoria().equalsIgnoreCase(categoria) &&
+                                        juego.getPrecio() >= min && juego.getPrecio() <= max){
+                                    lista.add(juego);
+                                }
+                            }
+                        }else if(categoria.equalsIgnoreCase("Todas") && (min != 0 || max != 0)){
+                            for(Juego juego: lista_juegos){
+                                if(juego.getPrecio() >= min && juego.getPrecio() <= max){
+                                    lista.add(juego);
+                                }
+                            }
+                        }else if(!categoria.equalsIgnoreCase("Todas") && min == 0 && max == 0){
+                            for(Juego juego: lista_juegos){
+                                if(juego.getCategoria().equalsIgnoreCase(categoria)){
+                                    lista.add(juego);
+                                }
+                            }
+                        }
+                    }
+
+
                 }else{
                     for(Juego juego: lista_juegos){
-                        if(juego.getNombre().toLowerCase().contains(filtro.trim().toLowerCase())){
+                        if(juego.getNombre().toLowerCase().contains(filtro.trim().toLowerCase())
+                            && categoria.equalsIgnoreCase("Todas") && max == 0 && min == 0){
+                            lista.add(juego);
+                        }else if(juego.getNombre().toLowerCase().contains(filtro.trim().toLowerCase())
+                                && !categoria.equalsIgnoreCase("Todas") && max == 0 && min == 0){
+                            lista.add(juego);
+                        }else if(juego.getNombre().toLowerCase().contains(filtro.trim().toLowerCase())
+                                && !categoria.equalsIgnoreCase("Todas") && (max != 0 || min != 0)
+                                && juego.getPrecio() >= min && juego.getPrecio() <= max){
+                            lista.add(juego);
+                        }else if(juego.getNombre().toLowerCase().contains(filtro.trim().toLowerCase())
+                                && categoria.equalsIgnoreCase("Todas") && (max != 0 || min != 0)
+                                && juego.getPrecio() >= min && juego.getPrecio() <= max){
                             lista.add(juego);
                         }
                     }
@@ -113,41 +155,12 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
     }
 
     public void filtrarCategoria(String filtro){
-        lista_filtrada = new ArrayList<>(lista_juegos);
-        List<Juego> lista = new ArrayList<>();
-
-        if(filtro.equals("Todas")){
-            lista = lista_juegos;
-        }else{
-            for(Juego juego: lista_juegos){
-                if(juego.getCategoria().equalsIgnoreCase(filtro)){
-                    lista.add(juego);
-                }
-            }
-        }
-        lista_filtrada.clear();
-        lista_filtrada.addAll(lista);
-        notifyDataSetChanged();
+        categoria = filtro;
     }
 
     public void filtrarPorPrecio(int min, int max){
-        lista_filtrada = new ArrayList<>(lista_juegos);
-        List<Juego> lista = new ArrayList<>();
-
-        if(max == 0){
-            lista = lista_juegos;
-        }else{
-            for(Juego juego: lista_juegos){
-                double precio = juego.getPrecio();
-                if(precio >= min && precio <= max){
-                    lista.add(juego);
-                }
-            }
-        }
-
-        lista_filtrada.clear();
-        lista_filtrada.addAll(lista);
-        notifyDataSetChanged();
+        this.min = min;
+        this.max = max;
     }
 
     public class Vh extends RecyclerView.ViewHolder {

@@ -122,6 +122,12 @@ public class ListaJuegosUsuario extends Fragment {
                 min = i;
                 tv_min.setText("Precio mínimo: " + Integer.toString(i));
                 adaptadorJuegos.filtrarPorPrecio(min, max);
+
+                if(usuarioActividad.isQuerySi()){
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryfull());
+                }else{
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getNewTextFull());
+                }
                 if(i > max ){
                     sb_max.setProgress(i);
                 }
@@ -142,6 +148,13 @@ public class ListaJuegosUsuario extends Fragment {
                 max = i;
                 tv_max.setText("Precio máximo: " + Integer.toString(i));
                 adaptadorJuegos.filtrarPorPrecio(min, max);
+
+                if(usuarioActividad.isQuerySi()){
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryfull());
+                }else{
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getNewTextFull());
+                }
+
                 if(i < min){
                     sb_min.setProgress(i);
                 }
@@ -160,6 +173,11 @@ public class ListaJuegosUsuario extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 adaptadorJuegos.filtrarCategoria(categorias.get(i));
+                if(usuarioActividad.isQuerySi()){
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryfull());
+                }else{
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getNewTextFull());
+                }
             }
 
             @Override

@@ -13,15 +13,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/sb_min"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_precio_min"
         app:layout_constraintTop_toBottomOf="@+id/tv_precio_min" />
 
@@ -39,8 +39,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/precio_minimo"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -52,18 +54,19 @@
 
     <TextView
         android:id="@+id/tv_precio_max"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/precio_max"
-        app:layout_constraintStart_toStartOf="@+id/sb_min"
+        app:layout_constraintEnd_toEndOf="@+id/tv_precio_min"
+        app:layout_constraintStart_toStartOf="@+id/tv_precio_min"
         app:layout_constraintTop_toBottomOf="@+id/sb_min" />
 
     <SeekBar
         android:id="@+id/sb_max"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_precio_max"
         app:layout_constraintTop_toBottomOf="@+id/tv_precio_max" />
 
