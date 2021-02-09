@@ -129,7 +129,7 @@ public class DialogModEvento extends DialogFragment {
         et_precio.setText(Double.toString(evento.getPrecio()));
         et_fecha.setText(evento.getFecha());
 
-        sto.child("tienda").child("juegos").child(evento.getId())
+        sto.child("tienda").child("eventos").child(evento.getId())
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

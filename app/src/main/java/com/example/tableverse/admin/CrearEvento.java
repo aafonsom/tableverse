@@ -85,7 +85,7 @@ public class CrearEvento extends Fragment {
         et_nombre = view.findViewById(R.id.et_evento);
         et_aforo = view.findViewById(R.id.et_aforo);
         et_fecha = view.findViewById(R.id.et_fecha_evento);
-        et_precio = view.findViewById(R.id.et_aforo);
+        et_precio = view.findViewById(R.id.et_precio);
         fotoEvento = view.findViewById(R.id.iv_evento);
         error = view.findViewById(R.id.tv_error);
         Button addEvent = view.findViewById(R.id.b_add_event);

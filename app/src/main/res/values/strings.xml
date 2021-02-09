@@ -32,6 +32,7 @@
     <string name="disponibilidad_juego">Disponibilidad del juego</string>
     <string name="precio_minimo">Precio mínimo sin establecer</string>
     <string name="precio_max">Precio máximo sin establecer</string>
+    <string name="eventos_gratuitos">Eventos gratuitos</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>

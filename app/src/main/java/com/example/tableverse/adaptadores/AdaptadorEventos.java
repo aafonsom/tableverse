@@ -1,5 +1,6 @@
 package com.example.tableverse.adaptadores;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +17,22 @@ import com.example.tableverse.R;
 import com.example.tableverse.dialog.DialogModEvento;
 import com.example.tableverse.dialog.DialogModJuego;
 import com.example.tableverse.objetos.Evento;
+import com.example.tableverse.objetos.Juego;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> {
 
     List<Evento> lista_eventos;
+    List<Evento> lista_filtrada;
     Context context;
-    AdminActividad adminActividad;
-    public AdaptadorEventos(List<Evento> lista_eventos, Context context, AdminActividad adminActividad) {
+    Activity activity;
+    public AdaptadorEventos(List<Evento> lista_eventos, Context context, Activity activity) {
         this.lista_eventos = lista_eventos;
+        this.lista_filtrada = lista_eventos;
         this.context = context;
-        this.adminActividad = adminActividad;
+        this.activity = activity;
     }
 
     @NonNull
@@ -41,28 +46,51 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
 
     @Override
     public void onBindViewHolder(@NonNull Vh holder, final int position) {
-        Evento evento = lista_eventos.get(position);
+        Evento evento = lista_filtrada.get(position);
 
         holder.nombre.setText(evento.getNombre());
         holder.aforo.setText("Fecha: " + evento.getFecha());
         holder.precio.setText("Precio de la entrada:" + evento.getPrecio());
         Glide.with(context).load(evento.getUrlImagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                .error(android.R.drawable.stat_notify_error).into(holder.foto);
+                .error(R.drawable.person_morada).into(holder.foto);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adminActividad.setPosition(position);
-                DialogModEvento fragment = new DialogModEvento();
-                fragment.show(adminActividad.getSupportFragmentManager(), "Modificar Datos");
-            }
-        });
+        if(activity instanceof AdminActividad){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((AdminActividad)activity).setPosition(position);
+                    DialogModEvento fragment = new DialogModEvento();
+                    fragment.show(((AdminActividad)activity).getSupportFragmentManager(), "Modificar Datos");
+                }
+            });
+        }else if(activity instanceof AdminActividad){
+
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return lista_eventos.size();
+        return lista_filtrada.size();
+    }
+
+    public void filtroGratuito(boolean gratuito){
+        lista_filtrada = new ArrayList<>(lista_eventos);
+        List<Evento> lista = new ArrayList<>();
+
+        if(!gratuito){
+            lista = lista_eventos;
+        }else{
+            for(Evento evento: lista_eventos){
+                if(evento.getPrecio() == 0){
+                    lista.add(evento);
+                }
+            }
+        }
+        lista_filtrada.clear();
+        lista_filtrada.addAll(lista);
+        notifyDataSetChanged();
     }
 
     public class Vh extends RecyclerView.ViewHolder {
