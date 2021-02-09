@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -66,9 +67,16 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
                     fragment.show(((AdminActividad)activity).getSupportFragmentManager(), "Modificar Datos");
                 }
             });
-        }else if(activity instanceof AdminActividad){
-            ((UsuarioActividad)activity).setPosition(position);
-            ((UsuarioActividad)activity).getNavController().navigate(R.id.verEvento);
+        }else if(activity instanceof UsuarioActividad){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((UsuarioActividad)activity).setPosition(position);
+                    NavController navController = ((UsuarioActividad)activity).getNavController();
+                    navController.navigate(R.id.verEvento);
+                }
+            });
+
         }
 
     }
