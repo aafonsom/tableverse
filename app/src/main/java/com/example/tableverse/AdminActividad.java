@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.tableverse.admin.CrearJuego;
 import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
+import com.example.tableverse.objetos.ReservaJuego;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -34,10 +35,12 @@ public class AdminActividad extends AppCompatActivity {
     private BottomNavigationView navView;
     private List<Juego> lista_juegos = new ArrayList<>();
     private List<Evento> lista_eventos = new ArrayList<>();
+    private List<ReservaJuego> lista_pedidos = new ArrayList<>();
     private int position = 0;
 
     public List<Juego> getLista_juegos(){ return lista_juegos; }
     public List<Evento> getLista_eventos(){ return lista_eventos; }
+    public List<ReservaJuego> getLista_pedidos() { return lista_pedidos; }
     public NavController getNavController(){ return navController; }
     public DatabaseReference getRef(){ return ref; }
     public StorageReference getSto(){ return sto; }

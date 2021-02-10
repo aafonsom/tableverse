@@ -3,6 +3,7 @@ package com.example.tableverse.objetos;
 import java.io.Serializable;
 
 public class ReservaJuego implements Serializable {
+    //Quizás es interesante añadir fecha, bueno en realidad no, ya que la key de la reserva, ya indica cuáles han sido anteriores o posteriores
     private String id, id_juego, id_cliente, url_juego, nombre_juego;
     private boolean preparado;
 
