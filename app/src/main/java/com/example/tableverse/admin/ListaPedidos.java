@@ -13,11 +13,6 @@ import android.view.ViewGroup;
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListaPedidos#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListaPedidos extends Fragment {
     private AdminActividad adminActividad;
     private final int MODO_FAB = 3;
@@ -64,6 +59,9 @@ public class ListaPedidos extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         adminActividad = (AdminActividad)getActivity();
         adminActividad.modoFab(MODO_FAB);
+
+        
+
     }
 
 }

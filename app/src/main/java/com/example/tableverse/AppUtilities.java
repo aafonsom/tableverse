@@ -65,19 +65,27 @@ public class AppUtilities {
 
     public boolean esPosterior(String fecha){
         boolean res = false;
-        try {
-            Calendar hoy = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Calendar fechaEvento = Calendar.getInstance();
-            fechaEvento.setTime(sdf.parse(fecha));
 
-            if(hoy.before(fechaEvento)){
-                res = true;
-            }
+        Calendar hoy = Calendar.getInstance();
+        Calendar fechaEvento = transfomarStringACalendar(fecha);
+
+
+        if(hoy.before(fechaEvento) || esElMismoDia(fechaEvento)){
+            res = true;
+        }
+
+        return res;
+    }
+
+    public Calendar transfomarStringACalendar(String fecha){
+        Calendar fechaEvento = Calendar.getInstance();
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            fechaEvento.setTime(sdf.parse(fecha));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return res;
+        return fechaEvento;
     }
 
     public boolean esAforoValido(String aforoString){
@@ -89,6 +97,19 @@ public class AppUtilities {
         }
 
         return validado;
+    }
+
+    public boolean esElMismoDia(Calendar fechaEvento){
+        boolean esMismoDia = false;
+        Calendar hoy = Calendar.getInstance();
+
+        if(hoy.get(Calendar.YEAR)  == fechaEvento.get(Calendar.YEAR) &&
+            hoy.get(Calendar.MONTH) == fechaEvento.get(Calendar.MONTH) &&
+            hoy.get(Calendar.DAY_OF_MONTH) == fechaEvento.get(Calendar.DAY_OF_MONTH)){
+            esMismoDia = true;
+        }
+
+        return esMismoDia;
     }
 
 

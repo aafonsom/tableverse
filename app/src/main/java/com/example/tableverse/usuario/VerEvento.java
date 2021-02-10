@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tableverse.AppUtilities;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.objetos.Evento;
@@ -36,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 
@@ -112,7 +114,16 @@ public class VerEvento extends Fragment {
 
     private void setView(){
         tv_nombre.setText(evento.getNombre());
-        tv_fecha.setText(evento.getFecha());
+        AppUtilities utilities = new AppUtilities();
+
+        Calendar fechaEvento = utilities.transfomarStringACalendar(evento.getFecha());
+
+        if(utilities.esElMismoDia(fechaEvento)){
+            tv_fecha.setText("El evento es hoy mismo! No pierdas la oportunidad de apuntarte!");
+        }else{
+            tv_fecha.setText(evento.getFecha());
+        }
+
         tv_precio.setText("Precio: " + evento.getPrecio());
         tv_libres.setText("Plazas libres: " + (evento.getAforoMax() - evento.getOcupado()));
         tv_ocupadas.setText("Plazas ocupadas: " + evento.getOcupado());

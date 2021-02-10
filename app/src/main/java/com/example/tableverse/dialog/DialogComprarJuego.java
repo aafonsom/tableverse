@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
@@ -25,9 +27,17 @@ import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.objetos.Juego;
+import com.example.tableverse.objetos.ReservaEvento;
+import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.Iterator;
 
 
 public class DialogComprarJuego extends DialogFragment {
@@ -38,7 +48,8 @@ public class DialogComprarJuego extends DialogFragment {
     private Button b_comprar;
     private ImageView iv_foto, cerrar;
     private StorageReference sto;
-
+    private DatabaseReference ref;
+    private Usuario usuario;
 
 
     public DialogComprarJuego(){
@@ -69,13 +80,15 @@ public class DialogComprarJuego extends DialogFragment {
 
         usuarioActividad = (UsuarioActividad) getActivity();
         sto = usuarioActividad.getSto();
+        ref = usuarioActividad.getRef();
         juego = usuarioActividad.getLista_juegos().get(usuarioActividad.getPosition());
+        usuario = usuarioActividad.getUsuario();
         setView();
 
         b_comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                comprarJuego();
             }
         });
 
@@ -88,6 +101,14 @@ public class DialogComprarJuego extends DialogFragment {
 
         return builder.create();
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof UsuarioActividad){
+            this.usuarioActividad = (UsuarioActividad) context;
+        }
     }
 
     private void setView() {
@@ -112,12 +133,42 @@ public class DialogComprarJuego extends DialogFragment {
         });
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof UsuarioActividad){
-            this.usuarioActividad = (UsuarioActividad) context;
-        }
+    private void comprarJuego(){
+        ref.child("tienda").child("reservas_juegos").orderByChild("id_cliente")
+                .equalTo(usuario.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ReservaJuego reservaExiste = null;
+                Iterator<DataSnapshot> iterator = snapshot.getChildren().iterator();
+
+                while (iterator.hasNext() && reservaExiste == null){
+                    ReservaJuego rj = iterator.next().getValue(ReservaJuego.class);
+                    if(rj.getId_juego().equals(juego.getId())){
+                        reservaExiste = rj;
+                    }
+                }
+
+                if(reservaExiste != null){
+                    Toast.makeText(usuarioActividad, "Ya has reservado este juego, se está preparando", Toast.LENGTH_SHORT).show();
+                }else{
+                    ReservaJuego nuevaReserva = new ReservaJuego(juego.getId(), usuario.getId(), juego.getNombre());
+                    String id = ref.child("tienda").child("reservas_juegos").push().getKey();
+                    ref.child("tienda").child("reservas_juegos").child(id).setValue(nuevaReserva);
+                    juego.setStock(juego.getStock() - 1);
+                    ref.child("tienda").child("juegos").child(juego.getId()).setValue(juego);
+
+                    Toast.makeText(usuarioActividad, "Se ha reservado el juego con éxito", Toast.LENGTH_SHORT).show();
+
+                    dismiss();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
