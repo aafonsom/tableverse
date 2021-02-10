@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
@@ -36,6 +39,8 @@ public class ListaPedidos extends Fragment {
     private DatabaseReference ref;
     private StorageReference sto;
     private RecyclerView rv_pedidos;
+    private Spinner spi_tipo;
+    private final String[] tipo = {"En preparación", "Preparados"};
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -70,7 +75,7 @@ public class ListaPedidos extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_lista_pedidos, container, false);
     }
 
@@ -79,6 +84,7 @@ public class ListaPedidos extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rv_pedidos = view.findViewById(R.id.rv_pedidos);
+        spi_tipo = view.findViewById(R.id.spi_tipo_pedido);
 
         adminActividad = (AdminActividad)getActivity();
         adminActividad.modoFab(MODO_FAB);
@@ -88,12 +94,26 @@ public class ListaPedidos extends Fragment {
 
         cargarPedidos();
 
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, tipo);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spi_tipo.setAdapter(spinnerAdapter);
+
         adaptadorPedidos = new AdaptadorPedidos(lista_pedidos, getContext());
         llm = new LinearLayoutManager(getContext());
         rv_pedidos.setAdapter(adaptadorPedidos);
         rv_pedidos.setLayoutManager(llm);
 
+        spi_tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                adaptadorPedidos.filtroTipo(tipo[i]);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void cargarPedidos(){

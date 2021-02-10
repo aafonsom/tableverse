@@ -36,6 +36,10 @@
     <string name="apuntarse_evento">Apuntarse al evento</string>
     <string name="comprar_juego">Realizar pedido ya!</string>
     <string name="ver_info_cliente">Ver información del cliente</string>
+    <string name="confirmar_pedido">Confirmación del pedido</string>
+    <string name="pedido_pregunta_confirmacion">Vas a confirmar que el pedido está preparado, estás seguro?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>
