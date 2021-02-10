@@ -100,6 +100,7 @@ public class ListaPedidos extends Fragment {
         ref.child("tienda").child("reservas_juegos").orderByKey().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                lista_pedidos.clear();
                 for(DataSnapshot hijo: snapshot.getChildren()){
                     ReservaJuego pojo_reserva = hijo.getValue(ReservaJuego.class);
                     pojo_reserva.setId(hijo.getKey());
