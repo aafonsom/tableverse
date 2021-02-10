@@ -1,28 +1,47 @@
 package com.example.tableverse.usuario;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.tableverse.R;
+import com.example.tableverse.UsuarioActividad;
+import com.example.tableverse.objetos.Usuario;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ConfiguracionUsuario#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ConfiguracionUsuario extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private DatabaseReference ref;
+    private Spinner spi_divisas;
+    private Switch sw_oscuro;
+    private TextView tv_nombre, tv_email, tv_divisa;
+    private ImageView iv_foto;
+    private Usuario usuario;
+    private UsuarioActividad usuarioActividad;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -30,15 +49,6 @@ public class ConfiguracionUsuario extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ConfiguracionUsuario.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ConfiguracionUsuario newInstance(String param1, String param2) {
         ConfiguracionUsuario fragment = new ConfiguracionUsuario();
         Bundle args = new Bundle();
@@ -60,7 +70,81 @@ public class ConfiguracionUsuario extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_configuracion_usuario, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        spi_divisas = view.findViewById(R.id.spi_divisas);
+        sw_oscuro = view.findViewById(R.id.sw_modo_noche);
+        tv_nombre = view.findViewById(R.id.tv_config_usuario);
+        tv_email = view.findViewById(R.id.tv_email);
+        tv_divisa = view.findViewById(R.id.tv_divisa);
+        iv_foto = view.findViewById(R.id.iv_configuracion);
+
+        usuarioActividad = (UsuarioActividad) getActivity();
+        ref = usuarioActividad.getRef();
+        usuario = usuarioActividad.getUsuario();
+
+
+        String[] tipo_divisa = {"Euros €", "Dólares $", "Libras Esterlinas £"};
+        ArrayAdapter<String> spiAdaptador = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, tipo_divisa);
+        spiAdaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spi_divisas.setAdapter(spiAdaptador);
+
+        CargarImagen ci = new CargarImagen(usuarioActividad.getSto());
+        ci.start();
+        setView();
+
+        spi_divisas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                tv_divisa.setText(Character.toString(usuarioActividad.getDivisas()[i]));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void setView(){
+        tv_nombre.setText(usuario.getNombre());
+        tv_email.setText(usuario.getCorreo());
+        tv_divisa.setText("€");
+
+        Glide.with(this).load(usuario.getUrl_imagen())
+                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                .error(R.drawable.person_morada).into(iv_foto);
+    }
+
+
+    private class CargarImagen extends Thread{
+        private StorageReference sto;
+
+        public CargarImagen(StorageReference sto) {
+            this.sto = sto;
+
+        }
+
+        @Override
+        public void run(){
+            sto.child("tienda").child("usuarios").child(usuario.getId()).getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        usuario.setUrl_imagen(uri.toString());
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setView();
+                            }
+                        });
+                    }
+                });
+        }
     }
 }

@@ -40,6 +40,8 @@
     <string name="pedido_pregunta_confirmacion">Vas a confirmar que el pedido está preparado, estás seguro?</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="divisa">Indique la divisa que quiere:</string>
+    <string name="modo_noche">Activar modo nocturno: </string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>

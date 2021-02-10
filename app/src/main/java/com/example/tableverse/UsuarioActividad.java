@@ -59,8 +59,10 @@ public class UsuarioActividad extends AppCompatActivity {
     private AdaptadorEventos adaptadorEventos;
     private SearchView searchView;
     private int position = 0;
+    private char[] divisas = {'€', '$', '£'};
 
-    public Usuario getUsuario(){ return usuario; }
+    public char[] getDivisas() { return divisas; }
+    public Usuario getUsuario() { return usuario; }
     public List<Juego> getLista_juegos() { return lista_juegos; }
     public List<Evento> getLista_eventos() { return lista_eventos; }
     public AdaptadorJuegos getAdaptadorJuegos() { return adaptadorJuegos; }
