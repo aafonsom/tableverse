@@ -24,6 +24,7 @@ import com.example.tableverse.objetos.Usuario;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> implements Filterable {
@@ -32,6 +33,8 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
     private List<Juego> lista_filtrada;
     private Context context;
     private Activity activity;
+    private int min = 0, max = 0;
+    private String categoria = "Todas";
 
     public AdaptadorJuegos(List<Juego> lista_juegos, Context context, Activity activity) {
         this.lista_juegos = lista_juegos;
@@ -107,16 +110,18 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
                 lista_filtrada = new ArrayList<>(lista_juegos);
                 List<Juego> lista = new ArrayList<>();
                 String filtro = charSequence.toString();
-
-                if(filtro.isEmpty()){
-                    lista = lista_juegos;
-                }else{
-                    for(Juego juego: lista_juegos){
-                        if(juego.getNombre().toLowerCase().contains(filtro.trim().toLowerCase())){
-                            lista.add(juego);
+                lista = filtrarCategoria();
+                lista = filtrarPorPrecio(lista);
+                if(!filtro.isEmpty()){
+                    Iterator<Juego> iterator = lista.iterator();
+                    while (iterator.hasNext()){
+                        Juego juego = iterator.next();
+                        if(!juego.getNombre().toLowerCase().contains(filtro.trim().toLowerCase())){
+                            iterator.remove();
                         }
                     }
                 }
+
                 FilterResults results = new FilterResults();
                 results.values = lista;
 
@@ -134,32 +139,29 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
 
     }
 
-    public void filtrarCategoria(String filtro){
-        lista_filtrada = new ArrayList<>(lista_juegos);
+    public List<Juego> filtrarCategoria(){
         List<Juego> lista = new ArrayList<>();
 
-        if(filtro.equals("Todas")){
-            lista = lista_juegos;
+        if(categoria.equals("Todas")){
+            lista = new ArrayList<>(lista_juegos);
         }else{
             for(Juego juego: lista_juegos){
-                if(juego.getCategoria().equalsIgnoreCase(filtro)){
+                if(juego.getCategoria().equalsIgnoreCase(categoria)){
                     lista.add(juego);
                 }
             }
         }
-        lista_filtrada.clear();
-        lista_filtrada.addAll(lista);
-        notifyDataSetChanged();
+
+        return lista;
     }
 
-    public void filtrarPorPrecio(int min, int max){
-        lista_filtrada = new ArrayList<>(lista_juegos);
+    public List<Juego> filtrarPorPrecio(List<Juego> prefiltrada){
         List<Juego> lista = new ArrayList<>();
 
         if(max == 0){
-            lista = lista_juegos;
+            lista = prefiltrada;
         }else{
-            for(Juego juego: lista_juegos){
+            for(Juego juego: prefiltrada){
                 double precio = juego.getPrecio();
                 if(precio >= min && precio <= max){
                     lista.add(juego);
@@ -167,9 +169,20 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
             }
         }
 
-        lista_filtrada.clear();
-        lista_filtrada.addAll(lista);
-        notifyDataSetChanged();
+        return lista;
+    }
+
+
+    public void setMax(int max){
+        this.max = max;
+    }
+
+    public void setMin(int min){
+        this.min = min;
+    }
+
+    public void setCategoria(String categoria){
+        this.categoria = categoria;
     }
 
     public class Vh extends RecyclerView.ViewHolder {

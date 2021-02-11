@@ -132,7 +132,9 @@ public class ListaJuegosUsuario extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                adaptadorJuegos.filtrarPorPrecio(min, max);
+                adaptadorJuegos.setMax(max);
+                adaptadorJuegos.setMin(min);
+                adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
             }
         });
 
@@ -152,7 +154,9 @@ public class ListaJuegosUsuario extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                adaptadorJuegos.filtrarPorPrecio(min, max);
+                adaptadorJuegos.setMax(max);
+                adaptadorJuegos.setMin(min);
+                adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
 
             }
         });
@@ -160,7 +164,8 @@ public class ListaJuegosUsuario extends Fragment {
         spi_categoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                adaptadorJuegos.filtrarCategoria(categorias.get(i));
+                adaptadorJuegos.setCategoria(categorias.get(i));
+                adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
             }
 
             @Override
@@ -235,6 +240,7 @@ public class ListaJuegosUsuario extends Fragment {
     private void setSeekBarMax(int precioMax){
         sb_max.setMax(precioMax);
         sb_min.setMax(precioMax - 1);
+        sb_max.setProgress(precioMax);
     }
 
 

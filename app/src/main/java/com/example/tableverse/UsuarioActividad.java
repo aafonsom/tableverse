@@ -66,14 +66,24 @@ public class UsuarioActividad extends AppCompatActivity {
     private NavController navController;
     public AdaptadorJuegos adaptadorJuegos;
     private AdaptadorEventos adaptadorEventos;
-    private SearchView searchView;
+    public SearchView searchView;
     private int position = 0;
     private char[] divisas = {'€', '$', '£'};
     private long lastTime;
     private long  ON_DAY_MS = 86400000;
     private double[] ratios = {-1, -1, -1, -1};
     private int pos_ratio_elegido = -1;
+    private String queryText = "", newText = "";
 
+    public String getQueryText() {
+        return queryText;
+    }
+
+    public String getNewText() {
+        return newText;
+    }
+
+    public SearchView getSearchView() { return searchView; }
     public SharedPreferences getSp() { return sp; }
     public SharedPreferences.Editor getEditor() { return editor; }
     public double[] getRatios() { return ratios; }
@@ -150,12 +160,14 @@ public class UsuarioActividad extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                newText = s;
                 adaptadorJuegos.getFilter().filter(s);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                queryText = s;
                 adaptadorJuegos.getFilter().filter(s);
                 return false;
             }

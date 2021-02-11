@@ -2,9 +2,11 @@ package com.example.tableverse;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.tableverse.servicios.ServicioNotificacion;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,6 +43,8 @@ public class LoginActividad extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_login);
 
         createNotificationChannel();
+        Intent intent = new Intent(this, ServicioNotificacion.class);
+        startService(intent);
 
         ref = FirebaseDatabase.getInstance().getReference();
         sto = FirebaseStorage.getInstance().getReference();
