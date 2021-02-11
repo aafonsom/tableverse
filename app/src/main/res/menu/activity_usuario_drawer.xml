@@ -19,9 +19,9 @@
             android:title="@string/eventos_suscritos" />
 
         <item
-            android:id="@+id/configuracionUsuario"
+            android:id="@+id/historialPedidos"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/configuracion" />
+            android:title="@string/historial_pedidos" />
 
     </group>
 </menu>

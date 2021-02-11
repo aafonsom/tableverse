@@ -22,6 +22,7 @@ import com.example.tableverse.dialog.DialogModJuego;
 import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.Usuario;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,12 +55,13 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
 
         holder.titulo.setText(juego.getNombre());
         holder.categoria.setText("Categoria: " + juego.getCategoria());
-        holder.precio.setText("Precio: " + juego.getPrecio());
         Glide.with(context).load(juego.getUrl_juego())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(android.R.drawable.stat_notify_error).into(holder.foto);
 
         if(activity instanceof AdminActividad){
+            holder.precio.setText("Precio: " + juego.getPrecio());
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -69,6 +71,17 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
                 }
             });
         }else if(activity instanceof UsuarioActividad){
+            UsuarioActividad usuarioActividad = ((UsuarioActividad)activity);
+            if(usuarioActividad.getPos_ratio_elegido() == -1){
+                holder.precio.setText("Precio: " + juego.getPrecio()
+                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+            }else{
+                DecimalFormat df = new DecimalFormat("#.##");
+                holder.precio.setText("Precio: " + df.format(juego.getPrecio() *
+                        usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
+                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+            }
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

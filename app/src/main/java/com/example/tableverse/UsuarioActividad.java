@@ -11,13 +11,19 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.example.tableverse.adaptadores.AdaptadorEventos;
 import com.example.tableverse.adaptadores.AdaptadorJuegos;
 import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.Usuario;
+import com.example.tableverse.objetos.VolleySingleton;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +44,9 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +69,16 @@ public class UsuarioActividad extends AppCompatActivity {
     private SearchView searchView;
     private int position = 0;
     private char[] divisas = {'€', '$', '£'};
+    private long lastTime;
+    private long  ON_DAY_MS = 86400000;
+    private double[] ratios = {-1, -1, -1, -1};
+    private int pos_ratio_elegido = -1;
 
+    public SharedPreferences getSp() { return sp; }
+    public SharedPreferences.Editor getEditor() { return editor; }
+    public double[] getRatios() { return ratios; }
+    public int getPos_ratio_elegido() { return pos_ratio_elegido; }
+    public void setPos_ratio_elegido(int pos_ratio_elegido) { this.pos_ratio_elegido = pos_ratio_elegido; }
     public char[] getDivisas() { return divisas; }
     public Usuario getUsuario() { return usuario; }
     public List<Juego> getLista_juegos() { return lista_juegos; }
@@ -89,7 +107,7 @@ public class UsuarioActividad extends AppCompatActivity {
 
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.eventosApuntado, R.id.eventosDisponibles, R.id.listaJuegosUsuario, R.id.configuracionUsuario)
+                R.id.eventosApuntado, R.id.eventosDisponibles, R.id.listaJuegosUsuario, R.id.historialPedidos)
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_usuario);
@@ -108,6 +126,15 @@ public class UsuarioActividad extends AppCompatActivity {
         }else{
             cargarDatosUsuario(id);
         }
+
+        sp = getSharedPreferences("sp_api_moneda", this.MODE_PRIVATE);
+        editor = sp.edit();
+        lastTime = sp.getLong("lastTime", -1);
+        ratios[0] = sp.getFloat("USD", -1);
+        ratios[1] = sp.getFloat("GBP", -1);
+        pos_ratio_elegido = sp.getInt("pos", -1);
+        /*ratios[2] = sp.getFloat("CNY", -1);
+        ratios[3] = sp.getFloat("RUB", -1);*/
     }
 
     @Override
@@ -148,7 +175,9 @@ public class UsuarioActividad extends AppCompatActivity {
                 Intent intent = new Intent(this, LoginActividad.class);
                 startActivity(intent);
                 return true;
-
+            case R.id.action_settings:
+                navController.navigate(R.id.configuracionUsuario);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -216,4 +245,64 @@ public class UsuarioActividad extends AppCompatActivity {
             });
         }
     }
+
+    public void refreshCache(){
+        String url = "https://api.exchangeratesapi.io/latest";
+        JsonObjectRequest json_req = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject rates = response.getJSONObject("rates");
+                            ratios[0] = rates.getDouble("USD");
+                            editor.putFloat("USD", (float)ratios[0]);
+                            ratios[1] = rates.getDouble("GBP");
+                            editor.putFloat("GBP", (float)ratios[1]);
+                            /*ratios[2] = rates.getDouble("CNY");
+                            editor.putFloat("CNY", (float)ratios[2]);
+                            ratios[3] = rates.getDouble("RUB");
+                            editor.putFloat("RUB", (float)ratios[3]);*/
+
+                            editor.commit();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                // Si hay algún poblema al hacer la conexión
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Toast.makeText(getApplicationContext(), "Error al hacer la petición",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(json_req);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        long now = System.currentTimeMillis();
+        if(lastTime == -1 || isMoreThanOneDay(now)){
+            editor.putLong("lastTime", now);
+            editor.commit();
+            refreshCache();
+        }
+    }
+
+    public boolean isMoreThanOneDay(long now){
+        boolean isMore = false;
+        if(lastTime != -1 && now-lastTime>ON_DAY_MS){
+            isMore = true;
+        }
+        return isMore;
+    }
+
+
 }

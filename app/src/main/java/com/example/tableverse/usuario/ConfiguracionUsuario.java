@@ -1,5 +1,6 @@
 package com.example.tableverse.usuario;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -38,6 +39,8 @@ public class ConfiguracionUsuario extends Fragment {
     private ImageView iv_foto;
     private Usuario usuario;
     private UsuarioActividad usuarioActividad;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -87,12 +90,14 @@ public class ConfiguracionUsuario extends Fragment {
         usuarioActividad = (UsuarioActividad) getActivity();
         ref = usuarioActividad.getRef();
         usuario = usuarioActividad.getUsuario();
-
+        editor = usuarioActividad.getEditor();
+        sp = usuarioActividad.getSp();
 
         String[] tipo_divisa = {"Euros €", "Dólares $", "Libras Esterlinas £"};
         ArrayAdapter<String> spiAdaptador = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, tipo_divisa);
         spiAdaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_divisas.setAdapter(spiAdaptador);
+        spi_divisas.setSelection(sp.getInt("pos",  -1) + 1);
 
         CargarImagen ci = new CargarImagen(usuarioActividad.getSto());
         ci.start();
@@ -102,6 +107,9 @@ public class ConfiguracionUsuario extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tv_divisa.setText(Character.toString(usuarioActividad.getDivisas()[i]));
+                usuarioActividad.setPos_ratio_elegido(i - 1);
+                editor.putInt("pos", i-1);
+                editor.commit();
             }
 
             @Override

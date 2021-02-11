@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
 import java.util.Iterator;
 
 
@@ -113,7 +114,17 @@ public class DialogComprarJuego extends DialogFragment {
 
     private void setView() {
         tv_nombre.setText(juego.getNombre());
-        tv_precio.setText(juego.getPrecio() + "€");
+
+        if(usuarioActividad.getPos_ratio_elegido() == -1){
+            tv_precio.setText("Precio de la entrada: " + juego.getPrecio()
+                    + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+        }else{
+            DecimalFormat df = new DecimalFormat("#.##");
+            tv_precio.setText("Precio de la entrada: " + df.format(juego.getPrecio() *
+                    usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
+                    + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+        }
+
         int stock = juego.getStock();
         if(stock < 10){
             tv_stock.setText("Solo quedan " + stock + " unidades! No pierdas tu oportunidad!");

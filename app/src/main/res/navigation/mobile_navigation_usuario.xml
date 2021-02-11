@@ -29,4 +29,9 @@
         android:name="com.example.tableverse.usuario.VerEvento"
         android:label="Información del evento"
         tools:layout="@layout/fragment_ver_evento" />
+    <fragment
+        android:id="@+id/historialPedidos"
+        android:name="com.example.tableverse.usuario.HistorialPedidos"
+        android:label="Historial de Pedidos"
+        tools:layout="@layout/fragment_historial_pedidos" />
 </navigation>

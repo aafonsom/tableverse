@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -123,8 +124,17 @@ public class VerEvento extends Fragment {
         }else{
             tv_fecha.setText(evento.getFecha());
         }
+        UsuarioActividad usuarioActividad = (UsuarioActividad)getActivity();
+        if(usuarioActividad.getPos_ratio_elegido() == -1){
+            tv_precio.setText("Precio de la entrada: " + evento.getPrecio()
+                    + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+        }else{
+            DecimalFormat df = new DecimalFormat("#.##");
+            tv_precio.setText("Precio de la entrada: " + df.format(evento.getPrecio() *
+                    usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
+                    + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+        }
 
-        tv_precio.setText("Precio: " + evento.getPrecio());
         tv_libres.setText("Plazas libres: " + (evento.getAforoMax() - evento.getOcupado()));
         tv_ocupadas.setText("Plazas ocupadas: " + evento.getOcupado());
         CargarImagen ci = new CargarImagen(evento);

@@ -11,7 +11,7 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="101"
-        android:title="@string/action_settings"
+        android:title="@string/configuracion"
         app:showAsAction="never" />
     <item
         android:id="@+id/logout"

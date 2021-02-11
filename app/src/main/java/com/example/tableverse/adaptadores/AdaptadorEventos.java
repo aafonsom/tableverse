@@ -22,6 +22,7 @@ import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.Usuario;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,17 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
                 }
             });
         }else if(activity instanceof UsuarioActividad){
+            UsuarioActividad usuarioActividad = ((UsuarioActividad)activity);
+            if(usuarioActividad.getPos_ratio_elegido() == -1){
+                holder.precio.setText("Precio de la entrada: " + evento.getPrecio()
+                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+            }else{
+                DecimalFormat df = new DecimalFormat("#.##");
+                holder.precio.setText("Precio de la entrada: " + df.format(evento.getPrecio() *
+                        usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
+                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+            }
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

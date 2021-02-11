@@ -54,6 +54,7 @@
     <string name="eventos_suscritos">Mis eventos</string>
     <string name="configuracion">Configuración</string>
     <string name="logout">Logout</string>
+    <string name="historial_pedidos">Historial de pedidos</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
