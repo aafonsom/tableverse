@@ -157,12 +157,13 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
 
     public List<Juego> filtrarPorPrecio(List<Juego> prefiltrada){
         List<Juego> lista = new ArrayList<>();
+        UsuarioActividad usuarioActividad = ((UsuarioActividad)activity);
 
         if(max == 0){
             lista = prefiltrada;
         }else{
             for(Juego juego: prefiltrada){
-                double precio = juego.getPrecio();
+                double precio = juego.getPrecio() * usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()];
                 if(precio >= min && precio <= max){
                     lista.add(juego);
                 }

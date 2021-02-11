@@ -74,15 +74,11 @@ public class UsuarioActividad extends AppCompatActivity {
     private double[] ratios = {-1, -1, -1, -1};
     private int pos_ratio_elegido = -1;
     private String queryText = "", newText = "";
+    private boolean queryTextSi = false;
 
-    public String getQueryText() {
-        return queryText;
-    }
-
-    public String getNewText() {
-        return newText;
-    }
-
+    public boolean isQueryTextSi() { return queryTextSi; }
+    public String getQueryText() { return queryText; }
+    public String getNewText() { return newText; }
     public SearchView getSearchView() { return searchView; }
     public SharedPreferences getSp() { return sp; }
     public SharedPreferences.Editor getEditor() { return editor; }
@@ -160,6 +156,7 @@ public class UsuarioActividad extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                queryTextSi = false;
                 newText = s;
                 adaptadorJuegos.getFilter().filter(s);
                 return false;
@@ -167,6 +164,7 @@ public class UsuarioActividad extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                queryTextSi = true;
                 queryText = s;
                 adaptadorJuegos.getFilter().filter(s);
                 return false;

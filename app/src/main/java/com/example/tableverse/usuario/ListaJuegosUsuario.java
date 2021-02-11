@@ -134,7 +134,11 @@ public class ListaJuegosUsuario extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 adaptadorJuegos.setMax(max);
                 adaptadorJuegos.setMin(min);
-                adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
+                if(usuarioActividad.isQueryTextSi()){
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
+                }else{
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getNewText());
+                }
             }
         });
 
