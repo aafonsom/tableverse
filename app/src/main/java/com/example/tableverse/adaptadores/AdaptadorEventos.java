@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,10 +18,8 @@ import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.dialog.DialogModEvento;
-import com.example.tableverse.dialog.DialogModJuego;
+import com.example.tableverse.dialog.DialogUsuariosApuntados;
 import com.example.tableverse.objetos.Evento;
-import com.example.tableverse.objetos.Juego;
-import com.example.tableverse.objetos.Usuario;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,7 +42,12 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
     @Override
     public Vh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.template_juegos, parent, false);
+        View v;
+        if(activity instanceof AdminActividad){
+             v = inflater.inflate(R.layout.template_eventos_admin, parent, false);
+        }else{
+            v = inflater.inflate(R.layout.template_juegos, parent, false);
+        }
 
         return new Vh(v);
     }
@@ -53,14 +57,14 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
         Evento evento = lista_filtrada.get(position);
 
         holder.nombre.setText(evento.getNombre());
-        holder.aforo.setText("Fecha: " + evento.getFecha());
-        holder.precio.setText("Precio de la entrada:" + evento.getPrecio());
+        holder.fecha.setText("Fecha: " + evento.getFecha());
+
         Glide.with(context).load(evento.getUrlImagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.person_morada).into(holder.foto);
 
         if(activity instanceof AdminActividad){
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.editar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ((AdminActividad)activity).setPosition(position);
@@ -68,7 +72,19 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
                     fragment.show(((AdminActividad)activity).getSupportFragmentManager(), "Modificar Datos");
                 }
             });
+
+            holder.verUsuarios.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((AdminActividad)activity).setPosition(position);
+                    ((AdminActividad)activity).getNavController().navigate(R.id.verUsuarios);
+                    /*DialogUsuariosApuntados fragment = new DialogUsuariosApuntados();
+                    fragment.show(((AdminActividad)activity).getSupportFragmentManager(), "Usuarios Apuntados");*/
+                }
+            });
+
         }else if(activity instanceof UsuarioActividad){
+            holder.precio.setText("Precio de la entrada:" + evento.getPrecio());
             UsuarioActividad usuarioActividad = ((UsuarioActividad)activity);
             if(usuarioActividad.getPos_ratio_elegido() == -1){
                 holder.precio.setText("Precio de la entrada: " + evento.getPrecio()
@@ -118,15 +134,24 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
 
     public class Vh extends RecyclerView.ViewHolder {
         private ImageView foto;
-        private TextView nombre, precio, aforo;
+        private TextView nombre, precio, fecha;
+        private Button verUsuarios, editar;
 
         public Vh(@NonNull View itemView) {
             super(itemView);
+            if(activity instanceof AdminActividad){
+                foto = itemView.findViewById(R.id.temp_ev_iv);
+                nombre = itemView.findViewById(R.id.temp_ev_nombre);
+                fecha = itemView.findViewById(R.id.temp_ev_fecha);
+                verUsuarios = itemView.findViewById(R.id.temp_ver_usuarios);
+                editar = itemView.findViewById(R.id.temp_editar);
+            }else{
+                foto = itemView.findViewById(R.id.template_juego_imagen);
+                nombre = itemView.findViewById(R.id.template_juego_titulo);
+                precio = itemView.findViewById(R.id.template_precio);
+                fecha = itemView.findViewById(R.id.template_categoria);
+            }
 
-            foto = itemView.findViewById(R.id.template_juego_imagen);
-            nombre = itemView.findViewById(R.id.template_juego_titulo);
-            precio = itemView.findViewById(R.id.template_precio);
-            aforo = itemView.findViewById(R.id.template_categoria);
         }
     }
 }

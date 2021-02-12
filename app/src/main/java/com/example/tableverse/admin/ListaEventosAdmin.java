@@ -112,7 +112,7 @@ public class ListaEventosAdmin extends Fragment {
 
                     lista_eventos.add(pojo_evento);
                 }
-                //Mejorar, hacerlo con asynctask
+
                 for(final Evento pojo_evento: lista_eventos){
                     sto.child("tienda").child("eventos").child(pojo_evento.getId())
                             .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

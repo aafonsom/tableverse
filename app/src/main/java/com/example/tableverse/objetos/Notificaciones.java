@@ -35,7 +35,7 @@ public class Notificaciones {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(LoginActividad.createID(), builder.build());
-        
+
     }
 
 

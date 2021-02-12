@@ -30,4 +30,9 @@
         android:name="com.example.tableverse.admin.CrearEvento"
         android:label="Añadir nuevo evento"
         tools:layout="@layout/fragment_crear_evento" />
+    <fragment
+        android:id="@+id/verUsuarios"
+        android:name="com.example.tableverse.usuario.VerUsuarios"
+        android:label="fragment_ver_usuarios"
+        tools:layout="@layout/fragment_ver_usuarios" />
 </navigation>

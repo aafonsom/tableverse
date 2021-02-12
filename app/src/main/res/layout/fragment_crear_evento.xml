@@ -92,6 +92,7 @@
 
     <Button
         android:id="@+id/b_add_event"
+        style="@style/RobotoButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimary"

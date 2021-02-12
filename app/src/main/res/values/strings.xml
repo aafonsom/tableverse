@@ -42,6 +42,8 @@
     <string name="no">No</string>
     <string name="divisa">Indique la divisa que quiere:</string>
     <string name="modo_noche">Activar modo nocturno: </string>
+    <string name="editar">Editar</string>
+    <string name="ver_usuarios">Usuarios Apuntados</string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>
