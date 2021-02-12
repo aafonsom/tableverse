@@ -33,6 +33,6 @@
     <fragment
         android:id="@+id/verUsuarios"
         android:name="com.example.tableverse.usuario.VerUsuarios"
-        android:label="fragment_ver_usuarios"
+        android:label="Usuarios Apuntados"
         tools:layout="@layout/fragment_ver_usuarios" />
 </navigation>

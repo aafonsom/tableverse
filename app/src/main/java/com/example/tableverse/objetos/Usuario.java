@@ -3,7 +3,12 @@ package com.example.tableverse.objetos;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
-    String id, nombre, correo, contraseña, url_imagen, tipo;
+    public final static int NOTIFICADO = 0;
+    public final static int PEDIDO_ESPERA = 1;
+    public final static int PEDIDO_PREPARADO = 2;
+
+    private String id, nombre, correo, contraseña, url_imagen, tipo;
+    private int estado;
 
     public Usuario() {
         this.id = "";
@@ -19,8 +24,17 @@ public class Usuario implements Serializable {
         this.nombre = nombre;
         this.correo = correo;
         this.contraseña = contraseña;
+        this.estado = 0;
         this.tipo = "normal";
         this.url_imagen = "";
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public String getTipo() {

@@ -1,11 +1,14 @@
 package com.example.tableverse.usuario;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,12 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.objetos.Usuario;
@@ -98,9 +103,11 @@ public class ConfiguracionUsuario extends Fragment {
         spiAdaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_divisas.setAdapter(spiAdaptador);
         spi_divisas.setSelection(sp.getInt("pos",  -1) + 1);
-
-        CargarImagen ci = new CargarImagen(usuarioActividad.getSto());
-        ci.start();
+        usuarioActividad.setMode(0);
+       /* usuarioActividad.setVisibilitySearchView();
+*/
+        /*CargarImagen ci = new CargarImagen(usuarioActividad.getSto());
+        ci.start();*/
         setView();
 
         spi_divisas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -117,6 +124,26 @@ public class ConfiguracionUsuario extends Fragment {
 
             }
         });
+
+        sw_oscuro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*SharedPreferences sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("modo", sw_oscuro.isChecked());
+                editor.commit();
+                LoginActividad loginActividad = new LoginActividad();
+                loginActividad.alternarModoNoche(sw_oscuro.isChecked());*/
+                if(sw_oscuro.isChecked()){
+                    ((AppCompatActivity)usuarioActividad).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }else{
+                    ((AppCompatActivity)usuarioActividad).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+                /*usuarioActividad.setMode(0);
+                usuarioActividad.getTheme();*/
+            }
+        });
+
     }
 
     private void setView(){

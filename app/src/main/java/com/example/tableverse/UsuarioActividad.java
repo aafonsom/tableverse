@@ -3,7 +3,10 @@ package com.example.tableverse;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -60,7 +64,7 @@ public class UsuarioActividad extends AppCompatActivity {
     private StorageReference sto;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
-    private Usuario usuario;
+    public static Usuario usuario;
     private List<Juego> lista_juegos = new ArrayList<>();
     private List<Evento> lista_eventos = new ArrayList<>();
     private NavController navController;
@@ -75,7 +79,10 @@ public class UsuarioActividad extends AppCompatActivity {
     private int pos_ratio_elegido = -1;
     private String queryText = "", newText = "";
     private boolean queryTextSi = false;
+    private int mode = 1;
 
+    public int getMode() { return mode; }
+    public void setMode(int mode) { this.mode = mode; }
     public boolean isQueryTextSi() { return queryTextSi; }
     public String getQueryText() { return queryText; }
     public String getNewText() { return newText; }
@@ -99,9 +106,12 @@ public class UsuarioActividad extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_actividad);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setSubtitleTextColor(Color.WHITE);
+
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -174,6 +184,15 @@ public class UsuarioActividad extends AppCompatActivity {
         return true;
     }
 
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        if(mode == 0){
+            theme.applyStyle(R.style.DarkTheme, true);
+        }
+
+        return theme;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -203,6 +222,7 @@ public class UsuarioActividad extends AppCompatActivity {
     private void setViewNav(){
         tv_nav_nombre.setText(usuario.getNombre());
         tv_nav_email.setText(usuario.getCorreo());
+
 
         Glide.with(this).load(usuario.getUrl_imagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
@@ -313,6 +333,22 @@ public class UsuarioActividad extends AppCompatActivity {
         }
         return isMore;
     }
+
+    public void alternarModoNoche(boolean modoNoche){
+        if(modoNoche){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    /*public void setVisibilitySearchView(){
+        if(mode == 0){
+            searchView.setVisibility(View.GONE);
+        }else{
+            searchView.setVisibility(View.VISIBLE);
+        }
+    }*/
 
 
 }

@@ -3,6 +3,8 @@ package com.example.tableverse;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -14,6 +16,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -35,9 +38,13 @@ public class LoginActividad extends AppCompatActivity {
     public TabLayout getTabLayout(){ return tabLayout; }
     public DatabaseReference getRef(){ return ref; }
     public StorageReference getSto() {return sto; }
+    private boolean alternar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sp = getSharedPreferences("MODO", MODE_PRIVATE);
+        alternar = sp.getBoolean("modo", false);
+        alternarModoNoche(alternar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         tabLayout = findViewById(R.id.tab_login);
@@ -112,6 +119,17 @@ public class LoginActividad extends AppCompatActivity {
         int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(now));
         return id;
     }
+
+
+    public void alternarModoNoche(boolean modoNoche){
+        if(modoNoche){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+
 
 
 }
