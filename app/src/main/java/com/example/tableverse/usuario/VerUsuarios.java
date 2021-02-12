@@ -123,11 +123,12 @@ public class VerUsuarios extends Fragment {
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    final Usuario pojo_cliente = snapshot.getChildren().iterator().next().getValue(Usuario.class);
-                                    pojo_cliente.setId(snapshot.getKey());
+                                    DataSnapshot hijo = snapshot.getChildren().iterator().next();
+                                    final Usuario pojo_cliente = hijo.getValue(Usuario.class);
+                                    pojo_cliente.setId(hijo.getKey());
                                     lista_usuarios.add(pojo_cliente);
 
-                                    adaptadorUsuarios.notifyDataSetChanged();
+
 
                                     sto.child("tienda").child("usuarios").child(pojo_cliente.getId())
                                             .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
