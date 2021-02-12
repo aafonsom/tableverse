@@ -74,7 +74,7 @@ public class CrearEvento extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_crear_evento, container, false);
     }
 
@@ -146,17 +146,15 @@ public class CrearEvento extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.hasChildren()){
-                        Toast.makeText(getContext(), "Ya existe un evento con este nombre", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Evento pojo_evento = new Evento(nombre, fecha, Double.parseDouble(precio),
-                                Integer.parseInt(aforo_maximo));
-                        String id = ref.child("tienda").child("eventos").push().getKey();
-                        ref.child("tienda").child("eventos").child(id).setValue(pojo_evento);
-                        if(fotoEventoUrl != null){
-                            sto.child("tienda").child("eventos").child(id).putFile(fotoEventoUrl);
+                        Evento evento = snapshot.getChildren().iterator().next().getValue(Evento.class);
+                        if(evento.getFecha().equals(fecha)){
+                            Toast.makeText(getContext(), "Ya existe un evento con este nombre y en esta fecha", Toast.LENGTH_SHORT).show();
+                        }else{
+                            nuevoEvento(nombre, fecha, precio, aforo_maximo);
                         }
-                        AdminActividad adminActividad = (AdminActividad)getActivity();
-                        adminActividad.getNavController().navigate(R.id.listaEventosAdmin);
+
+                    }else{
+                        nuevoEvento(nombre, fecha, precio, aforo_maximo);
                     }
                 }
 
@@ -167,6 +165,18 @@ public class CrearEvento extends Fragment {
             });
         }
 
+    }
+
+    private void nuevoEvento(String nombre, String fecha, String precio, String aforo_maximo){
+        Evento pojo_evento = new Evento(nombre, fecha, Double.parseDouble(precio),
+                Integer.parseInt(aforo_maximo));
+        String id = ref.child("tienda").child("eventos").push().getKey();
+        ref.child("tienda").child("eventos").child(id).setValue(pojo_evento);
+        if(fotoEventoUrl != null){
+            sto.child("tienda").child("eventos").child(id).putFile(fotoEventoUrl);
+        }
+        AdminActividad adminActividad = (AdminActividad)getActivity();
+        adminActividad.getNavController().navigate(R.id.listaEventosAdmin);
     }
 
     private boolean esValido(String nombre, String fecha, String precioString, String aforo_maximoStr){
