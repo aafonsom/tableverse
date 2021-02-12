@@ -196,12 +196,18 @@ public class ListaJuegosUsuario extends Fragment {
                     adaptadorJuegos.notifyDataSetChanged();
                 }
                 int precio_maximo_tienda = 0;
-                for(Juego pojo_juego: lista_juegos){
+                for(final Juego pojo_juego: lista_juegos){
                     if(pojo_juego.getPrecio() > precio_maximo_tienda){
                         precio_maximo_tienda = (int)Math.ceil(pojo_juego.getPrecio());
                     }
-                    CargarImagen ci = new CargarImagen(pojo_juego);
-                    ci.start();
+                    sto.child("tienda").child("juegos").child(pojo_juego.getId()).getDownloadUrl()
+                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    pojo_juego.setUrl_juego(uri.toString());
+                                    adaptadorJuegos.notifyDataSetChanged();
+                                }
+                            });
                 }
 
                 setSeekBarMax(precio_maximo_tienda);

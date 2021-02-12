@@ -13,23 +13,32 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
 
+import java.io.Serializable;
+
 public class Notificaciones {
 
     public Notificaciones() {
     }
 
-    public void crearNotificacion(Bitmap icon, String id, String title,
-                                                        String contenido, String textoLargo,
-                                                        PendingIntent pendingIntent, Context context){
+    public void crearNotificacion(Serializable pojo, String contenido, String expandido,
+                                  String titulo,  int icono_big, Class destino,
+                                  Context context){
+        Intent intent = new Intent(context, destino);
+        intent.putExtra("USUARIO",pojo);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Bitmap imagen = BitmapFactory.decodeResource(context.getResources(),
+                icono_big);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
-                id)
+                LoginActividad.CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
+                .setContentTitle(titulo)
                 .setContentText(contenido)
-                .setLargeIcon(icon)
+                .setLargeIcon(imagen)
                 .setContentIntent(pendingIntent)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(textoLargo))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(expandido))
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
 

@@ -27,6 +27,7 @@ import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.Usuario;
 import com.example.tableverse.objetos.VolleySingleton;
+import com.example.tableverse.servicios.ServicioNotificacion;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -111,7 +112,8 @@ public class UsuarioActividad extends AppCompatActivity {
         setContentView(R.layout.activity_usuario_actividad);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitleTextColor(Color.WHITE);
-
+        Intent servicio = new Intent(this, ServicioNotificacion.class);
+        startService(servicio);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

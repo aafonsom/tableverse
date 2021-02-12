@@ -12,6 +12,7 @@ import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
+import com.example.tableverse.servicios.ServicioNotificacion;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +58,8 @@ public class AdminActividad extends AppCompatActivity {
         fab = findViewById(R.id.fab_admin);
         ref = FirebaseDatabase.getInstance().getReference();
         sto = FirebaseStorage.getInstance().getReference();
+        Intent servicio = new Intent(this, ServicioNotificacion.class);
+        startService(servicio);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         navView = findViewById(R.id.nav_view);

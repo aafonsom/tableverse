@@ -8,8 +8,11 @@ import android.service.restrictions.RestrictionsReceiver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.tableverse.R;
+import com.example.tableverse.objetos.Notificaciones;
 import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
+import com.example.tableverse.usuario.HistorialPedidos;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +40,7 @@ public class ServicioNotificacion extends IntentService {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                ReservaJuego pojo_reserva = snapshot.getValue(ReservaJuego.class);
+                final ReservaJuego pojo_reserva = snapshot.getValue(ReservaJuego.class);
                 pojo_reserva.setId(snapshot.getKey());
 
 
@@ -46,7 +49,29 @@ public class ServicioNotificacion extends IntentService {
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        pojo_usuario = snapshot.getValue(Usuario.class);
+                        DataSnapshot hijo = snapshot.getChildren().iterator().next();
+                        pojo_usuario = hijo.getValue(Usuario.class);
+                        pojo_usuario.setId(hijo.getKey());
+                        SharedPreferences sp = getSharedPreferences("LOGIN", MODE_PRIVATE);
+                        String id = sp.getString("id", "");
+
+                        if(pojo_reserva.isPreparado()  &&
+                                pojo_usuario.getEstado() == Usuario.PEDIDO_PREPARADO
+                                && pojo_usuario.getId().equals(id)){
+                            ref.child("tienda").child("clientes").child(pojo_usuario.getId())
+                                    .child("estado").setValue(Usuario.NOTIFICADO);
+                            Notificaciones nueva = new Notificaciones();
+                            nueva.crearNotificacion(pojo_usuario, "Se ha procesado tu pedido",
+                                    "Tu pedido ya está listo para recoger en tienda, " +
+                                            "acercate cuando puedas", "Pedido procesado",
+                                    R.mipmap.ic_launcher, HistorialPedidos.class,
+                                    getApplicationContext());
+
+                        }else if(!pojo_reserva.isPreparado() &&  pojo_usuario.getTipo().equals("admin")
+                                && pojo_usuario.getEstado() == Usuario.PEDIDO_ESPERA){
+
+                        }
+
                     }
 
                     @Override
@@ -55,14 +80,7 @@ public class ServicioNotificacion extends IntentService {
                     }
                 });
 
-                SharedPreferences sp = getSharedPreferences("LOGIN", MODE_PRIVATE);
 
-
-                if(pojo_reserva.isPreparado() &&
-                        sp.getString("id", "").equals(pojo_usuario.getId()) &&
-                        pojo_usuario.getEstado() == Usuario.PEDIDO_PREPARADO){
-                    ref.child("tienda").child("clientes").child(pojo_usuario.getId()).child("estado").setValue(Usuario.NOTIFICADO);
-                }
 
 
             }

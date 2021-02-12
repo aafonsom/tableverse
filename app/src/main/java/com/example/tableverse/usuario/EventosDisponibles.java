@@ -125,9 +125,15 @@ public class EventosDisponibles extends Fragment {
                 }
                 adaptadorEventos.notifyDataSetChanged();
 
-                for(Evento evento: lista_eventos){
-                    CargarImagen ci = new CargarImagen(evento);
-                    ci.start();
+                for(final Evento evento: lista_eventos){
+                    sto.child("tienda").child("eventos").child(evento.getId()).getDownloadUrl()
+                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    evento.setUrlImagen(uri.toString());
+                                    adaptadorEventos.notifyDataSetChanged();
+                                }
+                            });
                 }
 
             }
@@ -140,7 +146,7 @@ public class EventosDisponibles extends Fragment {
     }
 
 
-    private class CargarImagen extends Thread{
+   /* private class CargarImagen extends Thread{
         Evento pojo_evento;
 
         public CargarImagen(Evento pojo_evento) {
@@ -163,6 +169,6 @@ public class EventosDisponibles extends Fragment {
                         }
                     });
         }
-    }
+    }*/
 
 }

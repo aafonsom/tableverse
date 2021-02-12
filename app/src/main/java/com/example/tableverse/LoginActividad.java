@@ -32,7 +32,7 @@ public class LoginActividad extends AppCompatActivity {
     private TabLayout tabLayout;
     private DatabaseReference ref;
     private StorageReference sto;
-    private String CHANNEL_ID = "tableverse_channel";
+    public static final String CHANNEL_ID = "tableverse_channel";
 
     public NavController getNavController(){ return navController; }
     public TabLayout getTabLayout(){ return tabLayout; }
@@ -50,8 +50,7 @@ public class LoginActividad extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_login);
 
         createNotificationChannel();
-        Intent intent = new Intent(this, ServicioNotificacion.class);
-        startService(intent);
+
 
         ref = FirebaseDatabase.getInstance().getReference();
         sto = FirebaseStorage.getInstance().getReference();

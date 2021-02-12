@@ -101,6 +101,7 @@ public class HistorialPedidos extends Fragment {
                 .equalTo(usuario.getId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                lista_reservas.clear();
                 for (DataSnapshot hijo : snapshot.getChildren()) {
                     ReservaJuego reserva = hijo.getValue(ReservaJuego.class);
                     reserva.setId(hijo.getKey());
@@ -109,9 +110,16 @@ public class HistorialPedidos extends Fragment {
 
                 adaptadorPedidos.notifyDataSetChanged();
 
-                for(ReservaJuego res: lista_reservas){
-                    CargarImagen ci = new CargarImagen(res);
-                    ci.start();
+                for(final ReservaJuego res: lista_reservas){
+                    sto.child("tienda").child("juegos").child(res.getId_juego()).getDownloadUrl()
+                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    res.setUrl_juego(uri.toString());
+                                    adaptadorPedidos.notifyDataSetChanged();
+                                }
+                            });
+
                 }
             }
 
@@ -122,7 +130,7 @@ public class HistorialPedidos extends Fragment {
         });
     }
 
-    private class CargarImagen extends Thread{
+    /*private class CargarImagen extends Thread{
         ReservaJuego pojo_reserva;
         public CargarImagen(ReservaJuego pojo_reserva) {
             this.pojo_reserva = pojo_reserva;
@@ -144,9 +152,11 @@ public class HistorialPedidos extends Fragment {
                     }
                 });
 
-        }
+        }*/
+/*
 
     }
+*/
 
 
 }

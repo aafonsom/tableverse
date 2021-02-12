@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.tableverse.R;
 import com.example.tableverse.objetos.ReservaJuego;
+import com.example.tableverse.objetos.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -56,6 +57,8 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
         if(reserva.isPreparado()){
             holder.confirm.setVisibility(View.INVISIBLE);
         }else{
+            holder.confirm.setVisibility(View.VISIBLE);
+
             holder.confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -73,6 +76,7 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
 
                                 ref.child("tienda").child("reservas_juegos").child(reserva.getId())
                                         .setValue(reserva);
+                                ref.child("tienda").child("clientes").child(reserva.getId_cliente()).child("estado").setValue(Usuario.PEDIDO_PREPARADO);
 
                             }
 
