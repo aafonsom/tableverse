@@ -130,9 +130,15 @@ public class ListaPedidos extends Fragment {
 
                 adaptadorPedidos.notifyDataSetChanged();
 
-                for(ReservaJuego reserva: lista_pedidos) {
-                    CargarImagen ci = new CargarImagen(reserva);
-                    ci.start();
+                for(final ReservaJuego reserva: lista_pedidos) {
+                    sto.child("tienda").child("juegos").child(reserva.getId_juego()).getDownloadUrl()
+                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    reserva.setUrl_juego(uri.toString());
+                                    adaptadorPedidos.notifyDataSetChanged();
+                                }
+                            });
                 }
 
             }
@@ -144,31 +150,5 @@ public class ListaPedidos extends Fragment {
         });
     }
 
-
-    private class CargarImagen extends Thread{
-        private ReservaJuego pojo_reserva;
-
-        public CargarImagen(ReservaJuego pojo_reserva) {
-            this.pojo_reserva = pojo_reserva;
-        }
-
-        @Override
-        public void run(){
-            sto.child("tienda").child("juegos").child(pojo_reserva.getId_juego()).getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            pojo_reserva.setUrl_juego(uri.toString());
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adaptadorPedidos.notifyDataSetChanged();
-                                }
-                            });
-                        }
-                    });
-        }
-
-    }
 
 }

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.tableverse.R;
+import com.example.tableverse.inicio.Login;
 import com.example.tableverse.objetos.Notificaciones;
 import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
@@ -64,7 +65,7 @@ public class ServicioNotificacion extends IntentService {
                             nueva.crearNotificacion(pojo_usuario, "Se ha procesado tu pedido",
                                     "Tu pedido ya está listo para recoger en tienda, " +
                                             "acercate cuando puedas", "Pedido procesado",
-                                    R.mipmap.ic_launcher, HistorialPedidos.class,
+                                    R.mipmap.ic_launcher, Login.class,
                                     getApplicationContext());
 
                         }else if(!pojo_reserva.isPreparado() &&  pojo_usuario.getTipo().equals("admin")

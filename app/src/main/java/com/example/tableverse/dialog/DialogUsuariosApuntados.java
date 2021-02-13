@@ -56,12 +56,6 @@ public class DialogUsuariosApuntados extends DialogFragment {
 
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return crearDialogUsuariosApuntados();
-    }
-
     private AlertDialog crearDialogUsuariosApuntados() {
         builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
