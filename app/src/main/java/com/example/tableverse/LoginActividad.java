@@ -48,7 +48,8 @@ public class LoginActividad extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         tabLayout = findViewById(R.id.tab_login);
-
+        Intent servicio = new Intent(this, ServicioNotificacion.class);
+        startService(servicio);
         createNotificationChannel();
 
 

@@ -33,7 +33,7 @@ public class Notificaciones {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
                 LoginActividad.CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.icono_redondo)
                 .setContentTitle(titulo)
                 .setContentText(contenido)
                 .setLargeIcon(imagen)

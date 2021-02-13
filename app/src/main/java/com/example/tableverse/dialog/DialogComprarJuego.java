@@ -162,15 +162,43 @@ public class DialogComprarJuego extends DialogFragment {
                 if(reservaExiste != null){
                     Toast.makeText(usuarioActividad, "Ya has reservado este juego, se está preparando", Toast.LENGTH_SHORT).show();
                 }else{
-                    ReservaJuego nuevaReserva = new ReservaJuego(juego.getId(), usuario.getId(), juego.getNombre());
-                    String id = ref.child("tienda").child("reservas_juegos").push().getKey();
-                    ref.child("tienda").child("reservas_juegos").child(id).setValue(nuevaReserva);
-                    juego.setStock(juego.getStock() - 1);
-                    ref.child("tienda").child("juegos").child(juego.getId()).setValue(juego);
+                    ref.child("tienda").child("clientes").orderByKey()
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot hijo: snapshot.getChildren()){
+                                Usuario pojo_usuario = hijo.getValue(Usuario.class);
+
+                                if(pojo_usuario.getTipo().equals("admin")){
+                                    pojo_usuario.setId(hijo.getKey());
+
+                                    ref.child("tienda").child("clientes")
+                                            .child(pojo_usuario.getId()).child("estado")
+                                            .setValue(Usuario.PEDIDO_ESPERA);
+
+                                    dismiss();
+
+                                }
+
+                            }
+
+                            ReservaJuego nuevaReserva = new ReservaJuego(juego.getId(), usuario.getId(), juego.getNombre());
+                            String id = ref.child("tienda").child("reservas_juegos").push().getKey();
+                            ref.child("tienda").child("reservas_juegos").child(id).setValue(nuevaReserva);
+                            juego.setStock(juego.getStock() - 1);
+                            ref.child("tienda").child("juegos").child(juego.getId()).setValue(juego);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
 
                     Toast.makeText(usuarioActividad, "Se ha reservado el juego con éxito", Toast.LENGTH_SHORT).show();
 
-                    dismiss();
+
                 }
 
             }
