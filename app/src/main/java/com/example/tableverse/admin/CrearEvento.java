@@ -92,6 +92,7 @@ public class CrearEvento extends Fragment {
         fotoEventoUrl = null;
 
         AdminActividad adminActividad = (AdminActividad)getActivity();
+        adminActividad.getToolbar().setNavigationIcon(R.drawable.arrow_back_white_24dp);
         adminActividad.modoFab(MODO_FAB);
         adminActividad.modoNavView(MODO_NAVVIEW);
         ref = adminActividad.getRef();

@@ -98,7 +98,7 @@ public class ListaPedidos extends Fragment {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_tipo.setAdapter(spinnerAdapter);
 
-        adaptadorPedidos = new AdaptadorPedidos(lista_pedidos, getContext());
+        adaptadorPedidos = new AdaptadorPedidos(lista_pedidos, getContext(), adminActividad);
         llm = new LinearLayoutManager(getContext());
         rv_pedidos.setAdapter(adaptadorPedidos);
         rv_pedidos.setLayoutManager(llm);

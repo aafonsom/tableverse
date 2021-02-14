@@ -88,7 +88,7 @@ public class HistorialPedidos extends Fragment {
         sto = usuarioActividad.getSto();
         usuario = usuarioActividad.getUsuario();
         cargarDatos();
-        adaptadorPedidos = new AdaptadorPedidos(lista_reservas, getContext());
+        adaptadorPedidos = new AdaptadorPedidos(lista_reservas, getContext(), usuarioActividad);
         llm = new LinearLayoutManager(getContext());
         rv_historial.setAdapter(adaptadorPedidos);
         rv_historial.setLayoutManager(llm);

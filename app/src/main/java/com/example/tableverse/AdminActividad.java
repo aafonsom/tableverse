@@ -2,6 +2,8 @@ package com.example.tableverse;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
@@ -40,7 +42,9 @@ public class AdminActividad extends AppCompatActivity {
     private List<ReservaJuego> lista_pedidos = new ArrayList<>();
     private List<Usuario> lista_usuarios = new ArrayList<>();
     private int position = 0;
+    private Toolbar toolbar;
 
+    public Toolbar getToolbar() { return toolbar; }
     public List<Usuario> getLista_usuarios() { return lista_usuarios; }
     public List<Juego> getLista_juegos(){ return lista_juegos; }
     public List<Evento> getLista_eventos(){ return lista_eventos; }
@@ -61,7 +65,9 @@ public class AdminActividad extends AppCompatActivity {
         Intent servicio = new Intent(this, ServicioNotificacion.class);
         startService(servicio);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.tb_admin);
+
+
         navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.listaJuegosAdmin, R.id.listaEventosAdmin, R.id.listaPedidos)

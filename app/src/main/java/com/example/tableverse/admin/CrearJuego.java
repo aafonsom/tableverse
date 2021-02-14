@@ -91,6 +91,7 @@ public class CrearJuego extends Fragment {
         Button añadir = view.findViewById(R.id.b_addjuego);
 
         AdminActividad adminActividad = (AdminActividad)getActivity();
+        adminActividad.getToolbar().setNavigationIcon(R.drawable.arrow_back_white_24dp);
         adminActividad.modoFab(MODO_FAB);
         adminActividad.modoNavView(MODO_NAVVIEW);
         ref = adminActividad.getRef();

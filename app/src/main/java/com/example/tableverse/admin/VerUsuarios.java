@@ -1,6 +1,5 @@
-package com.example.tableverse.usuario;
+package com.example.tableverse.admin;
 
-import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -47,12 +46,10 @@ public class VerUsuarios extends Fragment {
     private Evento evento;
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -93,6 +90,7 @@ public class VerUsuarios extends Fragment {
         rv_usuarios = v.findViewById(R.id.rv_usuarios);
 
         adminActividad = (AdminActividad) getActivity();
+        adminActividad.getToolbar().setNavigationIcon(R.drawable.arrow_back_white_24dp);
         ref = adminActividad.getRef();
         sto = adminActividad.getSto();
         lista_usuarios = adminActividad.getLista_usuarios();

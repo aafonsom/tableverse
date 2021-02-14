@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".usuario.VerUsuarios"
+    tools:context=".admin.VerUsuarios"
     android:paddingTop="?attr/actionBarSize"
     android:paddingBottom="?attr/actionBarSize">
 

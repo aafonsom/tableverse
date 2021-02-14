@@ -32,7 +32,7 @@
         tools:layout="@layout/fragment_crear_evento" />
     <fragment
         android:id="@+id/verUsuarios"
-        android:name="com.example.tableverse.usuario.VerUsuarios"
+        android:name="com.example.tableverse.admin.VerUsuarios"
         android:label="Usuarios Apuntados"
         tools:layout="@layout/fragment_ver_usuarios" />
 </navigation>

@@ -1,5 +1,6 @@
 package com.example.tableverse.adaptadores;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
+import com.example.tableverse.dialog.InfoUsuario;
 import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,12 +30,14 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
 
     private List<ReservaJuego> lista_reservas;
     private List<ReservaJuego> lista_filtrada;
+    private Activity activity;
     private Context context;
 
-    public AdaptadorPedidos(List<ReservaJuego> lista_reservas, Context context) {
+    public AdaptadorPedidos(List<ReservaJuego> lista_reservas, Context context, Activity activity) {
         this.lista_reservas = lista_reservas;
         this.lista_filtrada = lista_reservas;
         this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -50,6 +55,14 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
         final ReservaJuego reserva = lista_filtrada.get(position);
 
         holder.nombre.setText(reserva.getNombre_juego());
+        holder.info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InfoUsuario info = new InfoUsuario(reserva.getId_cliente());
+                info.show(((AdminActividad)activity).getSupportFragmentManager(), "Información de usuario");
+            }
+        });
+
         Glide.with(context).load(reserva.getUrl_juego())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.person_morada).into(holder.foto);
