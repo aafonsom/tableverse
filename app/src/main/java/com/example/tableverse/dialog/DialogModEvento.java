@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.Iterator;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -150,26 +153,37 @@ public class DialogModEvento extends DialogFragment {
         aforo =et_aforo.getText().toString().trim();
 
         if(validar(nombre, fecha, precio, aforo)){
-            if(nombre.equals(evento.getNombre())){
-                realizarModificaciones(nombre, fecha, precio, aforo);
-            }else{
-                ref.child("tienda").child("eventos").orderByChild("nombre").equalTo(nombre)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.hasChildren()){
-                                    Toast.makeText(adminActividad, "Ya existe un juego con ese nombre", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    realizarModificaciones(nombre, fecha, precio, aforo);
+
+            ref.child("tienda").child("eventos").orderByChild("nombre").equalTo(nombre)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChildren()){
+                            Evento buscado = null;
+                            for(DataSnapshot hijo: snapshot.getChildren()){
+                                Evento evento = hijo.getValue(Evento.class);
+                                if(evento.getFecha().equals(fecha)){
+                                    buscado = evento;
+                                    break;
                                 }
                             }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
+                            if(buscado != null){
+                                Toast.makeText(getContext(), "Ya existe un evento con este nombre y en esta fecha", Toast.LENGTH_SHORT).show();
+                            }else{
+                                realizarModificaciones(nombre, fecha, precio, aforo);
                             }
-                        });
-            }
+                        }else{
+                            realizarModificaciones(nombre, fecha, precio, aforo);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
         }
     }
 
@@ -207,7 +221,7 @@ public class DialogModEvento extends DialogFragment {
         boolean esValido = true;
         double precioDouble = -1;
         int aforoInt;
-        //TODO: Mejorar la validación, no afecta cambiar el válido a false en el catch
+
         try{
             precioDouble = Double.parseDouble(precio);
         }catch (NumberFormatException nfe){

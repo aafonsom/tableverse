@@ -30,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Iterator;
+
 import static android.app.Activity.RESULT_OK;
 
 public class CrearEvento extends Fragment {
@@ -138,17 +140,26 @@ public class CrearEvento extends Fragment {
         nombre = et_nombre.getText().toString().trim();
         fecha = et_fecha.getText().toString().trim();
         precio = et_precio.getText().toString().trim();
-        aforo_maximo =et_aforo.getText().toString().trim();
+        aforo_maximo = et_aforo.getText().toString().trim();
 
         if(esValido(nombre, fecha, precio, aforo_maximo)){
-            //TODO: Añadir funcionalidad, no puede haber dos eventos en la misma fecha
+
             ref.child("tienda").child("eventos").orderByChild("nombre").equalTo(nombre)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.hasChildren()){
-                        Evento evento = snapshot.getChildren().iterator().next().getValue(Evento.class);
-                        if(evento.getFecha().equals(fecha)){
+                        Evento buscado = null;
+                        Iterator<DataSnapshot> iter = snapshot.getChildren().iterator();
+
+                        while (iter.hasNext() && buscado == null){
+                            Evento evento = iter.next().getValue(Evento.class);
+                            if(evento.getFecha().equals(fecha)){
+                                buscado = evento;
+                            }
+                        }
+
+                        if(buscado != null){
                             Toast.makeText(getContext(), "Ya existe un evento con este nombre y en esta fecha", Toast.LENGTH_SHORT).show();
                         }else{
                             nuevoEvento(nombre, fecha, precio, aforo_maximo);

@@ -7,8 +7,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.LayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +50,7 @@ public class ListaJuegosUsuario extends Fragment {
     private SeekBar sb_min, sb_max;
     private TextView tv_min, tv_max;
     private RecyclerView rv_juegos;
-    private LinearLayoutManager llm;
+    private StaggeredGridLayoutManager glm;
     private Spinner spi_categoria;
     private List<String> categorias;
     private ArrayAdapter<String> categoriaAdapter;
@@ -107,11 +110,11 @@ public class ListaJuegosUsuario extends Fragment {
         categorias = new ArrayList<>();
 
         cargarJuegos();
-        llm = new LinearLayoutManager(getContext());
+        glm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         usuarioActividad.adaptadorJuegos = new AdaptadorJuegos(lista_juegos, getContext(), usuarioActividad);
         adaptadorJuegos = usuarioActividad.adaptadorJuegos;
         rv_juegos.setAdapter(adaptadorJuegos);
-        rv_juegos.setLayoutManager(llm);
+        rv_juegos.setLayoutManager(glm);
         categoriaAdapter = new ArrayAdapter<>(usuarioActividad.getApplicationContext(), android.R.layout.simple_spinner_item, categorias);
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_categoria.setAdapter(categoriaAdapter);
@@ -219,32 +222,6 @@ public class ListaJuegosUsuario extends Fragment {
 
             }
         });
-    }
-
-
-    private class CargarImagen extends Thread{
-        Juego pojo_juego;
-
-        public CargarImagen(Juego pojo_juego) {
-            this.pojo_juego = pojo_juego;
-        }
-
-        @Override
-        public void run(){
-            sto.child("tienda").child("juegos").child(pojo_juego.getId()).getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            pojo_juego.setUrl_juego(uri.toString());
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adaptadorJuegos.notifyDataSetChanged();
-                                }
-                            });
-                        }
-                    });
-        }
     }
 
     private void setSeekBarMax(int precioMax){

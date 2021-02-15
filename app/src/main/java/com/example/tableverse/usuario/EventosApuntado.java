@@ -9,6 +9,7 @@ import androidx.constraintlayout.solver.widgets.Snapshot;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class EventosApuntado extends Fragment {
     private StorageReference sto;
     private RecyclerView rv_evento;
     private AdaptadorEventos adaptadorEventos;
-    private LinearLayoutManager llm;
+    private StaggeredGridLayoutManager llm;
     private UsuarioActividad usuarioActividad;
 
     private static final String ARG_PARAM1 = "param1";
@@ -90,7 +91,7 @@ public class EventosApuntado extends Fragment {
 
         cargarEventos();
 
-        llm = new LinearLayoutManager(getContext());
+        llm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         adaptadorEventos = new AdaptadorEventos(lista_evento, getContext(), usuarioActividad);
         rv_evento.setAdapter(adaptadorEventos);
         rv_evento.setLayoutManager(llm);

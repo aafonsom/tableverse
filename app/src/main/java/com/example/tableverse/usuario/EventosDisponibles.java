@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ public class EventosDisponibles extends Fragment {
     private Switch sw_eventos;
     private RecyclerView rv_eventos;
     private AdaptadorEventos adaptadorEventos;
-    private LinearLayoutManager llm;
+    private StaggeredGridLayoutManager llm;
     private List<Evento> lista_eventos;
     private DatabaseReference ref;
     private StorageReference sto;
@@ -92,7 +93,7 @@ public class EventosDisponibles extends Fragment {
         sto = usuarioActividad.getSto();
         cargarEventos();
 
-        llm = new LinearLayoutManager(getContext());
+        llm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         adaptadorEventos = new AdaptadorEventos(lista_eventos, getContext(), usuarioActividad);
 
 

@@ -46,8 +46,15 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
     @NonNull
     @Override
     public Vh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.template_juegos, parent, false);
+        View v = null;
+        LayoutInflater inflater;
+        if (activity instanceof AdminActividad){
+            inflater = LayoutInflater.from(context);
+            v = inflater.inflate(R.layout.template_juegos, parent, false);
+        }else if (activity instanceof UsuarioActividad){
+            inflater = LayoutInflater.from(context);
+            v = inflater.inflate(R.layout.template_juegos_usuarios, parent, false);
+        }
 
         return new Vh(v);
     }
@@ -121,7 +128,6 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
                         }
                     }
                 }
-
                 FilterResults results = new FilterResults();
                 results.values = lista;
 
@@ -134,9 +140,7 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
                 lista_filtrada.addAll((List<Juego>) filterResults.values);
                 notifyDataSetChanged();
             }
-
         };
-
     }
 
     public List<Juego> filtrarCategoria(){
@@ -163,7 +167,13 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
             lista = prefiltrada;
         }else{
             for(Juego juego: prefiltrada){
-                double precio = juego.getPrecio() * usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()];
+                double precio;
+                if(usuarioActividad.getPos_ratio_elegido() == -1){
+                    precio = juego.getPrecio();
+                }else{
+                    precio = juego.getPrecio() * usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()];
+                }
+
                 if(precio >= min && precio <= max){
                     lista.add(juego);
                 }

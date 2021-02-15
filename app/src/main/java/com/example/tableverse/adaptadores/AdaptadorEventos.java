@@ -46,7 +46,7 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
         if(activity instanceof AdminActividad){
              v = inflater.inflate(R.layout.template_eventos_admin, parent, false);
         }else{
-            v = inflater.inflate(R.layout.template_juegos, parent, false);
+            v = inflater.inflate(R.layout.template_eventos, parent, false);
         }
 
         return new Vh(v);
@@ -57,7 +57,7 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
         Evento evento = lista_filtrada.get(position);
 
         holder.nombre.setText(evento.getNombre());
-        holder.fecha.setText("Fecha: " + evento.getFecha());
+        holder.fecha.setText(evento.getFecha());
 
         Glide.with(context).load(evento.getUrlImagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
@@ -84,18 +84,20 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
             });
 
         }else if(activity instanceof UsuarioActividad){
-            holder.precio.setText("Precio de la entrada:" + evento.getPrecio());
             UsuarioActividad usuarioActividad = ((UsuarioActividad)activity);
-            if(usuarioActividad.getPos_ratio_elegido() == -1){
-                holder.precio.setText("Precio de la entrada: " + evento.getPrecio()
-                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+            if (evento.getPrecio() == 0){
+                holder.precio.setText("La entrada es gratuita");
             }else{
-                DecimalFormat df = new DecimalFormat("#.##");
-                holder.precio.setText("Precio de la entrada: " + df.format(evento.getPrecio() *
-                        usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
-                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+                if(usuarioActividad.getPos_ratio_elegido() == -1){
+                    holder.precio.setText("Precio de la entrada: " + evento.getPrecio()
+                            + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+                }else{
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    holder.precio.setText("Precio de la entrada: " + df.format(evento.getPrecio() *
+                            usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
+                            + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+                }
             }
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -139,17 +141,14 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
 
         public Vh(@NonNull View itemView) {
             super(itemView);
+            foto = itemView.findViewById(R.id.temp_ev_iv);
+            nombre = itemView.findViewById(R.id.temp_ev_nombre);
+            fecha = itemView.findViewById(R.id.temp_ev_fecha);
             if(activity instanceof AdminActividad){
-                foto = itemView.findViewById(R.id.temp_ev_iv);
-                nombre = itemView.findViewById(R.id.temp_ev_nombre);
-                fecha = itemView.findViewById(R.id.temp_ev_fecha);
                 verUsuarios = itemView.findViewById(R.id.temp_ver_usuarios);
                 editar = itemView.findViewById(R.id.temp_editar);
             }else{
-                foto = itemView.findViewById(R.id.template_juego_imagen);
-                nombre = itemView.findViewById(R.id.template_juego_titulo);
-                precio = itemView.findViewById(R.id.template_precio);
-                fecha = itemView.findViewById(R.id.template_categoria);
+                precio = itemView.findViewById(R.id.temp_ev_precio);
             }
 
         }
