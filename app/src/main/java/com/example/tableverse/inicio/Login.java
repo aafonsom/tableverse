@@ -93,10 +93,10 @@ public class Login extends Fragment {
         LoginActividad loginActividad = (LoginActividad)getActivity();
         ref = loginActividad.getRef();
 
-        String id = sp.getString("id", "");
+    /*    String id = sp.getString("id", "");
         if(!id.equals("")){
             cargarUsuario(id);
-        }
+        }*/
 
 
         login.setOnClickListener(new View.OnClickListener() {

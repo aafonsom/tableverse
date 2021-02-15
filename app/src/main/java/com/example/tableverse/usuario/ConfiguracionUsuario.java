@@ -103,11 +103,10 @@ public class ConfiguracionUsuario extends Fragment {
         spiAdaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_divisas.setAdapter(spiAdaptador);
         spi_divisas.setSelection(sp.getInt("pos",  -1) + 1);
-        usuarioActividad.setMode(0);
-       /* usuarioActividad.setVisibilitySearchView();
-*/
-        /*CargarImagen ci = new CargarImagen(usuarioActividad.getSto());
-        ci.start();*/
+
+        usuarioActividad.setVisibilitySearchView(0);
+
+        sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
         setView();
 
         spi_divisas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -128,17 +127,12 @@ public class ConfiguracionUsuario extends Fragment {
         sw_oscuro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*SharedPreferences sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
+                SharedPreferences sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putBoolean("modo", sw_oscuro.isChecked());
+                editor.putBoolean("tema", sw_oscuro.isChecked());
                 editor.commit();
-                LoginActividad loginActividad = new LoginActividad();
-                loginActividad.alternarModoNoche(sw_oscuro.isChecked());*/
-                if(sw_oscuro.isChecked()){
-                    ((AppCompatActivity)usuarioActividad).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }else{
-                    ((AppCompatActivity)usuarioActividad).getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
+                usuarioActividad.getTheme();
+
                 /*usuarioActividad.setMode(0);
                 usuarioActividad.getTheme();*/
             }
@@ -150,6 +144,8 @@ public class ConfiguracionUsuario extends Fragment {
         tv_nombre.setText(usuario.getNombre());
         tv_email.setText(usuario.getCorreo());
         tv_divisa.setText("€");
+        SharedPreferences sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
+        sw_oscuro.setChecked(sp.getBoolean("tema", false));
 
         Glide.with(this).load(usuario.getUrl_imagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)

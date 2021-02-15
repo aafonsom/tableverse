@@ -103,6 +103,9 @@ public class ListaJuegosUsuario extends Fragment {
         rv_juegos = view.findViewById(R.id.rv_juegos);
 
         usuarioActividad = (UsuarioActividad) getActivity();
+        if(usuarioActividad.getSearchView() != null){
+            usuarioActividad.setVisibilitySearchView(1);
+        }
         ref = usuarioActividad.getRef();
         sto = usuarioActividad.getSto();
         adaptadorJuegos = usuarioActividad.getAdaptadorJuegos();

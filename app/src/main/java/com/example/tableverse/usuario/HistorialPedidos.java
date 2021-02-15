@@ -87,6 +87,7 @@ public class HistorialPedidos extends Fragment {
         usuarioActividad = (UsuarioActividad)getActivity();
         ref = usuarioActividad.getRef();
         sto = usuarioActividad.getSto();
+        usuarioActividad.setVisibilitySearchView(0);
         usuario = usuarioActividad.getUsuario();
         cargarDatos();
         adaptadorPedidos = new AdaptadorPedidosUsuario(lista_reservas, getContext(), usuarioActividad);

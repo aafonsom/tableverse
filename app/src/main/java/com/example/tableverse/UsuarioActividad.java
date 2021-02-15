@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,8 +28,6 @@ import com.example.tableverse.objetos.Usuario;
 import com.example.tableverse.objetos.VolleySingleton;
 import com.example.tableverse.servicios.ServicioNotificacion;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -80,10 +77,12 @@ public class UsuarioActividad extends AppCompatActivity {
     private int pos_ratio_elegido = -1;
     private String queryText = "", newText = "";
     private boolean queryTextSi = false;
-    private int mode = 1;
+    private boolean tema = false;
 
-    public int getMode() { return mode; }
-    public void setMode(int mode) { this.mode = mode; }
+    public boolean isTema() {
+        return tema;
+    }
+    public void setTema(boolean tema) { this.tema = tema; }
     public boolean isQueryTextSi() { return queryTextSi; }
     public String getQueryText() { return queryText; }
     public String getNewText() { return newText; }
@@ -107,8 +106,8 @@ public class UsuarioActividad extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getTheme();
         super.onCreate(savedInstanceState);
+        getTheme();
         setContentView(R.layout.activity_usuario_actividad);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitleTextColor(Color.WHITE);
@@ -145,12 +144,12 @@ public class UsuarioActividad extends AppCompatActivity {
             cargarDatosUsuario(id);
         }
 
-        sp = getSharedPreferences("sp_api_moneda", this.MODE_PRIVATE);
-        editor = sp.edit();
-        lastTime = sp.getLong("lastTime", -1);
-        ratios[0] = sp.getFloat("USD", -1);
-        ratios[1] = sp.getFloat("GBP", -1);
-        pos_ratio_elegido = sp.getInt("pos", -1);
+        SharedPreferences sp_moneda = getSharedPreferences("sp_api_moneda", this.MODE_PRIVATE);
+        editor = sp_moneda.edit();
+        lastTime = sp_moneda.getLong("lastTime", -1);
+        ratios[0] = sp_moneda.getFloat("USD", -1);
+        ratios[1] = sp_moneda.getFloat("GBP", -1);
+        pos_ratio_elegido = sp_moneda.getInt("pos", -1);
         /*ratios[2] = sp.getFloat("CNY", -1);
         ratios[3] = sp.getFloat("RUB", -1);*/
     }
@@ -188,9 +187,14 @@ public class UsuarioActividad extends AppCompatActivity {
 
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        if(mode == 0){
+        SharedPreferences sp_tema = getSharedPreferences("MODO", MODE_PRIVATE);
+        tema = sp_tema.getBoolean("tema", false);
+        if(tema){
             theme.applyStyle(R.style.DarkTheme, true);
+        }else{
+            theme.applyStyle(R.style.AppTheme, true);
         }
+        alternarModoNoche(tema);
 
         return theme;
     }
@@ -226,7 +230,7 @@ public class UsuarioActividad extends AppCompatActivity {
         tv_nav_email.setText(usuario.getCorreo());
 
 
-        Glide.with(this).load(usuario.getUrl_imagen())
+        Glide.with(getApplicationContext()).load(usuario.getUrl_imagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.person_morada).into(iv_nav_header);
     }
@@ -240,10 +244,19 @@ public class UsuarioActividad extends AppCompatActivity {
                     DataSnapshot dataSnapshot = snapshot.getChildren().iterator().next();
                     usuario = dataSnapshot.getValue(Usuario.class);
                     usuario.setId(dataSnapshot.getKey());
-
-
-                    CargarFoto cf = new CargarFoto();
-                    cf.start();
+                    sto.child("tienda").child("usuarios").child(usuario.getId()).getDownloadUrl()
+                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                usuario.setUrl_imagen(uri.toString());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setViewNav();
+                                    }
+                                });
+                            }
+                        });
                     setViewNav();
                 }
             }
@@ -253,29 +266,6 @@ public class UsuarioActividad extends AppCompatActivity {
 
             }
         });
-    }
-
-    private class CargarFoto extends Thread{
-
-        public CargarFoto() {
-        }
-
-        @Override
-        public void run(){
-            sto.child("tienda").child("usuarios").child(usuario.getId()).getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    usuario.setUrl_imagen(uri.toString());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setViewNav();
-                        }
-                    });
-                }
-            });
-        }
     }
 
     public void refreshCache(){
@@ -344,13 +334,15 @@ public class UsuarioActividad extends AppCompatActivity {
         }
     }
 
-    /*public void setVisibilitySearchView(){
+    public void setVisibilitySearchView(int mode){
         if(mode == 0){
-            searchView.setVisibility(View.GONE);
+            searchView.setVisibility(View.INVISIBLE);
+
         }else{
             searchView.setVisibility(View.VISIBLE);
+
         }
-    }*/
+    }
 
 
 }

@@ -100,6 +100,7 @@ public class VerEvento extends Fragment {
 
         UsuarioActividad usuarioActividad = (UsuarioActividad)getActivity();
         evento = usuarioActividad.getLista_eventos().get(usuarioActividad.getPosition());
+        usuarioActividad.setVisibilitySearchView(0);
         ref = usuarioActividad.getRef();
         setView();
         PieChart pc = view.findViewById(R.id.pieChart);

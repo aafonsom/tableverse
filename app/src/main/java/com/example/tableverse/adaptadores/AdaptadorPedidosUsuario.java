@@ -2,6 +2,7 @@ package com.example.tableverse.adaptadores;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.dialog.InfoUsuario;
 import com.example.tableverse.objetos.ReservaJuego;
+import com.example.tableverse.objetos.Usuario;
 
 import java.util.List;
 
@@ -49,6 +51,11 @@ public class AdaptadorPedidosUsuario extends RecyclerView.Adapter<AdaptadorPedid
         Glide.with(context).load(reserva.getUrl_juego())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.person_morada).into(holder.foto);
+
+        if(((UsuarioActividad)activity).isTema()){
+            holder.nombre.setTextColor(Color.WHITE);
+            holder.info.setTextColor(Color.parseColor("#9b73f7"));
+        }
 
         if(reserva.getFecha_procesado().isEmpty()){
             holder.fecha_procesado.setText("El pedido todavía no está preparado");

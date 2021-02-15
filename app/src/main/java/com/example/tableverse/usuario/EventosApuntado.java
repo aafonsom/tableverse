@@ -88,7 +88,7 @@ public class EventosApuntado extends Fragment {
         ref = usuarioActividad.getRef();
         sto = usuarioActividad.getSto();
         usuario = usuarioActividad.getUsuario();
-
+        usuarioActividad.setVisibilitySearchView(0);
         cargarEventos();
 
         llm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

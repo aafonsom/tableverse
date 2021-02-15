@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="green_check">#00b400</color>
     <color name="transparent_primary">#B3311B92</color>
+    <color name="AccentDarkTheme">#9b73f7</color>
 </resources>

@@ -91,6 +91,7 @@ public class EventosDisponibles extends Fragment {
         adaptadorEventos = usuarioActividad.getAdaptadorEventos();
         ref = usuarioActividad.getRef();
         sto = usuarioActividad.getSto();
+        usuarioActividad.setVisibilitySearchView(0);
         cargarEventos();
 
         llm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
