@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tableverse.AdminActividad;
+import com.example.tableverse.AppUtilities;
 import com.example.tableverse.R;
 import com.example.tableverse.dialog.InfoUsuario;
 import com.example.tableverse.objetos.ReservaJuego;
@@ -58,7 +59,7 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
         holder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InfoUsuario info = new InfoUsuario(reserva.getId_cliente());
+                InfoUsuario info = new InfoUsuario(reserva.getId_cliente(), true);
                 info.show(((AdminActividad)activity).getSupportFragmentManager(), "Información de usuario");
             }
         });
@@ -86,10 +87,13 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
                                 reserva.setPreparado(true);
-
+                                AppUtilities utilities = new AppUtilities();
+                                String fecha = utilities.getDate();
+                                reserva.setFecha_procesado(fecha);
                                 ref.child("tienda").child("reservas_juegos").child(reserva.getId())
                                         .setValue(reserva);
                                 ref.child("tienda").child("clientes").child(reserva.getId_cliente()).child("estado").setValue(Usuario.PEDIDO_PREPARADO);
+                                notifyDataSetChanged();
 
                             }
 

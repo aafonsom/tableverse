@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.tableverse.AdminActividad;
+import com.example.tableverse.AppUtilities;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.objetos.Juego;
@@ -181,8 +182,9 @@ public class DialogComprarJuego extends DialogFragment {
                                 }
 
                             }
-
-                            ReservaJuego nuevaReserva = new ReservaJuego(juego.getId(), usuario.getId(), juego.getNombre());
+                            AppUtilities appUtilities = new AppUtilities();
+                            String fecha = appUtilities.getDate();
+                            ReservaJuego nuevaReserva = new ReservaJuego(juego.getId(), usuario.getId(), juego.getNombre(), fecha);
                             String id = ref.child("tienda").child("reservas_juegos").push().getKey();
                             ref.child("tienda").child("reservas_juegos").child(id).setValue(nuevaReserva);
                             juego.setStock(juego.getStock() - 1);

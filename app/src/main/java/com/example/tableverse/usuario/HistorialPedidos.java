@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.adaptadores.AdaptadorPedidos;
+import com.example.tableverse.adaptadores.AdaptadorPedidosUsuario;
 import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 public class HistorialPedidos extends Fragment {
     private RecyclerView rv_historial;
-    private AdaptadorPedidos adaptadorPedidos;
+    private AdaptadorPedidosUsuario adaptadorPedidos;
     private List<ReservaJuego> lista_reservas = new ArrayList<>();
     private LinearLayoutManager llm;
     private DatabaseReference ref;
@@ -88,7 +89,7 @@ public class HistorialPedidos extends Fragment {
         sto = usuarioActividad.getSto();
         usuario = usuarioActividad.getUsuario();
         cargarDatos();
-        adaptadorPedidos = new AdaptadorPedidos(lista_reservas, getContext(), usuarioActividad);
+        adaptadorPedidos = new AdaptadorPedidosUsuario(lista_reservas, getContext(), usuarioActividad);
         llm = new LinearLayoutManager(getContext());
         rv_historial.setAdapter(adaptadorPedidos);
         rv_historial.setLayoutManager(llm);

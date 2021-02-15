@@ -1,5 +1,6 @@
 package com.example.tableverse.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.net.Uri;
@@ -21,8 +22,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
+import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.adaptadores.AdaptadorUsuarios;
 import com.example.tableverse.objetos.Evento;
+import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,16 +40,20 @@ import java.util.List;
 
 public class InfoUsuario extends DialogFragment {
 
-    private AdminActividad adminActividad;
+    private Activity activity;
     private DatabaseReference ref;
     private StorageReference sto;
     private Usuario usuario;
+    private Juego juego;
     private String reserva;
     private ImageView foto;
     private TextView nombre, email;
+    private boolean cliente;
+    private String[] llamadas;
 
-    public InfoUsuario(String reserva){
+    public InfoUsuario(String reserva, boolean cliente){
         this.reserva = reserva;
+        this.cliente = cliente;
     }
 
     @NonNull
@@ -65,10 +72,20 @@ public class InfoUsuario extends DialogFragment {
         nombre = v.findViewById(R.id.tv_nombre);
         email = v.findViewById(R.id.tv_email);
 
-        adminActividad = (AdminActividad) getActivity();
-        ref = adminActividad.getRef();
-        sto = adminActividad.getSto();
+        activity = getActivity();
+        if(activity instanceof AdminActividad){
+            ref = ((AdminActividad)activity).getRef();
+            sto = ((AdminActividad)activity).getSto();
+        }else{
+            ref = ((UsuarioActividad)activity).getRef();
+            sto = ((UsuarioActividad)activity).getSto();
+        }
 
+        if(cliente){
+            llamadas = new String[]{"clientes", "usuarios"};
+        }else{
+            llamadas = new String[]{"juegos", "juegos"};
+        }
 
         cargarUsuario();
 
@@ -76,11 +93,11 @@ public class InfoUsuario extends DialogFragment {
 
     }
 
-    private void setView(){
+    private void setViewUsuario(){
         nombre.setText(usuario.getNombre());
         email.setText(usuario.getCorreo());
 
-        sto.child("tienda").child("usuarios").child(usuario.getId())
+        sto.child("tienda").child(llamadas[1]).child(usuario.getId())
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -92,16 +109,40 @@ public class InfoUsuario extends DialogFragment {
         });
     }
 
+    private void setViewJuego(){
+        nombre.setText(juego.getNombre());
+        email.setText(juego.getCategoria());
+
+        sto.child("tienda").child(llamadas[1]).child(juego.getId())
+                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                juego.setUrl_juego(uri.toString());
+                Glide.with(getContext()).load(juego.getUrl_juego())
+                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                        .error(R.drawable.person_morada).into(foto);
+            }
+        });
+    }
+
     private void cargarUsuario() {
-        ref.child("tienda").child("clientes").orderByKey().equalTo(reserva)
+        ref.child("tienda").child(llamadas[0]).orderByKey().equalTo(reserva)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         DataSnapshot hijo = snapshot.getChildren().iterator().next();
-                        usuario = hijo.getValue(Usuario.class);
-                        usuario.setId(hijo.getKey());
+                        if(cliente){
+                            usuario = hijo.getValue(Usuario.class);
+                            usuario.setId(hijo.getKey());
 
-                        setView();
+                            setViewUsuario();
+                        }else{
+                            juego = hijo.getValue(Juego.class);
+                            juego.setId(hijo.getKey());
+
+                            setViewJuego();
+                        }
+
                     }
 
                     @Override

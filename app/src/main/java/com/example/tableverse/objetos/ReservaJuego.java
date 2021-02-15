@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ReservaJuego implements Serializable {
     //Quizás es interesante añadir fecha, bueno en realidad no, ya que la key de la reserva, ya indica cuáles han sido anteriores o posteriores
-    private String id, id_juego, id_cliente, url_juego, nombre_juego;
+    private String id, id_juego, id_cliente, url_juego, nombre_juego, fecha_pedido, fecha_procesado;
     private boolean preparado;
 
     public ReservaJuego() {
@@ -14,15 +14,36 @@ public class ReservaJuego implements Serializable {
         this.nombre_juego = "";
         this.preparado = false;
         this.url_juego = "";
+        this.fecha_pedido = "";
+        this.fecha_procesado = "";
     }
 
-    public ReservaJuego(String id_juego, String id_cliente, String nombre_juego) {
+    public ReservaJuego(String id_juego, String id_cliente, String nombre_juego, String fecha_pedido) {
         this.id = "";
         this.id_juego = id_juego;
         this.id_cliente = id_cliente;
         this.nombre_juego = nombre_juego;
         this.preparado = false;
         this.url_juego = "";
+        this.fecha_pedido = fecha_pedido;
+        this.fecha_procesado = "";
+    }
+
+
+    public String getFecha_pedido() {
+        return fecha_pedido;
+    }
+
+    public void setFecha_pedido(String fecha_pedido) {
+        this.fecha_pedido = fecha_pedido;
+    }
+
+    public String getFecha_procesado() {
+        return fecha_procesado;
+    }
+
+    public void setFecha_procesado(String fecha_procesado) {
+        this.fecha_procesado = fecha_procesado;
     }
 
     public String getId() {
