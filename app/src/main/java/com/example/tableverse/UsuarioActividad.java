@@ -78,10 +78,11 @@ public class UsuarioActividad extends AppCompatActivity {
     private String queryText = "", newText = "";
     private boolean queryTextSi = false;
     private boolean tema = false;
+    private boolean vistaLineal = false;
 
-    public boolean isTema() {
-        return tema;
-    }
+    public void setVistaLineal(boolean vistaLineal) { this.vistaLineal = vistaLineal; }
+    public boolean isVistaLineal() { return vistaLineal; }
+    public boolean isTema() { return tema; }
     public void setTema(boolean tema) { this.tema = tema; }
     public boolean isQueryTextSi() { return queryTextSi; }
     public String getQueryText() { return queryText; }
@@ -249,12 +250,7 @@ public class UsuarioActividad extends AppCompatActivity {
                             @Override
                             public void onSuccess(Uri uri) {
                                 usuario.setUrl_imagen(uri.toString());
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setViewNav();
-                                    }
-                                });
+                                setViewNav();
                             }
                         });
                     setViewNav();

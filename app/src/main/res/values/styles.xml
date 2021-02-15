@@ -77,6 +77,11 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="tverror" parent="tvConfiguracionCabecera">
+        <item name="android:textColor">@color/red</item>
+
+    </style>
+
     <style name="tvConfiguracionCabeceraBig" parent="tvConfiguracionCabecera">
         <item name="android:textSize">30sp</item>
     </style>

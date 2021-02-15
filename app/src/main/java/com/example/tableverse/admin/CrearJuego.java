@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tableverse.AdminActividad;
@@ -38,6 +39,7 @@ public class CrearJuego extends Fragment {
     private static final int SELECCIONAR_FOTO = 1;
 
     private ImageView fotoJuego;
+    private TextView error;
     private EditText et_nombre, et_categoria, et_precio, et_stock;
     private DatabaseReference ref;
     private StorageReference sto;
@@ -88,6 +90,8 @@ public class CrearJuego extends Fragment {
         et_precio = view.findViewById(R.id.et_precio_juego);
         et_stock = view.findViewById(R.id.et_fecha);
         fotoJuego = view.findViewById(R.id.iv_foto_evento);
+        error = view.findViewById(R.id.tv_error);
+
         Button añadir = view.findViewById(R.id.b_addjuego);
 
         AdminActividad adminActividad = (AdminActividad)getActivity();
@@ -115,52 +119,82 @@ public class CrearJuego extends Fragment {
 
     private void crearJuego(){
         final String nombre, categoria;
-        final double precio;
-        final int stock;
+        final String precio;
+        final String stock;
 
         nombre = et_nombre.getText().toString().trim();
         categoria = et_categoria.getText().toString().trim();
+        precio = et_precio.getText().toString().trim();
+        stock = et_stock.getText().toString().trim();
 
-        try{
-            precio = Double.parseDouble(et_precio.getText().toString().trim());
-            stock = Integer.parseInt(et_stock.getText().toString().trim());
-            boolean validacion = validar(nombre, categoria, precio, stock);
-            if(validacion){
-                ref.child("tienda").child("juegos").orderByChild("nombre").equalTo(nombre)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChildren()){
-                                Toast.makeText(getContext(), "Ya existe un juego con ese nombre", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Juego pojo_juego = new Juego(nombre, categoria, precio, stock);
-                                String id = ref.child("tienda").child("juegos").push().getKey();
-                                ref.child("tienda").child("juegos").child(id).setValue(pojo_juego);
-                                sto.child("tienda").child("juegos").child(id).putFile(fotoJuegoUrl);
-                                AdminActividad adminActividad = (AdminActividad)getActivity();
-                                adminActividad.getNavController().navigate(R.id.listaJuegosAdmin);
-                            }
+
+        boolean validacion = validar(nombre, categoria, precio, stock);
+        if(validacion){
+            ref.child("tienda").child("juegos").orderByChild("nombre").equalTo(nombre)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChildren()){
+                            Toast.makeText(getContext(), "Ya existe un juego con ese nombre", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Juego pojo_juego = new Juego(nombre, categoria, Double.parseDouble(precio), Integer.parseInt(stock));
+                            String id = ref.child("tienda").child("juegos").push().getKey();
+                            ref.child("tienda").child("juegos").child(id).setValue(pojo_juego);
+                            sto.child("tienda").child("juegos").child(id).putFile(fotoJuegoUrl);
+                            AdminActividad adminActividad = (AdminActividad)getActivity();
+                            adminActividad.getNavController().navigate(R.id.listaJuegosAdmin);
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-            }else{
-                Toast.makeText(getContext(), "Hay campos no validados", Toast.LENGTH_SHORT).show();
-            }
-        }catch(NumberFormatException nfe){
-            Toast.makeText(getContext(), "El precio o el stock no son válidos", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        }else{
+            Toast.makeText(getContext(), "Hay campos no validados", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private boolean validar(String nombre, String categoria, double precio, int stock){
+    private boolean validar(String nombre, String categoria, String precio, String stock){
         boolean validado = true;
 
-        if(nombre.equals("") || categoria.equals("") || precio == 0.0 || stock == 0
-            || fotoJuegoUrl == null){
+        if(nombre.equals("")){
+            et_nombre.setError("El nombre no puede estar vacío");
+            validado = false;
+        }
+
+        if(categoria.isEmpty()){
+            et_categoria.setError("La categoría no puede estar vacía");
+            validado = false;
+        }
+
+        if(precio.isEmpty()){
+            et_precio.setError("El precio no puede estar vacío");
+            validado = false;
+        }else{
+            double pre = Double.parseDouble(precio);
+            if(pre == 0){
+                et_precio.setError("El precio no puede ser 0");
+                validado = false;
+            }
+        }
+
+        if(stock.isEmpty()){
+            et_stock.setError("El stock no puede estar vacío");
+            validado = false;
+        }else{
+            int sto = Integer.parseInt(stock);
+            if(sto == 0){
+                et_stock.setError("El stock no puede ser 0");
+                validado = false;
+            }
+        }
+
+        if(fotoJuegoUrl == null){
+            error.setText("Es obligatorio seleccionar una foto");
+            error.setVisibility(View.VISIBLE);
             validado = false;
         }
 

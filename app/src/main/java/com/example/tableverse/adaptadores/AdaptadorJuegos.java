@@ -48,12 +48,16 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
     public Vh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = null;
         LayoutInflater inflater;
+        inflater = LayoutInflater.from(context);
         if (activity instanceof AdminActividad){
-            inflater = LayoutInflater.from(context);
             v = inflater.inflate(R.layout.template_juegos, parent, false);
         }else if (activity instanceof UsuarioActividad){
-            inflater = LayoutInflater.from(context);
-            v = inflater.inflate(R.layout.template_juegos_usuarios, parent, false);
+            if(((UsuarioActividad)activity).isVistaLineal()){
+                v = inflater.inflate(R.layout.template_linear_juegos, parent, false);
+            }else{
+                v = inflater.inflate(R.layout.template_juegos_usuarios, parent, false);
+            }
+
         }
 
         return new Vh(v);

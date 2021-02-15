@@ -1,6 +1,7 @@
 package com.example.tableverse.usuario;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -55,7 +57,7 @@ public class ListaJuegosUsuario extends Fragment {
     private List<String> categorias;
     private ArrayAdapter<String> categoriaAdapter;
     private int max = 0, min = 0;
-
+    private int spinner_pos_actual = 0;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -101,6 +103,7 @@ public class ListaJuegosUsuario extends Fragment {
         tv_max = view.findViewById(R.id.tv_precio_max);
         tv_min = view.findViewById(R.id.tv_precio_min);
         rv_juegos = view.findViewById(R.id.rv_juegos);
+        ImageView changeView = view.findViewById(R.id.iv_changeview);
 
         usuarioActividad = (UsuarioActividad) getActivity();
         if(usuarioActividad.getSearchView() != null){
@@ -166,7 +169,11 @@ public class ListaJuegosUsuario extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 adaptadorJuegos.setMax(max);
                 adaptadorJuegos.setMin(min);
-                adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
+                if(usuarioActividad.isQueryTextSi()){
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
+                }else{
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getNewText());
+                }
 
             }
         });
@@ -175,6 +182,7 @@ public class ListaJuegosUsuario extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 adaptadorJuegos.setCategoria(categorias.get(i));
+                spinner_pos_actual = i;
                 adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
             }
 
@@ -183,6 +191,19 @@ public class ListaJuegosUsuario extends Fragment {
 
             }
         });
+
+        changeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(usuarioActividad.isVistaLineal()){
+                    usuarioActividad.setVistaLineal(false);
+                }else{
+                    usuarioActividad.setVistaLineal(true);
+                }
+                changeRecyclerView();
+            }
+        });
+
 
     }
 
@@ -226,6 +247,31 @@ public class ListaJuegosUsuario extends Fragment {
             }
         });
     }
+
+    private void changeRecyclerView(){
+        usuarioActividad.adaptadorJuegos = new AdaptadorJuegos(lista_juegos, getContext(), usuarioActividad);
+
+        if(usuarioActividad.isVistaLineal()){
+            LinearLayoutManager llm = new LinearLayoutManager(getContext());
+            rv_juegos.setAdapter(usuarioActividad.adaptadorJuegos);
+            rv_juegos.setLayoutManager(llm);
+        }else {
+            glm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            rv_juegos.setAdapter(usuarioActividad.adaptadorJuegos);
+            rv_juegos.setLayoutManager(glm);
+        }
+        adaptadorJuegos = usuarioActividad.adaptadorJuegos;
+        adaptadorJuegos.setMax(max);
+        adaptadorJuegos.setMin(min);
+        adaptadorJuegos.setCategoria(categorias.get(spinner_pos_actual));
+        if(usuarioActividad.isQueryTextSi()){
+            adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
+        }else{
+            adaptadorJuegos.getFilter().filter(usuarioActividad.getNewText());
+        }
+
+    }
+
 
     private void setSeekBarMax(int precioMax){
         sb_max.setMax(precioMax);

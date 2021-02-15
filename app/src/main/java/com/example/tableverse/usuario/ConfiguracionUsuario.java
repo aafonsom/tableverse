@@ -104,7 +104,9 @@ public class ConfiguracionUsuario extends Fragment {
         spi_divisas.setAdapter(spiAdaptador);
         spi_divisas.setSelection(sp.getInt("pos",  -1) + 1);
 
-        usuarioActividad.setVisibilitySearchView(0);
+        if(usuarioActividad.searchView != null){
+            usuarioActividad.setVisibilitySearchView(0);
+        }
 
         sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
         setView();
@@ -132,9 +134,6 @@ public class ConfiguracionUsuario extends Fragment {
                 editor.putBoolean("tema", sw_oscuro.isChecked());
                 editor.commit();
                 usuarioActividad.getTheme();
-
-                /*usuarioActividad.setMode(0);
-                usuarioActividad.getTheme();*/
             }
         });
 

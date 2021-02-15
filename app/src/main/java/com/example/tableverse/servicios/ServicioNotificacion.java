@@ -33,8 +33,6 @@ public class ServicioNotificacion extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-
-
         ref.child("tienda").child("reservas_juegos").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
