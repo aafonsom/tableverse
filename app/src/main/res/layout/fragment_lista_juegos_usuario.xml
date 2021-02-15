@@ -23,12 +23,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+
+        android:foregroundTint="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/sb_min"
+        style="@style/seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -45,6 +48,7 @@
 
     <TextView
         android:id="@+id/tv_precio_min"
+        style="@style/littleconfig"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -63,6 +67,7 @@
 
     <TextView
         android:id="@+id/tv_precio_max"
+        style="@style/littleconfig"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -73,6 +78,7 @@
 
     <SeekBar
         android:id="@+id/sb_max"
+        style="@style/seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -95,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_dashboard_black_24dp"
+        android:src="@drawable/format_list_bulleted_24px"
         android:tint="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@+id/rv_juegos"
         app:layout_constraintEnd_toEndOf="parent" />

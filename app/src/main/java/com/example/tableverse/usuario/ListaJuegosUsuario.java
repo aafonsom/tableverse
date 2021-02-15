@@ -121,7 +121,7 @@ public class ListaJuegosUsuario extends Fragment {
         adaptadorJuegos = usuarioActividad.adaptadorJuegos;
         rv_juegos.setAdapter(adaptadorJuegos);
         rv_juegos.setLayoutManager(glm);
-        categoriaAdapter = new ArrayAdapter<>(usuarioActividad.getApplicationContext(), android.R.layout.simple_spinner_item, categorias);
+        categoriaAdapter = new ArrayAdapter<>(usuarioActividad.getApplicationContext(), R.layout.spinner_layout, categorias);
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_categoria.setAdapter(categoriaAdapter);
 

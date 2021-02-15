@@ -77,6 +77,10 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="littleconfig" parent="tvConfiguracionCabecera">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="tverror" parent="tvConfiguracionCabecera">
         <item name="android:textColor">@color/red</item>
 
@@ -98,6 +102,21 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorWhite</item>
     </style>
+
+    <style name="seekBar" parent="Widget.AppCompat.SeekBar">
+
+        <item name="android:progressTint">@color/colorWhite</item>
+        <item name="android:colorControlActivated">@color/colorWhite</item>
+        <item name="android:thumbTint">@color/colorWhite</item>
+    </style>
+
+
+
+
+
+
+
+
 
     <style name="AppTheme.PopupOverlay.RobotoToolbarStyle">
         <item name="android:fontFamily">@font/roboto</item>
