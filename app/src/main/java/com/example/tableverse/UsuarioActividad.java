@@ -82,6 +82,8 @@ public class UsuarioActividad extends AppCompatActivity {
     private boolean queryTextSi = false;
     private boolean tema = false;
     private boolean vistaLineal = false;
+    boolean doubleBackToExitPressedOnce = false;
+
 
     public void setVistaLineal(boolean vistaLineal) { this.vistaLineal = vistaLineal; }
     public boolean isVistaLineal() { return vistaLineal; }
@@ -244,7 +246,6 @@ public class UsuarioActividad extends AppCompatActivity {
                 .error(R.drawable.persona_placeholder).into(iv_nav_header);
     }
 
-    boolean doubleBackToExitPressedOnce = false;
     @Override
     public void onBackPressed() {
 
