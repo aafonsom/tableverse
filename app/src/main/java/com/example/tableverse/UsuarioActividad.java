@@ -233,7 +233,7 @@ public class UsuarioActividad extends AppCompatActivity {
 
         Glide.with(getApplicationContext()).load(usuario.getUrl_imagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                .error(R.drawable.person_morada).into(iv_nav_header);
+                .error(R.drawable.persona_placeholder).into(iv_nav_header);
     }
 
     private void cargarDatosUsuario(String id){

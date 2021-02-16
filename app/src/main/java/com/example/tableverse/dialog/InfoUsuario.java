@@ -9,13 +9,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
-import com.example.tableverse.adaptadores.AdaptadorUsuarios;
-import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
-import com.example.tableverse.objetos.ReservaJuego;
 import com.example.tableverse.objetos.Usuario;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,8 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.List;
 
 
 public class InfoUsuario extends DialogFragment {
@@ -104,7 +95,7 @@ public class InfoUsuario extends DialogFragment {
                 usuario.setUrl_imagen(uri.toString());
                 Glide.with(getContext()).load(usuario.getUrl_imagen())
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                        .error(R.drawable.person_morada).into(foto);
+                        .error(R.drawable.persona_placeholder).into(foto);
             }
         });
     }
@@ -120,7 +111,7 @@ public class InfoUsuario extends DialogFragment {
                 juego.setUrl_juego(uri.toString());
                 Glide.with(getContext()).load(juego.getUrl_juego())
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                        .error(R.drawable.person_morada).into(foto);
+                        .error(R.drawable.persona_placeholder).into(foto);
             }
         });
     }

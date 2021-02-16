@@ -44,7 +44,7 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vh
 
         Glide.with(context).load(usuario.getUrl_imagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                .error(R.drawable.person_morada).into(holder.iv);
+                .error(R.drawable.persona_placeholder).into(holder.iv);
     }
 
     @Override

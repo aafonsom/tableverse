@@ -44,7 +44,7 @@
                     style="@style/tvConfiguracionCabeceraBig"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/transparent_primary"
+                    android:background="@color/colorPrimary"
                     android:text="TextView"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"

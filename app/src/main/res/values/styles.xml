@@ -13,8 +13,8 @@
 
     <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
 
-        <item name="colorPrimary">@color/AccentDarkTheme</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/OpenSansTextViewStyleDark</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
@@ -65,7 +65,7 @@
     <style name="RobotoButtonStyle" parent="android:Widget.Button">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:background">@drawable/button_round</item>
         <item name="android:textSize">18sp</item>
         <item name="android:padding">8dp</item>
     </style>

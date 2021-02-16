@@ -13,12 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.dialog.InfoUsuario;
 import com.example.tableverse.objetos.ReservaJuego;
-import com.example.tableverse.objetos.Usuario;
 
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class AdaptadorPedidosUsuario extends RecyclerView.Adapter<AdaptadorPedid
         holder.nombre.setText(reserva.getNombre_juego());
         Glide.with(context).load(reserva.getUrl_juego())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                .error(R.drawable.person_morada).into(holder.foto);
+                .error(R.drawable.persona_placeholder).into(holder.foto);
 
         if(((UsuarioActividad)activity).isTema()){
             holder.nombre.setTextColor(Color.WHITE);

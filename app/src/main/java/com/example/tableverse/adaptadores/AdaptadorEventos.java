@@ -18,7 +18,6 @@ import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.dialog.DialogModEvento;
-import com.example.tableverse.dialog.DialogUsuariosApuntados;
 import com.example.tableverse.objetos.Evento;
 
 import java.text.DecimalFormat;
@@ -61,7 +60,7 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
 
         Glide.with(context).load(evento.getUrlImagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                .error(R.drawable.person_morada).into(holder.foto);
+                .error(R.drawable.icono_redondo).into(holder.foto);
 
         if(activity instanceof AdminActividad){
             holder.editar.setOnClickListener(new View.OnClickListener() {

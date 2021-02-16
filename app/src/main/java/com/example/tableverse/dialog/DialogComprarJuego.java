@@ -117,11 +117,11 @@ public class DialogComprarJuego extends DialogFragment {
         tv_nombre.setText(juego.getNombre());
 
         if(usuarioActividad.getPos_ratio_elegido() == -1){
-            tv_precio.setText("Precio de la entrada: " + juego.getPrecio()
+            tv_precio.setText("Precio: " + juego.getPrecio()
                     + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
         }else{
             DecimalFormat df = new DecimalFormat("#.##");
-            tv_precio.setText("Precio de la entrada: " + df.format(juego.getPrecio() *
+            tv_precio.setText("Precio: " + df.format(juego.getPrecio() *
                     usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
                     + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
         }

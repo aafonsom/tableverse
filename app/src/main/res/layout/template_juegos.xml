@@ -32,31 +32,36 @@
 
             <TextView
                 android:id="@+id/template_precio"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/template_categoria"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/template_categoria" />
+                app:layout_constraintStart_toStartOf="@+id/template_categoria"
+                app:layout_constraintTop_toBottomOf="@+id/template_categoria" />
 
             <TextView
                 android:id="@+id/template_categoria"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="TextView"
+                android:textAlignment="textStart"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/template_juego_imagen"
-                app:layout_constraintEnd_toStartOf="@+id/template_precio"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/template_juego_imagen" />
+                app:layout_constraintEnd_toEndOf="@+id/template_juego_titulo"
+                app:layout_constraintStart_toStartOf="@+id/template_juego_titulo"
+                app:layout_constraintTop_toBottomOf="@+id/template_juego_titulo" />
 
             <TextView
                 android:id="@+id/template_juego_titulo"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
                 android:text="TextView"
+                android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"

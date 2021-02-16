@@ -19,6 +19,12 @@ import com.example.tableverse.adaptadores.AdaptadorUsuarios;
 import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.ReservaEvento;
 import com.example.tableverse.objetos.Usuario;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,8 +51,6 @@ public class VerUsuarios extends Fragment {
     private AdaptadorUsuarios adaptadorUsuarios;
     private LinearLayoutManager llm;
     private Evento evento;
-
-
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -88,6 +93,7 @@ public class VerUsuarios extends Fragment {
         super.onViewCreated(v, savedInstanceState);
 
         rv_usuarios = v.findViewById(R.id.rv_usuarios);
+        PieChart pieChart = v.findViewById(R.id.piechart_admin);
 
         adminActividad = (AdminActividad) getActivity();
         adminActividad.getToolbar().setNavigationIcon(R.drawable.arrow_back_white_24dp);
@@ -98,12 +104,33 @@ public class VerUsuarios extends Fragment {
         evento = adminActividad.getLista_eventos().get(pos);
 
         cargarUsuarios();
+        setPieChart(pieChart);
 
         adaptadorUsuarios = new AdaptadorUsuarios(lista_usuarios, adminActividad.getApplicationContext());
         llm = new LinearLayoutManager(adminActividad.getApplicationContext());
         rv_usuarios.setLayoutManager(llm);
         rv_usuarios.setAdapter(adaptadorUsuarios);
 
+    }
+
+    private void setPieChart(PieChart pc){
+        PieData pd;
+        ArrayList<PieEntry> pieList = new ArrayList<>();
+        PieDataSet pieDataSet;
+
+        pc.setUsePercentValues(true);
+
+        pieList.add(new PieEntry(evento.getOcupado(),"Apuntados"));
+        pieList.add(new PieEntry(evento.getAforoMax() - evento.getOcupado(), "libres"));
+        pieDataSet = new PieDataSet(pieList, "");
+        pd = new PieData(pieDataSet);
+        pc.setData(pd);
+
+        pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+        pc.getDescription().setText("");
+        Legend l = pc.getLegend();
+        l.setTextSize(18f);
+        pd.setValueTextSize(18f);
     }
 
     private void cargarUsuarios() {

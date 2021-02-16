@@ -29,7 +29,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/person_morada" />
+                app:srcCompat="@drawable/persona_placeholder" />
 
             <TextView
                 android:id="@+id/template_tv_nombre_pedidos"

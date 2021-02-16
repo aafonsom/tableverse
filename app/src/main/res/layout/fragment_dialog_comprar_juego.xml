@@ -21,7 +21,7 @@
         android:id="@+id/tv_nombre"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#A6311B92"
+        android:background="@color/transparent_primary"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"

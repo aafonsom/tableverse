@@ -46,6 +46,7 @@
                     style="@style/CabeceraCardView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
                     android:text="TextView"
                     app:layout_constraintEnd_toEndOf="@+id/temp_ev_iv"
                     app:layout_constraintStart_toStartOf="@+id/temp_ev_iv"

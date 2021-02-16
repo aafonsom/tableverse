@@ -1,5 +1,6 @@
 package com.example.tableverse.usuario;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.media.Image;
 import android.net.Uri;
@@ -103,7 +104,7 @@ public class ListaJuegosUsuario extends Fragment {
         tv_max = view.findViewById(R.id.tv_precio_max);
         tv_min = view.findViewById(R.id.tv_precio_min);
         rv_juegos = view.findViewById(R.id.rv_juegos);
-        ImageView changeView = view.findViewById(R.id.iv_changeview);
+        final ImageView changeView = view.findViewById(R.id.iv_changeview);
 
         usuarioActividad = (UsuarioActividad) getActivity();
         if(usuarioActividad.getSearchView() != null){
@@ -116,14 +117,12 @@ public class ListaJuegosUsuario extends Fragment {
         categorias = new ArrayList<>();
 
         cargarJuegos();
-        glm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        usuarioActividad.adaptadorJuegos = new AdaptadorJuegos(lista_juegos, getContext(), usuarioActividad);
-        adaptadorJuegos = usuarioActividad.adaptadorJuegos;
-        rv_juegos.setAdapter(adaptadorJuegos);
-        rv_juegos.setLayoutManager(glm);
+        setAdaptador();
+
         categoriaAdapter = new ArrayAdapter<>(usuarioActividad.getApplicationContext(), R.layout.spinner_layout, categorias);
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_categoria.setAdapter(categoriaAdapter);
+
 
         sb_min.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -197,8 +196,19 @@ public class ListaJuegosUsuario extends Fragment {
             public void onClick(View view) {
                 if(usuarioActividad.isVistaLineal()){
                     usuarioActividad.setVistaLineal(false);
+                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(changeView, "alpha",0, 1);
+                    objectAnimator.setDuration(1500);
+                    objectAnimator.setStartDelay(0);
+                    objectAnimator.start();
+                    changeView.setImageResource(R.drawable.format_list_bulleted_24px);
                 }else{
                     usuarioActividad.setVistaLineal(true);
+                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(changeView, "alpha",0, 1);
+                    objectAnimator.setDuration(1500);
+                    objectAnimator.setStartDelay(0);
+                    objectAnimator.start();
+                    changeView.setImageResource(R.drawable.ic_dashboard_black_24dp);
+
                 }
                 changeRecyclerView();
             }
@@ -248,7 +258,7 @@ public class ListaJuegosUsuario extends Fragment {
         });
     }
 
-    private void changeRecyclerView(){
+    private void setAdaptador(){
         usuarioActividad.adaptadorJuegos = new AdaptadorJuegos(lista_juegos, getContext(), usuarioActividad);
 
         if(usuarioActividad.isVistaLineal()){
@@ -261,6 +271,10 @@ public class ListaJuegosUsuario extends Fragment {
             rv_juegos.setLayoutManager(glm);
         }
         adaptadorJuegos = usuarioActividad.adaptadorJuegos;
+    }
+
+    private void changeRecyclerView(){
+        setAdaptador();
         adaptadorJuegos.setMax(max);
         adaptadorJuegos.setMin(min);
         adaptadorJuegos.setCategoria(categorias.get(spinner_pos_actual));

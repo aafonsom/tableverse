@@ -1,5 +1,6 @@
 package com.example.tableverse.usuario;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.example.tableverse.AppUtilities;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
@@ -49,6 +51,7 @@ public class VerEvento extends Fragment {
     private Button b_apuntarse;
     private Evento evento;
     private DatabaseReference ref;
+    private UsuarioActividad usuarioActividad;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -98,7 +101,7 @@ public class VerEvento extends Fragment {
         fotoEvento = view.findViewById(R.id.iv_evento);
         b_apuntarse = view.findViewById(R.id.b_apuntarse);
 
-        UsuarioActividad usuarioActividad = (UsuarioActividad)getActivity();
+        usuarioActividad = (UsuarioActividad)getActivity();
         evento = usuarioActividad.getLista_eventos().get(usuarioActividad.getPosition());
         usuarioActividad.setVisibilitySearchView(0);
         ref = usuarioActividad.getRef();
@@ -125,21 +128,39 @@ public class VerEvento extends Fragment {
         }else{
             tv_fecha.setText(evento.getFecha());
         }
-        UsuarioActividad usuarioActividad = (UsuarioActividad)getActivity();
-        if(usuarioActividad.getPos_ratio_elegido() == -1){
-            tv_precio.setText("Precio de la entrada: " + evento.getPrecio()
-                    + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
-        }else{
-            DecimalFormat df = new DecimalFormat("#.##");
-            tv_precio.setText("Precio de la entrada: " + df.format(evento.getPrecio() *
-                    usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
-                    + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
-        }
 
+        setTvPrecio();
         tv_libres.setText("Plazas libres: " + (evento.getAforoMax() - evento.getOcupado()));
-        tv_ocupadas.setText("Plazas ocupadas: " + evento.getOcupado());
-        CargarImagen ci = new CargarImagen(evento);
-        ci.start();
+       /* tv_ocupadas.setText("Plazas ocupadas: " + evento.getOcupado());*/
+        tv_ocupadas.setVisibility(View.INVISIBLE);
+        StorageReference sto = FirebaseStorage.getInstance().getReference();
+        sto.child("tienda").child("eventos").child(evento.getId()).getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(getContext()).load(evento.getUrlImagen())
+                                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                                .error(android.R.drawable.stat_notify_error).into(fotoEvento);
+                        fotoEvento.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    }
+                });
+    }
+
+    private void setTvPrecio(){
+        if(evento.getPrecio() == 0){
+            tv_precio.setText("La entrada es gratuita. ");
+        }else{
+            if(usuarioActividad.getPos_ratio_elegido() == -1){
+                tv_precio.setText("Precio de la entrada: " + evento.getPrecio()
+                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+            }else{
+                DecimalFormat df = new DecimalFormat("#.##");
+                tv_precio.setText("Precio de la entrada: " + df.format(evento.getPrecio() *
+                        usuarioActividad.getRatios()[usuarioActividad.getPos_ratio_elegido()])
+                        + usuarioActividad.getDivisas()[usuarioActividad.getPos_ratio_elegido()+1]);
+            }
+
+        }
     }
 
     private void setPieChart(PieChart pc){
@@ -150,21 +171,22 @@ public class VerEvento extends Fragment {
         pc.setUsePercentValues(true);
 
         pieList.add(new PieEntry(evento.getOcupado(),"Apuntados"));
-        pieList.add(new PieEntry(evento.getAforoMax() - evento.getOcupado(), "Plazas restantes"));
+        pieList.add(new PieEntry(evento.getAforoMax() - evento.getOcupado(), "libres"));
         pieDataSet = new PieDataSet(pieList, "");
         pd = new PieData(pieDataSet);
         pc.setData(pd);
 
-
-        pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         pc.getDescription().setText("");
         Legend l = pc.getLegend();
+        if(usuarioActividad.isTema()){
+            l.setTextColor(Color.WHITE);
+        }
         l.setTextSize(18f);
         pd.setValueTextSize(18f);
     }
 
     public void apuntarseEvento(){
-        final UsuarioActividad usuarioActividad = (UsuarioActividad)getActivity();
         final Usuario usuario = usuarioActividad.getUsuario();
         ref.child("tienda").child("reservas_eventos").orderByChild("id_cliente")
                 .equalTo(usuario.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -201,29 +223,5 @@ public class VerEvento extends Fragment {
             }
         });
     }
-
-
-    private class CargarImagen extends Thread{
-        Evento pojo_evento;
-
-        public CargarImagen(Evento pojo_evento) {
-            this.pojo_evento = pojo_evento;
-        }
-
-        @Override
-        public void run(){
-            StorageReference sto = FirebaseStorage.getInstance().getReference();
-            sto.child("tienda").child("eventos").child(pojo_evento.getId()).getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Glide.with(getContext()).load(evento.getUrlImagen())
-                                    .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                                    .error(android.R.drawable.stat_notify_error).into(fotoEvento);
-                        }
-                    });
-        }
-    }
-
 
 }

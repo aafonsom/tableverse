@@ -66,7 +66,7 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
 
         Glide.with(context).load(reserva.getUrl_juego())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                .error(R.drawable.person_morada).into(holder.foto);
+                .error(R.drawable.persona_placeholder).into(holder.foto);
 
         if(reserva.isPreparado()){
             holder.confirm.setVisibility(View.INVISIBLE);
