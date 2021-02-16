@@ -31,20 +31,18 @@ import com.google.firebase.storage.StorageReference;
 
 public class InfoUsuario extends DialogFragment {
 
-    private Activity activity;
+    private AdminActividad activity;
     private DatabaseReference ref;
     private StorageReference sto;
     private Usuario usuario;
-    private Juego juego;
     private String reserva;
     private ImageView foto;
     private TextView nombre, email;
-    private boolean cliente;
     private String[] llamadas;
 
-    public InfoUsuario(String reserva, boolean cliente){
+    public InfoUsuario(String reserva){
         this.reserva = reserva;
-        this.cliente = cliente;
+
     }
 
     @NonNull
@@ -63,25 +61,16 @@ public class InfoUsuario extends DialogFragment {
         nombre = v.findViewById(R.id.tv_nombre);
         email = v.findViewById(R.id.tv_email);
 
-        activity = getActivity();
-        if(activity instanceof AdminActividad){
-            ref = ((AdminActividad)activity).getRef();
-            sto = ((AdminActividad)activity).getSto();
-        }else{
-            ref = ((UsuarioActividad)activity).getRef();
-            sto = ((UsuarioActividad)activity).getSto();
-        }
+        activity = (AdminActividad)getActivity();
 
-        if(cliente){
-            llamadas = new String[]{"clientes", "usuarios"};
-        }else{
-            llamadas = new String[]{"juegos", "juegos"};
-        }
+        ref = ((AdminActividad)activity).getRef();
+        sto = ((AdminActividad)activity).getSto();
+
+        llamadas = new String[]{"clientes", "usuarios"};
 
         cargarUsuario();
 
         return builder.create();
-
     }
 
     private void setViewUsuario(){
@@ -100,21 +89,7 @@ public class InfoUsuario extends DialogFragment {
         });
     }
 
-    private void setViewJuego(){
-        nombre.setText(juego.getNombre());
-        email.setText(juego.getCategoria());
 
-        sto.child("tienda").child(llamadas[1]).child(juego.getId())
-                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                juego.setUrl_juego(uri.toString());
-                Glide.with(getContext()).load(juego.getUrl_juego())
-                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                        .error(R.drawable.persona_placeholder).into(foto);
-            }
-        });
-    }
 
     private void cargarUsuario() {
         ref.child("tienda").child(llamadas[0]).orderByKey().equalTo(reserva)
@@ -122,17 +97,11 @@ public class InfoUsuario extends DialogFragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         DataSnapshot hijo = snapshot.getChildren().iterator().next();
-                        if(cliente){
-                            usuario = hijo.getValue(Usuario.class);
-                            usuario.setId(hijo.getKey());
 
-                            setViewUsuario();
-                        }else{
-                            juego = hijo.getValue(Juego.class);
-                            juego.setId(hijo.getKey());
+                        usuario = hijo.getValue(Usuario.class);
+                        usuario.setId(hijo.getKey());
 
-                            setViewJuego();
-                        }
+                        setViewUsuario();
 
                     }
 

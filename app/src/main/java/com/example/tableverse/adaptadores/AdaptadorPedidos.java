@@ -59,7 +59,7 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
         holder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InfoUsuario info = new InfoUsuario(reserva.getId_cliente(), true);
+                InfoUsuario info = new InfoUsuario(reserva.getId_cliente());
                 info.show(((AdminActividad)activity).getSupportFragmentManager(), "Información de usuario");
             }
         });
@@ -68,8 +68,17 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.persona_placeholder).into(holder.foto);
 
+        if(reserva.getFecha_procesado().isEmpty()){
+            holder.procesado.setText("Sin preparar");
+        }else{
+            holder.procesado.setText("Preparado: " + reserva.getFecha_procesado());
+        }
+
+        holder.pedido.setText("Pedido: " + reserva.getFecha_pedido());
+
+
         if(reserva.isPreparado()){
-            holder.confirm.setVisibility(View.INVISIBLE);
+            holder.confirm.setVisibility(View.GONE);
         }else{
             holder.confirm.setVisibility(View.VISIBLE);
 
@@ -77,7 +86,7 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
                 @Override
                 public void onClick(View view) {
                 new AlertDialog.Builder(context)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(R.drawable.icono_redondo)
                         .setTitle(R.string.confirmar_pedido)
                         .setMessage(R.string.pedido_pregunta_confirmacion)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -94,6 +103,7 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
                                         .setValue(reserva);
                                 ref.child("tienda").child("clientes").child(reserva.getId_cliente()).child("estado").setValue(Usuario.PEDIDO_PREPARADO);
                                 notifyDataSetChanged();
+                                filtroTipo("En preparación");
 
                             }
 
@@ -138,7 +148,7 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
     public class Vh extends RecyclerView.ViewHolder {
 
         public ImageView foto;
-        public TextView nombre, info;
+        public TextView nombre, info, pedido, procesado;
         public FloatingActionButton confirm;
         public Vh(@NonNull View itemView) {
             super(itemView);
@@ -147,6 +157,9 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
             nombre = itemView.findViewById(R.id.template_tv_nombre_pedidos);
             info = itemView.findViewById(R.id.template_info);
             confirm = itemView.findViewById(R.id.template_confirm);
+            pedido = itemView.findViewById(R.id.template_fecha_realizado);
+            procesado = itemView.findViewById(R.id.tv_fecha_procesado);
+
 
         }
     }

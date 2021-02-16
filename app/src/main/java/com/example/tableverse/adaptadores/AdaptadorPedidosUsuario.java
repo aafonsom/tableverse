@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
+import com.example.tableverse.dialog.InfoJuego;
 import com.example.tableverse.dialog.InfoUsuario;
 import com.example.tableverse.objetos.ReservaJuego;
 
@@ -68,10 +69,11 @@ public class AdaptadorPedidosUsuario extends RecyclerView.Adapter<AdaptadorPedid
         holder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InfoUsuario info = new InfoUsuario(reserva.getId_juego(), false);
-                info.show(((UsuarioActividad)activity).getSupportFragmentManager(), "Información de usuario");
+                InfoJuego info = new InfoJuego(reserva.getId_juego());
+                info.show(((UsuarioActividad)activity).getSupportFragmentManager(), "Información de juego");
             }
         });
+
 
     }
 

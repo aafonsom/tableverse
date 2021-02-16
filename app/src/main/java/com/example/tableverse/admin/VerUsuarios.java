@@ -100,8 +100,10 @@ public class VerUsuarios extends Fragment {
         ref = adminActividad.getRef();
         sto = adminActividad.getSto();
         lista_usuarios = adminActividad.getLista_usuarios();
+        adminActividad.modoFab(3);
         int pos = adminActividad.getPosition();
         evento = adminActividad.getLista_eventos().get(pos);
+        adminActividad.getToolbar().setTitle(evento.getNombre());
 
         cargarUsuarios();
         setPieChart(pieChart);
@@ -126,7 +128,7 @@ public class VerUsuarios extends Fragment {
         pd = new PieData(pieDataSet);
         pc.setData(pd);
 
-        pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         pc.getDescription().setText("");
         Legend l = pc.getLegend();
         l.setTextSize(18f);
@@ -144,41 +146,37 @@ public class VerUsuarios extends Fragment {
                     ReservaEvento pojo_reserva = hijo.getValue(ReservaEvento.class);
 
                     ref.child("tienda").child("clientes").orderByKey()
-                            .equalTo(pojo_reserva.getId_cliente())
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    DataSnapshot hijo = snapshot.getChildren().iterator().next();
-                                    final Usuario pojo_cliente = hijo.getValue(Usuario.class);
-                                    pojo_cliente.setId(hijo.getKey());
-                                    lista_usuarios.add(pojo_cliente);
+                        .equalTo(pojo_reserva.getId_cliente())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                DataSnapshot hijo = snapshot.getChildren().iterator().next();
+                                final Usuario pojo_cliente = hijo.getValue(Usuario.class);
+                                pojo_cliente.setId(hijo.getKey());
+                                lista_usuarios.add(pojo_cliente);
 
+                                sto.child("tienda").child("usuarios").child(pojo_cliente.getId())
+                                        .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        pojo_cliente.setUrl_imagen(uri.toString());
+                                        adaptadorUsuarios.notifyDataSetChanged();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        adaptadorUsuarios.notifyDataSetChanged();
+                                    }
+                                });;
 
+                            }
 
-                                    sto.child("tienda").child("usuarios").child(pojo_cliente.getId())
-                                            .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            pojo_cliente.setUrl_imagen(uri.toString());
-                                            adaptadorUsuarios.notifyDataSetChanged();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            adaptadorUsuarios.notifyDataSetChanged();
-                                        }
-                                    });;
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
+                            }
+                        });
                 }
-
 
             }
 
@@ -187,8 +185,6 @@ public class VerUsuarios extends Fragment {
 
             }
         });
-
-
     }
 
 }

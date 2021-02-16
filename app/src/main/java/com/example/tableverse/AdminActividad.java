@@ -1,15 +1,15 @@
 package com.example.tableverse;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.tableverse.admin.CrearJuego;
 import com.example.tableverse.objetos.Evento;
 import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.ReservaJuego;
@@ -78,28 +78,39 @@ public class AdminActividad extends AppCompatActivity {
     }
 
     public void modoFab(int modo){
-
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(fab, "alpha",0, 1);
+        objectAnimator.setDuration(1000);
+        objectAnimator.setStartDelay(0);
         switch (modo){
             case 1:
                 fab.setVisibility(View.VISIBLE);
+                fab.setImageResource(R.drawable.icono_add_juego);
+                objectAnimator.start();
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         navController.navigate(R.id.crearJuego);
                     }
                 });
+                fab.setClickable(true);
                 break;
             case 2:
                 fab.setVisibility(View.VISIBLE);
+                fab.setImageResource(R.drawable.calendar_add_event);
+                objectAnimator.start();
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         navController.navigate(R.id.crearEvento);
                     }
                 });
+                fab.setClickable(true);
                 break;
             case 3:
-                fab.setVisibility(View.GONE);
+                objectAnimator = ObjectAnimator.ofFloat(fab, "alpha",1, 0);
+                objectAnimator.setDuration(1500);
+                objectAnimator.start();
+                fab.setClickable(false);
                 break;
         }
     }
@@ -124,8 +135,15 @@ public class AdminActividad extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
-
+    }
 
 
 

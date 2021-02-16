@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -31,9 +34,11 @@ public class Notificaciones {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Resources res = context.getResources();
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
                 LoginActividad.CHANNEL_ID)
-                .setSmallIcon(R.drawable.icono_redondo)
+                .setSmallIcon(R.drawable.icono_juego)
                 .setContentTitle(titulo)
                 .setContentText(contenido)
                 .setLargeIcon(imagen)

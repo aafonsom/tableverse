@@ -6,21 +6,21 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/listaJuegosUsuario"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/icono_juego"
             android:title="@string/lista_juegos" />
         <item
             android:id="@+id/eventosDisponibles"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/event_24px"
             android:title="@string/eventos_disponibles" />
 
         <item
             android:id="@+id/eventosApuntado"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/event_available_24px"
             android:title="@string/eventos_suscritos" />
 
         <item
             android:id="@+id/historialPedidos"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/box_pedidos"
             android:title="@string/historial_pedidos" />
 
     </group>

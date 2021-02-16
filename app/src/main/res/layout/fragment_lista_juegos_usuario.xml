@@ -25,18 +25,14 @@
 
         <Spinner
             android:id="@+id/spi_categorias"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:animateLayoutChanges="true"
             android:animationCache="true"
             android:backgroundTint="@color/colorWhite"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
             android:id="@+id/tv_precio_min"
@@ -90,19 +86,31 @@
             android:src="@drawable/format_list_bulleted_24px"
             android:tint="@color/colorWhite"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView"
             style="@style/littleconfig"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/cambiar_vista"
-            app:layout_constraintEnd_toStartOf="@+id/iv_changeview"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/spi_categorias"
             app:layout_constraintTop_toBottomOf="@+id/spi_categorias" />
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/littleconfig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/categorias"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -68,6 +68,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/template_info"
                 app:srcCompat="@drawable/check_24px" />
+
+            <TextView
+                android:id="@+id/template_fecha_realizado"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toStartOf="@+id/template_confirm"
+                app:layout_constraintStart_toStartOf="@+id/template_info"
+                app:layout_constraintTop_toBottomOf="@+id/template_info" />
+
+            <TextView
+                android:id="@+id/tv_fecha_procesado"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/template_fecha_realizado"
+                app:layout_constraintStart_toStartOf="@+id/template_fecha_realizado"
+                app:layout_constraintTop_toBottomOf="@+id/template_fecha_realizado" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

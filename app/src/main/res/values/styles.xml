@@ -54,6 +54,10 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <style name="OpenSansTextViewStyle.VeryBig.Dinero">
+        <item name="android:textColor">@color/colorDinero</item>
+    </style>
+
     <style name="OpenSansEditTextStyle" parent="android:Widget.EditText">
         <item name="android:fontFamily">@font/open_sans</item>
     </style>
@@ -109,8 +113,6 @@
         <item name="android:colorControlActivated">@color/colorWhite</item>
         <item name="android:thumbTint">@color/colorWhite</item>
     </style>
-
-
 
 
 

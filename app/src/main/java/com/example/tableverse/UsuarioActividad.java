@@ -1,5 +1,6 @@
 package com.example.tableverse;
 
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -27,6 +29,7 @@ import com.example.tableverse.objetos.Juego;
 import com.example.tableverse.objetos.Usuario;
 import com.example.tableverse.objetos.VolleySingleton;
 import com.example.tableverse.servicios.ServicioNotificacion;
+import com.example.tableverse.usuario.ListaJuegosUsuario;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -208,6 +211,11 @@ public class UsuarioActividad extends AppCompatActivity {
                 SharedPreferences.Editor editor = sp.edit();
                 editor.remove("id");
                 editor.commit();
+
+                sp = getApplicationContext().getSharedPreferences("MODO", MODE_PRIVATE);
+                editor = sp.edit();
+                editor.remove("tema");
+                editor.commit();
                 Intent intent = new Intent(this, LoginActividad.class);
                 startActivity(intent);
                 return true;
@@ -234,6 +242,32 @@ public class UsuarioActividad extends AppCompatActivity {
         Glide.with(getApplicationContext()).load(usuario.getUrl_imagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.persona_placeholder).into(iv_nav_header);
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+    @Override
+    public void onBackPressed() {
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Por favor, pulsa de nuevo para salir", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+
     }
 
     private void cargarDatosUsuario(String id){

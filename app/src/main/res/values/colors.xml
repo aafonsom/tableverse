@@ -9,6 +9,7 @@
     <color name="green_check">#00b400</color>
     <color name="transparent_primary">#B3d32f2f</color>
     <color name="complementary">#2FD3D3</color>
+    <color name="colorDinero">#0000FF</color>
 </resources>
 
 <!-- Otros colores a probar

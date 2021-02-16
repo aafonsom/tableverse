@@ -46,6 +46,7 @@
     <string name="editar">Editar</string>
     <string name="ver_usuarios">Usuarios Apuntados</string>
     <string name="cambiar_vista"> Cambiar la vista: </string>
+    <string name="categorias">Categorias: </string>
 
     <!--Strings de cabeceras, menus, etc.-->
     <string name="frag_login">Login</string>
