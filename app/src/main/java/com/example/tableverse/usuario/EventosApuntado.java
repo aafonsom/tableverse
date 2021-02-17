@@ -92,6 +92,7 @@ public class EventosApuntado extends Fragment {
 
         usuarioActividad = (UsuarioActividad)getActivity();
         lista_evento = usuarioActividad.getLista_eventos();
+        lista_evento.clear();
         adaptadorEventos = usuarioActividad.getAdaptadorEventos();
         usuarioActividad.setVistaLineal(false);
         ref = usuarioActividad.getRef();

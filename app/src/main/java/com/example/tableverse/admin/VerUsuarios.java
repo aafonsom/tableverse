@@ -151,7 +151,7 @@ public class VerUsuarios extends Fragment {
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                
+
                                 DataSnapshot hijo = snapshot.getChildren().iterator().next();
                                 final Usuario pojo_cliente = hijo.getValue(Usuario.class);
                                 pojo_cliente.setId(hijo.getKey());

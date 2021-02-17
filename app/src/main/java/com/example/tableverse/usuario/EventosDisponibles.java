@@ -34,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -99,6 +100,7 @@ public class EventosDisponibles extends Fragment {
         usuarioActividad = (UsuarioActividad)getActivity();
 
         lista_eventos = usuarioActividad.getLista_eventos();
+        lista_eventos.clear();
         adaptadorEventos = usuarioActividad.getAdaptadorEventos();
         ref = usuarioActividad.getRef();
         sto = usuarioActividad.getSto();
