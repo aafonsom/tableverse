@@ -139,26 +139,34 @@ public class AdminActividad extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(navController.getCurrentDestination().getId() == R.id.crearJuego ||
+                navController.getCurrentDestination().getId() == R.id.crearEvento ||
+                navController.getCurrentDestination().getId() == R.id.verUsuarios){
+            navController.popBackStack();
+        }else{
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
 
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            return;
+
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Por favor, pulsa de nuevo para salir", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }
 
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Por favor, pulsa de nuevo para salir", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
 
     }
 

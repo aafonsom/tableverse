@@ -7,14 +7,16 @@
         android:orderInCategory="100"
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/settings_24px"
         android:orderInCategory="101"
         android:title="@string/configuracion"
         app:showAsAction="never" />
     <item
         android:id="@+id/logout"
+        android:icon="@drawable/logout_24px"
         android:orderInCategory="101"
         android:title="@string/logout"
         app:showAsAction="never" />

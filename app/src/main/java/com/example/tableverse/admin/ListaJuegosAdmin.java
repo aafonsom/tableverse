@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
@@ -108,6 +109,11 @@ public class ListaJuegosAdmin extends Fragment {
                     Juego pojo_juego = hijo.getValue(Juego.class);
                     pojo_juego.setId(hijo.getKey());
                     lista_juegos.add(pojo_juego);
+                }
+
+                if(lista_juegos.size() == 0){
+                    Toast.makeText(getContext(), "No hay juegos añadidos todavía, " +
+                            "use el botón de la esquina inferior derecha para añadir alguno", Toast.LENGTH_LONG).show();
                 }
 
                 for (final Juego juego : lista_juegos) {

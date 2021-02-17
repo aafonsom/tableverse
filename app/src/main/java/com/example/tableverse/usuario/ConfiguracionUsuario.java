@@ -101,7 +101,7 @@ public class ConfiguracionUsuario extends Fragment {
             usuarioActividad.setVisibilitySearchView(0);
         }
 
-        sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
+        sp = getActivity().getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
         setView();
 
         spi_divisas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -122,7 +122,7 @@ public class ConfiguracionUsuario extends Fragment {
         sw_oscuro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
+                SharedPreferences sp = getActivity().getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putBoolean("tema", sw_oscuro.isChecked());
                 editor.commit();
@@ -136,7 +136,7 @@ public class ConfiguracionUsuario extends Fragment {
         tv_nombre.setText(usuario.getNombre());
         tv_email.setText(usuario.getCorreo());
         tv_divisa.setText("€");
-        SharedPreferences sp = getActivity().getSharedPreferences("MODO", Context.MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
         sw_oscuro.setChecked(sp.getBoolean("tema", false));
 
         Glide.with(this).load(usuario.getUrl_imagen())
@@ -144,30 +144,4 @@ public class ConfiguracionUsuario extends Fragment {
                 .error(R.drawable.persona_placeholder).into(iv_foto);
     }
 
-
-    private class CargarImagen extends Thread{
-        private StorageReference sto;
-
-        public CargarImagen(StorageReference sto) {
-            this.sto = sto;
-
-        }
-
-        @Override
-        public void run(){
-            sto.child("tienda").child("usuarios").child(usuario.getId()).getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        usuario.setUrl_imagen(uri.toString());
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                setView();
-                            }
-                        });
-                    }
-                });
-        }
-    }
 }

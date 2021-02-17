@@ -10,7 +10,8 @@
         android:id="@+id/iv_evento"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:src="@drawable/icono_cuadrado"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholderevent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

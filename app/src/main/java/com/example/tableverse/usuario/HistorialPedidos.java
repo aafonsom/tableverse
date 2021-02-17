@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
@@ -111,6 +112,9 @@ public class HistorialPedidos extends Fragment {
                 }
 
                 adaptadorPedidos.notifyDataSetChanged();
+                if(lista_reservas.size() == 0){
+                    Toast.makeText(getContext(), "No tienes ninguna reserva realizada", Toast.LENGTH_SHORT).show();
+                }
 
                 for(final ReservaJuego res: lista_reservas){
                     sto.child("tienda").child("juegos").child(res.getId_juego()).getDownloadUrl()

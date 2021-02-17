@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -142,6 +143,9 @@ public class AdaptadorPedidos extends RecyclerView.Adapter<AdaptadorPedidos.Vh>{
         lista_filtrada.clear();
         lista_filtrada.addAll(lista);
         notifyDataSetChanged();
+        if(lista_filtrada.size() == 0){
+            Toast.makeText(context, "No se encontraron pedidos", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

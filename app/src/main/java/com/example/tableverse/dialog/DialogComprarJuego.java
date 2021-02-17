@@ -177,7 +177,7 @@ public class DialogComprarJuego extends DialogFragment {
                                             .child(pojo_usuario.getId()).child("estado")
                                             .setValue(Usuario.PEDIDO_ESPERA);
 
-                                    dismiss();
+
 
                                 }
 
@@ -189,6 +189,7 @@ public class DialogComprarJuego extends DialogFragment {
                             ref.child("tienda").child("reservas_juegos").child(id).setValue(nuevaReserva);
                             juego.setStock(juego.getStock() - 1);
                             ref.child("tienda").child("juegos").child(juego.getId()).setValue(juego);
+                            dismiss();
                         }
 
                         @Override

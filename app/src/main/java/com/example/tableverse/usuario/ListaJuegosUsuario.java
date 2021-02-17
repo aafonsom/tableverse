@@ -123,7 +123,6 @@ public class ListaJuegosUsuario extends Fragment {
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spi_categoria.setAdapter(categoriaAdapter);
 
-
         sb_min.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -182,7 +181,11 @@ public class ListaJuegosUsuario extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 adaptadorJuegos.setCategoria(categorias.get(i));
                 spinner_pos_actual = i;
-                adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
+                if(usuarioActividad.isQueryTextSi()){
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getQueryText());
+                }else{
+                    adaptadorJuegos.getFilter().filter(usuarioActividad.getNewText());
+                }
             }
 
             @Override
@@ -221,7 +224,6 @@ public class ListaJuegosUsuario extends Fragment {
         ref.child("tienda").child("juegos").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //TODO: METER TODAS LAS LLAMADAS A LA BASE DE DATOS EN UN HILO
                 lista_juegos.clear();
 
                 for(DataSnapshot hijo: snapshot.getChildren()){

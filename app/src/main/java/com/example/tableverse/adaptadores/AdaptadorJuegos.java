@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,8 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
     private Activity activity;
     private int min = 0, max = 0;
     private String categoria = "Todas";
+    private boolean hayToast = false;
+
 
     public AdaptadorJuegos(List<Juego> lista_juegos, Context context, Activity activity) {
         this.lista_juegos = lista_juegos;
@@ -143,6 +146,16 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
                 lista_filtrada.clear();
                 lista_filtrada.addAll((List<Juego>) filterResults.values);
                 notifyDataSetChanged();
+                if(lista_filtrada.size() == 0){
+                    if(!hayToast){
+                        Toast.makeText(context, "No se encontraron juegos", Toast.LENGTH_SHORT).show();
+                        hayToast = true;
+                    }else{
+                        hayToast = false;
+                    }
+                }else{
+                    hayToast = false;
+                }
             }
         };
     }

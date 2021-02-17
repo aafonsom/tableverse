@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -131,6 +132,9 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
         lista_filtrada.clear();
         lista_filtrada.addAll(lista);
         notifyDataSetChanged();
+        if(lista_filtrada.size() == 0){
+            Toast.makeText(context, "No se encontraron eventos gratuitos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class Vh extends RecyclerView.ViewHolder {

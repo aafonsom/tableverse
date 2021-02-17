@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.tableverse.AdminActividad;
 import com.example.tableverse.R;
@@ -111,6 +112,11 @@ public class ListaEventosAdmin extends Fragment {
                     pojo_evento.setId(datasnapshot.getKey());
 
                     lista_eventos.add(pojo_evento);
+                }
+
+                if(lista_eventos.size() == 0){
+                    Toast.makeText(getContext(), "No hay eventos añadidos todavía, por favor, " +
+                            "utilice el botón de la esquina inferior derecha para añadir uno", Toast.LENGTH_LONG).show();
                 }
 
                 for(final Evento pojo_evento: lista_eventos){

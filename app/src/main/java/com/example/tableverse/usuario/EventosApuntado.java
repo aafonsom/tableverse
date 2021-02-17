@@ -113,6 +113,9 @@ public class EventosApuntado extends Fragment {
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(!snapshot.hasChildren()){
+                                        Toast.makeText(getContext(), "No estás apuntado a ningún evento", Toast.LENGTH_SHORT).show();
+                                    }
                                     Evento pojo_evento = snapshot.getValue(Evento.class);
                                     pojo_evento.setId(snapshot.getKey());
                                     lista_evento.add(pojo_evento);

@@ -82,7 +82,8 @@ public class UsuarioActividad extends AppCompatActivity {
     private boolean queryTextSi = false;
     private boolean tema = false;
     private boolean vistaLineal = false;
-    boolean doubleBackToExitPressedOnce = false;
+    private boolean doubleBackToExitPressedOnce = false;
+    private SharedPreferences.Editor moneda_editor;
 
 
     public void setVistaLineal(boolean vistaLineal) { this.vistaLineal = vistaLineal; }
@@ -151,13 +152,11 @@ public class UsuarioActividad extends AppCompatActivity {
         }
 
         SharedPreferences sp_moneda = getSharedPreferences("sp_api_moneda", this.MODE_PRIVATE);
-        editor = sp_moneda.edit();
+        moneda_editor = sp_moneda.edit();
         lastTime = sp_moneda.getLong("lastTime", -1);
         ratios[0] = sp_moneda.getFloat("USD", -1);
         ratios[1] = sp_moneda.getFloat("GBP", -1);
-        pos_ratio_elegido = sp_moneda.getInt("pos", -1);
-        /*ratios[2] = sp.getFloat("CNY", -1);
-        ratios[3] = sp.getFloat("RUB", -1);*/
+        pos_ratio_elegido = sp.getInt("pos", -1);
     }
 
     @Override
@@ -193,7 +192,7 @@ public class UsuarioActividad extends AppCompatActivity {
 
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        SharedPreferences sp_tema = getSharedPreferences("MODO", MODE_PRIVATE);
+        SharedPreferences sp_tema = getSharedPreferences("LOGIN", MODE_PRIVATE);
         tema = sp_tema.getBoolean("tema", false);
         if(tema){
             theme.applyStyle(R.style.DarkTheme, true);
@@ -211,13 +210,9 @@ public class UsuarioActividad extends AppCompatActivity {
             case R.id.logout:
                 SharedPreferences sp = getApplicationContext().getSharedPreferences("LOGIN", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.remove("id");
+                editor.clear();
                 editor.commit();
 
-                sp = getApplicationContext().getSharedPreferences("MODO", MODE_PRIVATE);
-                editor = sp.edit();
-                editor.remove("tema");
-                editor.commit();
                 Intent intent = new Intent(this, LoginActividad.class);
                 startActivity(intent);
                 return true;
@@ -248,26 +243,32 @@ public class UsuarioActividad extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(navController.getCurrentDestination().getId() == R.id.configuracionUsuario ||
+                navController.getCurrentDestination().getId() == R.id.verEvento){
+            navController.popBackStack();
+        }else{
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
 
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Por favor, pulsa de nuevo para salir", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
+                return;
             }
-        }, 2000);
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Por favor, pulsa de nuevo para salir", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        }
+        
 
     }
 
@@ -312,15 +313,11 @@ public class UsuarioActividad extends AppCompatActivity {
                         try {
                             JSONObject rates = response.getJSONObject("rates");
                             ratios[0] = rates.getDouble("USD");
-                            editor.putFloat("USD", (float)ratios[0]);
+                            moneda_editor.putFloat("USD", (float)ratios[0]);
                             ratios[1] = rates.getDouble("GBP");
-                            editor.putFloat("GBP", (float)ratios[1]);
-                            /*ratios[2] = rates.getDouble("CNY");
-                            editor.putFloat("CNY", (float)ratios[2]);
-                            ratios[3] = rates.getDouble("RUB");
-                            editor.putFloat("RUB", (float)ratios[3]);*/
+                            moneda_editor.putFloat("GBP", (float)ratios[1]);
 
-                            editor.commit();
+                            moneda_editor.commit();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
