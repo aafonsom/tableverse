@@ -48,7 +48,7 @@ public class DialogComprarJuego extends DialogFragment {
     private Juego juego;
     private TextView tv_precio, tv_nombre, tv_stock;
     private Button b_comprar;
-    private ImageView iv_foto, cerrar;
+    private ImageView iv_foto;
     private StorageReference sto;
     private DatabaseReference ref;
     private Usuario usuario;
@@ -74,11 +74,7 @@ public class DialogComprarJuego extends DialogFragment {
         tv_stock = v.findViewById(R.id.tv_stock);
         tv_precio = v.findViewById(R.id.tv_precio);
         iv_foto = v.findViewById(R.id.iv_juego);
-        cerrar = v.findViewById(R.id.iv_close);
         b_comprar = v.findViewById(R.id.b_comprar);
-        Toolbar toolbar = v.findViewById(R.id.tb_comprar_juego);
-        toolbar.setTitle(getTag());
-
 
         usuarioActividad = (UsuarioActividad) getActivity();
         sto = usuarioActividad.getSto();
@@ -94,12 +90,6 @@ public class DialogComprarJuego extends DialogFragment {
             }
         });
 
-        cerrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
 
         return builder.create();
 
