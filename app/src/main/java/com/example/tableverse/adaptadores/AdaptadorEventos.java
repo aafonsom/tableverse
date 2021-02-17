@@ -46,7 +46,11 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
         if(activity instanceof AdminActividad){
              v = inflater.inflate(R.layout.template_eventos_admin, parent, false);
         }else{
-            v = inflater.inflate(R.layout.template_eventos, parent, false);
+            if(((UsuarioActividad)activity).isVistaLineal()){
+                v = inflater.inflate(R.layout.template_eventos_lineal, parent, false);
+            }else{
+                v = inflater.inflate(R.layout.template_eventos, parent, false);
+            }
         }
 
         return new Vh(v);

@@ -70,7 +70,7 @@ public class UsuarioActividad extends AppCompatActivity {
     private List<Evento> lista_eventos = new ArrayList<>();
     private NavController navController;
     public AdaptadorJuegos adaptadorJuegos;
-    private AdaptadorEventos adaptadorEventos;
+    public AdaptadorEventos adaptadorEventos;
     public SearchView searchView;
     private int position = 0;
     private char[] divisas = {'€', '$', '£'};

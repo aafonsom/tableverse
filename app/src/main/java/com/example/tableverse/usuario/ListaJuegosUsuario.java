@@ -110,6 +110,7 @@ public class ListaJuegosUsuario extends Fragment {
         if(usuarioActividad.getSearchView() != null){
             usuarioActividad.setVisibilitySearchView(1);
         }
+        usuarioActividad.setVistaLineal(false);
         ref = usuarioActividad.getRef();
         sto = usuarioActividad.getSto();
         adaptadorJuegos = usuarioActividad.getAdaptadorJuegos();
