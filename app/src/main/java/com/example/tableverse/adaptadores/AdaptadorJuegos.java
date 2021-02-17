@@ -74,7 +74,7 @@ public class AdaptadorJuegos extends RecyclerView.Adapter<AdaptadorJuegos.Vh> im
         holder.categoria.setText("Categoria: " + juego.getCategoria());
         Glide.with(context).load(juego.getUrl_juego())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                .error(android.R.drawable.stat_notify_error).into(holder.foto);
+                .error(R.drawable.icono_redondo).into(holder.foto);
 
         if(activity instanceof AdminActividad){
             holder.precio.setText("Precio: " + juego.getPrecio());

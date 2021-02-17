@@ -184,12 +184,6 @@ public class CrearJuego extends Fragment {
         if(stock.isEmpty()){
             et_stock.setError("El stock no puede estar vacío");
             validado = false;
-        }else{
-            int sto = Integer.parseInt(stock);
-            if(sto == 0){
-                et_stock.setError("El stock no puede ser 0");
-                validado = false;
-            }
         }
 
         if(fotoJuegoUrl == null){

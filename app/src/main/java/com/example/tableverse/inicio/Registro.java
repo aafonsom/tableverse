@@ -143,6 +143,7 @@ public class Registro extends Fragment {
                         LoginActividad loginActividad = (LoginActividad)getActivity();
                         TabLayout.Tab tab = loginActividad.getTabLayout().getTabAt(0);
                         loginActividad.getTabLayout().selectTab(tab);
+                        Toast.makeText(getContext(), "Te has registrado correctamente", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.login);
 
                     }

@@ -132,13 +132,15 @@ public class DialogModEvento extends DialogFragment {
         et_precio.setText(Double.toString(evento.getPrecio()));
         et_fecha.setText(evento.getFecha());
 
+
         sto.child("tienda").child("eventos").child(evento.getId())
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(getContext()).load(evento.getUrlImagen())
                         .placeholder(android.R.drawable.progress_indeterminate_horizontal)
-                        .error(android.R.drawable.stat_notify_error).into(iv_foto);
+                        .error(R.drawable.icono_redondo).into(iv_foto);
+                iv_foto.setImageTintMode(null);
             }
         });
 
