@@ -101,6 +101,7 @@ public class VerUsuarios extends Fragment {
         ref = adminActividad.getRef();
         sto = adminActividad.getSto();
         lista_usuarios = adminActividad.getLista_usuarios();
+        lista_usuarios.clear();
         adminActividad.modoFab(3);
         int pos = adminActividad.getPosition();
         evento = adminActividad.getLista_eventos().get(pos);

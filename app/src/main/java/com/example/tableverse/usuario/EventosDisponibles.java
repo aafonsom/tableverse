@@ -115,6 +115,8 @@ public class EventosDisponibles extends Fragment {
         rv_eventos.setAdapter(adaptadorEventos);
         rv_eventos.setLayoutManager(glm);
 
+        sw_eventos.setChecked(false);
+
         sw_eventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

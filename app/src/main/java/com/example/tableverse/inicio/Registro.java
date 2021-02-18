@@ -119,9 +119,7 @@ public class Registro extends Fragment {
         fotoElegida = view.findViewById(R.id.iv_foto_perfil);
         til_pass = view.findViewById(R.id.til_pass);
 
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},1000);
-        }
+
 
         LoginActividad loginActividad = (LoginActividad)getActivity();
         navController = loginActividad.getNavController();
@@ -208,7 +206,7 @@ public class Registro extends Fragment {
                 validacion = false;
             }else if(!utilities.isValidPass(pass)){
                 validacion = false;
-                til_pass.setError("Debe contener por lo menos un dígito y tener una longitud entre 5 y 15 caracteres");
+                til_pass.setError("Debe contener por lo menos un dígito y tener una longitud entre 6 y 15 caracteres");
             }
         }
 
@@ -225,7 +223,9 @@ public class Registro extends Fragment {
 
 
     public void seleccionarFotoPerfil(View v){
-
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},1000);
+        }
         new AlertDialog.Builder(getContext())
                 .setIcon(R.drawable.icono_redondo)
                 .setTitle(R.string.confirmar_pedido)
