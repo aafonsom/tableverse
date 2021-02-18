@@ -1,14 +1,25 @@
 package com.example.tableverse.inicio;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -28,11 +39,15 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -51,6 +66,13 @@ public class Registro extends Fragment {
     private StorageReference sto;
     private Uri fotoUsuario_url;
     private NavController navController;
+
+    private final static int SELECT_IMAGE = 2;
+
+    private String mCurrentPhotoPath;
+
+    private final static int REQUEST_TAKE_PHOTO = 3;
+    private final static int REQUEST_IMAGE_CAPTURE = 3;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -96,6 +118,10 @@ public class Registro extends Fragment {
         et_email = view.findViewById(R.id.et_email);
         fotoElegida = view.findViewById(R.id.iv_foto_perfil);
         til_pass = view.findViewById(R.id.til_pass);
+
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},1000);
+        }
 
         LoginActividad loginActividad = (LoginActividad)getActivity();
         navController = loginActividad.getNavController();
@@ -199,9 +225,44 @@ public class Registro extends Fragment {
 
 
     public void seleccionarFotoPerfil(View v){
-        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent,SELECCIONAR_FOTO);
+
+        new AlertDialog.Builder(getContext())
+                .setIcon(R.drawable.icono_redondo)
+                .setTitle(R.string.confirmar_pedido)
+                .setMessage(R.string.pedido_pregunta_confirmacion)
+                .setPositiveButton(R.string.galeria, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("image/*");
+                        startActivityForResult(intent,SELECCIONAR_FOTO);
+                    }
+
+                })
+                .setNegativeButton(R.string.camara, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null){
+                            File photoFile = null;
+
+                            try{
+                                photoFile = createImageFile();
+                            }catch (IOException io){
+                                io.printStackTrace();
+                            }
+
+                            if (photoFile != null){
+                                Uri photoUri = FileProvider.getUriForFile(getContext(), "com.example.tableverse.fileprovider", photoFile);
+                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                            }
+                        }
+                    }
+                })
+                .show();
+
     }
 
     @Override
@@ -214,8 +275,49 @@ public class Registro extends Fragment {
         }else{
             Toast.makeText(getContext(), "Fallo al seleccionar la foto de perfil", Toast.LENGTH_SHORT).show();
         }
+
+        if(requestCode == SELECT_IMAGE && resultCode == RESULT_OK){
+            fotoUsuario_url = data.getData();
+            fotoElegida.setImageURI(fotoUsuario_url);
+            Toast.makeText(getContext(), "Image selected", Toast.LENGTH_LONG).show();
+        }
+
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+            fotoElegida.setImageBitmap(bitmap);
+            fotoUsuario_url = Uri.fromFile(new File(mCurrentPhotoPath));
+        }
     }
 
+
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    public void takePicture (){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null){
+            File photoFile = null;
+
+            try{
+                photoFile = createImageFile();
+            }catch (IOException io){
+                io.printStackTrace();
+            }
+
+            if (photoFile != null){
+                Uri photoUri = FileProvider.getUriForFile(getContext(), "com.example.gamestoreapp.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
 
 
 }

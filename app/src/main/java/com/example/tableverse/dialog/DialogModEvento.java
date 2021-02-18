@@ -162,15 +162,16 @@ public class DialogModEvento extends DialogFragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.hasChildren()){
                             Evento buscado = null;
+                            int contador = 0;
                             for(DataSnapshot hijo: snapshot.getChildren()){
-                                Evento evento = hijo.getValue(Evento.class);
-                                if(evento.getFecha().equals(fecha)){
-                                    buscado = evento;
-                                    break;
+                                Evento aux = hijo.getValue(Evento.class);
+                                aux.setId(hijo.getKey());
+                                if(aux.getFecha().equals(fecha) && !aux.getId().equals(evento.getId())){
+                                    contador++;
                                 }
                             }
 
-                            if(buscado != null){
+                            if(contador > 0){
                                 Toast.makeText(getContext(), "Ya existe un evento con este nombre y en esta fecha", Toast.LENGTH_SHORT).show();
                             }else{
                                 realizarModificaciones(nombre, fecha, precio, aforo);
@@ -200,10 +201,14 @@ public class DialogModEvento extends DialogFragment {
             sto.child("tienda").child("eventos").child(evento.getId()).putFile(foto_url);
         }
         Toast.makeText(getContext(), "Datos modificados con éxito", Toast.LENGTH_SHORT).show();
-        //TODO: Añadir un notify datasetChanged, seguramente haya que poner el adaptador en AdminActividad ya que no consigo acceder al fragmento de ListaEventos
+
 
         dismiss();
-
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean hayCambios(String nombre, String fecha, double precio, int aforo){

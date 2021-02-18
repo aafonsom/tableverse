@@ -143,6 +143,12 @@ public class CrearJuego extends Fragment {
                             sto.child("tienda").child("juegos").child(id).putFile(fotoJuegoUrl);
                             AdminActividad adminActividad = (AdminActividad)getActivity();
                             adminActividad.getNavController().navigate(R.id.listaJuegosAdmin);
+
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
 

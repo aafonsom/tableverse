@@ -168,10 +168,12 @@ public class DialogModJuego extends DialogFragment {
             sto.child("tienda").child("juegos").child(juego.getId()).putFile(foto_url);
         }
         Toast.makeText(adminActividad, "Datos modificados con éxito", Toast.LENGTH_SHORT).show();
-        //TODO: Añadir un notify datasetChanged, seguramente haya que poner el adaptador en AdminActividad ya que no consigo acceder al fragmento de ListaJuegos
-
-
         dismiss();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 

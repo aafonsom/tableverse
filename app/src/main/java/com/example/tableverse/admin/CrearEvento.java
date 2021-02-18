@@ -150,6 +150,7 @@ public class CrearEvento extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.hasChildren()){
                         Evento buscado = null;
+
                         Iterator<DataSnapshot> iter = snapshot.getChildren().iterator();
 
                         while (iter.hasNext() && buscado == null){
@@ -189,6 +190,12 @@ public class CrearEvento extends Fragment {
         }
         AdminActividad adminActividad = (AdminActividad)getActivity();
         adminActividad.getNavController().navigate(R.id.listaEventosAdmin);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private boolean esValido(String nombre, String fecha, String precioString, String aforo_maximoStr){
