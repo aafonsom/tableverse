@@ -66,6 +66,7 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
         Glide.with(context).load(evento.getUrlImagen())
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.icono_redondo).into(holder.foto);
+        holder.foto.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         if(activity instanceof AdminActividad){
             holder.editar.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +129,7 @@ public class AdaptadorEventos extends RecyclerView.Adapter<AdaptadorEventos.Vh> 
             lista = lista_eventos;
         }else{
             for(Evento evento: lista_eventos){
-                if(evento.getPrecio() == 0){
+                if(evento.getPrecio() == 0.0){
                     lista.add(evento);
                 }
             }

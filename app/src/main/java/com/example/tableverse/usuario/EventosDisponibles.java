@@ -115,10 +115,10 @@ public class EventosDisponibles extends Fragment {
         rv_eventos.setAdapter(adaptadorEventos);
         rv_eventos.setLayoutManager(glm);
 
-        sw_eventos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        sw_eventos.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                adaptadorEventos.filtroGratuito(b);
+            public void onClick(View view) {
+                adaptadorEventos.filtroGratuito(sw_eventos.isChecked());
             }
         });
 
