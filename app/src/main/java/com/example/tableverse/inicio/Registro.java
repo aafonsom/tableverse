@@ -24,6 +24,7 @@ import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.objetos.Usuario;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +45,7 @@ public class Registro extends Fragment {
 
     private static final int SELECCIONAR_FOTO = 1;
     private EditText et_nombre, et_pass, et_passrepit, et_email;
+    private TextInputLayout til_pass;
     private ImageView fotoElegida;
     private DatabaseReference ref;
     private StorageReference sto;
@@ -93,6 +95,7 @@ public class Registro extends Fragment {
         et_passrepit = view.findViewById(R.id.et_registro_repitpass);
         et_email = view.findViewById(R.id.et_email);
         fotoElegida = view.findViewById(R.id.iv_foto_perfil);
+        til_pass = view.findViewById(R.id.til_pass);
 
         LoginActividad loginActividad = (LoginActividad)getActivity();
         navController = loginActividad.getNavController();
@@ -170,16 +173,16 @@ public class Registro extends Fragment {
         }
 
         if(pass.equals("")){
-            et_pass.setError("La contraseña no puede estar vacía");
+            til_pass.setError("La contraseña no puede estar vacía");
             validacion = false;
         }else{
             AppUtilities utilities = new AppUtilities();
             if(!pass.equals(repit_pass)){
-                et_pass.setError("Las contraseñas deben ser iguales");
+                til_pass.setError("Las contraseñas deben ser iguales");
                 validacion = false;
             }else if(!utilities.isValidPass(pass)){
                 validacion = false;
-                et_pass.setError("Debe contener por lo menos un dígito y tener una longitud entre 5 y 15 caracteres");
+                til_pass.setError("Debe contener por lo menos un dígito y tener una longitud entre 5 y 15 caracteres");
             }
         }
 
