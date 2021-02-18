@@ -22,6 +22,7 @@ import com.example.tableverse.LoginActividad;
 import com.example.tableverse.R;
 import com.example.tableverse.UsuarioActividad;
 import com.example.tableverse.objetos.Usuario;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +41,7 @@ public class Login extends Fragment {
     private DatabaseReference ref;
     private StorageReference sto;
     private EditText et_nombre, et_pass;
+    private TextInputLayout til_pass;
     private Usuario usuario;
     private SharedPreferences sp;
 
@@ -87,6 +89,7 @@ public class Login extends Fragment {
 
         et_nombre = view.findViewById(R.id.et_usuario);
         et_pass = view.findViewById(R.id.et_password);
+        til_pass = view.findViewById(R.id.til_pass);
 
         sp = getContext().getSharedPreferences("LOGIN", MODE_PRIVATE);
 
@@ -131,35 +134,50 @@ public class Login extends Fragment {
         String nombre = et_nombre.getText().toString().trim();
         final String pass = et_pass.getText().toString().trim();
 
-        if(nombre.equals("") || pass.equals("")){
-            Toast.makeText(getContext(), "Los campos no pueden estar vacíos", Toast.LENGTH_SHORT).show();
-        }else{
+        if(validar(nombre, pass)){
             ref.child("tienda").child("clientes").orderByChild("nombre").equalTo(nombre)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChildren()){
-                                DataSnapshot dataSnapshot = snapshot.getChildren().iterator().next();
-                                usuario = dataSnapshot.getValue(Usuario.class);
-                                if(usuario.getContraseña().equals(pass)){
-                                    usuario.setId(dataSnapshot.getKey());
-                                    guardarShared();
-                                    loguearse();
-                                }else{
-                                    Toast.makeText(getContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
-                                }
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChildren()){
+                            DataSnapshot dataSnapshot = snapshot.getChildren().iterator().next();
+                            usuario = dataSnapshot.getValue(Usuario.class);
+                            if(usuario.getContraseña().equals(pass)){
+                                usuario.setId(dataSnapshot.getKey());
+                                guardarShared();
+                                loguearse();
                             }else{
-                                Toast.makeText(getContext(), "No existe ningún usuario con ese nombre", Toast.LENGTH_SHORT).show();
+                                til_pass.setError("La contraseña es incorrecta");
                             }
-
+                        }else{
+                            et_nombre.setError("No existe este usuario");
                         }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    }
 
-                        }
-                    });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
         }
+    }
+
+    private boolean validar(String nombre, String pass){
+        boolean validar = true;
+
+        if(nombre.equals("")){
+            validar = false;
+            et_nombre.setError("El nombre no puede estar vacío");
+        }
+
+        if(pass.equals("")){
+            validar = false;
+            til_pass.setError("La contraseña no puede estar vacía");
+        }
+
+
+        return validar;
     }
 
     private void guardarShared(){
