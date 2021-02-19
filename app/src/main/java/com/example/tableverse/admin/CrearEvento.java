@@ -191,7 +191,7 @@ public class CrearEvento extends Fragment {
         AdminActividad adminActividad = (AdminActividad)getActivity();
         adminActividad.getNavController().navigate(R.id.listaEventosAdmin);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(900);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

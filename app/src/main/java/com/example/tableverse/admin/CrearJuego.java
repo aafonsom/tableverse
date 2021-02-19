@@ -135,7 +135,7 @@ public class CrearJuego extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.hasChildren()){
-                            Toast.makeText(getContext(), "Ya existe un juego con ese nombre", Toast.LENGTH_SHORT).show();
+                            et_nombre.setError("Ya existe un juego con ese nombre");
                         }else{
                             Juego pojo_juego = new Juego(nombre, categoria, Double.parseDouble(precio), Integer.parseInt(stock));
                             String id = ref.child("tienda").child("juegos").push().getKey();
@@ -145,7 +145,7 @@ public class CrearJuego extends Fragment {
                             adminActividad.getNavController().navigate(R.id.listaJuegosAdmin);
 
                             try {
-                                Thread.sleep(1000);
+                                Thread.sleep(900);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

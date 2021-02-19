@@ -125,26 +125,26 @@ public class DialogModJuego extends DialogFragment {
 
     private void modificarOnClick(){
         final String nombre, categoria;
-        final double precio;
-        final int stock;
+        final String precio;
+        final String stock;
 
         nombre = et_nombre.getText().toString().trim();
         categoria = et_categoria.getText().toString().trim();
-        precio = Double.parseDouble(et_precio.getText().toString().trim());
-        stock = Integer.parseInt(et_stock.getText().toString().trim());
+        precio = et_precio.getText().toString().trim();
+        stock = et_stock.getText().toString().trim();
 
         if(validar(nombre, categoria, precio, stock)){
             if(nombre.equals(juego.getNombre())){
-                realizarModificaciones(nombre, categoria, precio, stock);
+                realizarModificaciones(nombre, categoria, Double.parseDouble(precio), Integer.parseInt(stock));
             }else{
                 ref.child("tienda").child("juegos").orderByChild("nombre").equalTo(nombre)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.hasChildren()){
-                                Toast.makeText(adminActividad, "Ya existe un juego con ese nombre", Toast.LENGTH_SHORT).show();
+                                et_nombre.setError("Ya existe un juego con este nombre");
                             }else{
-                                realizarModificaciones(nombre, categoria, precio, stock);
+                                realizarModificaciones(nombre, categoria, Double.parseDouble(precio), Integer.parseInt(stock));
                             }
                         }
 
@@ -170,7 +170,7 @@ public class DialogModJuego extends DialogFragment {
         Toast.makeText(adminActividad, "Datos modificados con éxito", Toast.LENGTH_SHORT).show();
         dismiss();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(800);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -190,11 +190,38 @@ public class DialogModJuego extends DialogFragment {
         return cambios;
     }
 
-    private boolean validar(String nombre, String categoria, double precio, int stock){
-        boolean esValido = hayCambios(nombre, categoria, precio, stock);
-        //TODO: mejorar la validación
+    private boolean validar(String nombre, String categoria, String precio, String stock){
+        boolean esValido = true;
+
+        if(nombre.equals("")){
+            et_nombre.setError("El nombre no puede estar vacío");
+            esValido = false;
+        }
+
+        if(categoria.isEmpty()){
+            et_categoria.setError("La categoría no puede estar vacía");
+            esValido = false;
+        }
+
+        if(precio.isEmpty()){
+            et_precio.setError("El precio no puede estar vacío");
+            esValido = false;
+        }else{
+            double pre = Double.parseDouble(precio);
+            if(pre == 0){
+                et_precio.setError("El precio no puede ser 0");
+                esValido = false;
+            }
+        }
+
+        if(stock.isEmpty()){
+            et_stock.setError("El stock no puede estar vacío");
+            esValido = false;
+        }
+
         if(esValido){
-            if(nombre.equals("") || categoria.equals("") || precio == 0.0 || stock == 0){
+            boolean comprobacion = hayCambios(nombre, categoria, Double.parseDouble(precio), Integer.parseInt(stock));
+            if(!comprobacion){
                 esValido = false;
             }
         }

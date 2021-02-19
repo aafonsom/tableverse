@@ -205,7 +205,7 @@ public class DialogModEvento extends DialogFragment {
 
         dismiss();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(900);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
